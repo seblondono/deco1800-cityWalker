@@ -4,12 +4,7 @@ html, body {
   padding: 0;
 }
 
-#wrapper {
-  height: 100%;
-  position: relative;
-}
-
-#over {
+#over-content {
   position: absolute;
   top: 25%;
   left: 50%;
