@@ -6,20 +6,18 @@ html, body {
 
 #over-content {
   position: absolute;
-  top: 25%;
+  top: 60%;
   left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-  z-index: 99;
+  transform: translate(-50%, -50%);
+  z-index: 9;
 }
 
-#over_links {
+#over-content-interest {
   position: absolute;
   top: 40%;
   left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-  z-index: 99;
+  transform: translate(-50%, -50%);
+  z-index: 9;
 }
 
 #map {
@@ -30,83 +28,44 @@ html, body {
   height: 100%;
 }
 
-h1 {
-  font-size: 60px;
-}
-
-h3 {
-   position: absolute;
-   top: 200px;
-   left: 0;
-   width: 100%;
-}
-/* Preset selections ------------------ */
-
-#gallery {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-#gallery td {
-  float: left;
-  width: 22%;
-  margin: 5%;
-}
-
-#gallery td img {
-  border-radius: 100%;
-  width: 100%;
-}
-
-/* Head */
-
 #cityName {
   text-align: center;
-  font-size: 500%;
+  font-size: 800%;
+  font-weight: bold;
   color: blue;
-  padding: 5%;
+  padding: 10%;
 }
 
-.interest-image {
+.option-image {
   width: 100%;
+  margin: auto;
   border-radius: 50%;
-  box-shadow: 1px 2px 1px 1px;
+  box-shadow: 2px 4px 4px gray;
 }
 
-.interest-name {
+.option-image-index {
+  width: 100%;
+  margin: auto;
+  border-radius: 50%;
+  box-shadow: 2px 4px 4px gray;
+}
+
+.option-name {
   display: none;
-  font-size: 230%;
+  font-size: 300%;
+  font-weight: bold;
   text-align: center;
   color: red;
   position: absolute;
-  top: 40%;
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
+  top: 50%;
   left: 50%;
-  -webkit-transform: translateX(-52%);
-  transform: translateX(-52%);
-  padding: 0px;
+  transform: translate(-50%, -50%);
   margin: auto;
-  width: 100%;
 }
 
-.clickable:hover .interest-name {
-  display: block;
-}
-
-table {
-  padding: 0px;
-  margin: 0px;
-}
-
-#over-content-interest {
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-  z-index: 99;
+.clickable:hover .option-name {
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .clickable {
@@ -114,24 +73,10 @@ table {
   width: 100%;
 }
 
-img {
-  opacity: 0.7;
-}
-
-img:hover {
-  opacity: 2;
-}
-
-#over_links {
-  width: 60%;
-  padding: 0 5%;
+td {
+  padding: 2%;
 }
 
 #main-footer {
     position: center;
-}
-
-.image {
-   position: relative;
-   width: 100%; /* for IE 6 */
 }
