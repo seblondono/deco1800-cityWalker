@@ -22,8 +22,24 @@ function initMap() {
         "stylers": [
           { "visibility": "off" }
         ]
-      }
-    ],
+      },{
+        "stylers": [
+          { "saturation": -60 }
+        ]
+      },{
+        "featureType": 'road.arterial',
+        "elementType": 'geometry',
+        "stylers": [
+          { "hue": '#00ffee' },
+          { "saturation": 50 }
+        ]
+      },{
+        "featureType": 'poi.business',
+        "elementType": 'labels',
+        "stylers": [
+          { "visibility": 'off' }
+        ]
+      }],
     {name: 'CityWalker Interest'}
     );
   // Create a map object, and include the MapTypeId to add

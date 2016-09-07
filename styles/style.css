@@ -55,8 +55,49 @@ h1 {
   border-radius: 100%;
 }
 
-#wrapper2 {
-  max-width: 60%;
-  margin: 0 auto;
-  padding: 0 5%;
+.interest-image {
+  width: 100%;
+  border-radius: 50%;
+  border-color: blue;
+  border: 3px;
+}
+
+.interest-name {
+  display: none;
+  font-size: 230%;
+  text-align: center;
+  color: white;
+  position: absolute;
+  top: 40%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  left: 50%;
+  -webkit-transform: translateX(-52%);
+  transform: translateX(-52%);
+  padding: 0px;
+  margin: auto;
+  width: 100%;
+}
+
+.clickable:hover .interest-name {
+  display: block;
+}
+
+table {
+  padding: 0px;
+  margin: 0px;
+}
+
+#over-content-interest {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  z-index: 99;
+}
+
+.clickable {
+  position: relative;
+  width: 100%;
 }
