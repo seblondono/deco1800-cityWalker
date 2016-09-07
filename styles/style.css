@@ -15,7 +15,7 @@ html, body {
 
 #over_links {
   position: absolute;
-  top: 60%;
+  top: 40%;
   left: 50%;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
@@ -34,6 +34,12 @@ h1 {
   font-size: 60px;
 }
 
+h3 {
+   position: absolute; 
+   top: 200px; 
+   left: 0; 
+   width: 100%;
+}
 /* Preset selections ------------------ */
 
 #gallery {
@@ -42,21 +48,32 @@ h1 {
   list-style: none;
 }
 
-#gallery li {
+#gallery td {
   float: left;
-  width: 25%;
-  margin: 2.5%;
-
+  width: 22%;
+  margin: 5%;
 }
 
-#gallery li img {
-  display: block;
-  margin: 0 auto 30px;
+#gallery td img {
   border-radius: 100%;
+  width: 100%;
 }
 
-#wrapper2 {
-  max-width: 60%;
-  margin: 0 auto;
+img:hover {
+    opacity: 0.3; 
+    filter: alpha(opacity=30);
+}
+
+#over_links {
+  width: 60%;
   padding: 0 5%;
+}
+
+#main-footer {
+    position: center;
+}
+
+.image { 
+   position: relative; 
+   width: 100%; /* for IE 6 */
 }
