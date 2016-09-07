@@ -35,9 +35,9 @@ h1 {
 }
 
 h3 {
-   position: absolute; 
-   top: 200px; 
-   left: 0; 
+   position: absolute;
+   top: 200px;
+   left: 0;
    width: 100%;
 }
 /* Preset selections ------------------ */
@@ -59,19 +59,26 @@ h3 {
   width: 100%;
 }
 
-<<<<<<< HEAD
+/* Head */
+
+#cityName {
+  text-align: center;
+  font-size: 500%;
+  color: blue;
+  padding: 5%;
+}
+
 .interest-image {
   width: 100%;
   border-radius: 50%;
-  border-color: blue;
-  border: 3px;
+  box-shadow: 1px 2px 1px 1px;
 }
 
 .interest-name {
   display: none;
   font-size: 230%;
   text-align: center;
-  color: white;
+  color: red;
   position: absolute;
   top: 40%;
   -webkit-transform: translateY(-50%);
@@ -95,7 +102,7 @@ table {
 
 #over-content-interest {
   position: absolute;
-  top: 55%;
+  top: 30%;
   left: 50%;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
@@ -105,10 +112,14 @@ table {
 .clickable {
   position: relative;
   width: 100%;
-=======
+}
+
+img {
+  opacity: 0.7;
+}
+
 img:hover {
-    opacity: 0.3; 
-    filter: alpha(opacity=30);
+  opacity: 2;
 }
 
 #over_links {
@@ -120,8 +131,7 @@ img:hover {
     position: center;
 }
 
-.image { 
-   position: relative; 
+.image {
+   position: relative;
    width: 100%; /* for IE 6 */
->>>>>>> 11b81ae51c96cdcd1670e0f4b13343879b76e326
 }
