@@ -31,6 +31,7 @@ function initMap() {
     center: {lat: -25.729875, lng: 133.978979},
     scrollwheel: false,
     zoom: 5,
+    disableDefaultUI: true,
     mapTypeControlOptions: {
             mapTypeIds: ['styled_map']
           }
@@ -39,4 +40,32 @@ function initMap() {
   //Associate the styled map with the MapTypeId and set it to display.
   map.mapTypes.set('styled_map', styledMapType);
   map.setMapTypeId('styled_map');
+
+  //**************************************************************************//
+
+  var brisbane = {lat: -27.4697759, lng: 153.0251235};
+  // example marker:
+
+  $("#brisbane").click(function(){
+    map.setCenter(brisbane);
+    smoothZoom(map, 14, map.getZoom());
+  });
+
+  // the smooth zoom function
+  function smoothZoom (map, max, cnt) {
+      $("#over-content").fadeOut(1500);
+      if (cnt >= max) {
+          setTimeout(function(){location.href="interest.html";}, 1500);
+          return;
+      }
+      else {
+          z = google.maps.event.addListener(map, 'zoom_changed', function(event){
+              google.maps.event.removeListener(z);
+              smoothZoom(map, max, cnt + 1);
+          });
+          setTimeout(function(){map.setZoom(cnt)}, 700); // 80ms is what I found to work well on my system -- it might not work well on all systems
+      }
+  }
+  //**************************************************************************//
+
 }

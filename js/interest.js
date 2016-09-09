@@ -48,6 +48,7 @@ function initMap() {
     center: brisbane,
     scrollwheel: false,
     zoom: 13,
+    disableDefaultUI: true,
     mapTypeControlOptions: {
             mapTypeIds: ['styled_map']
           }

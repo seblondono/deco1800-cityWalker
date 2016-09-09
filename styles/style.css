@@ -33,7 +33,7 @@ html, body {
   font-size: 800%;
   font-weight: bold;
   color: blue;
-  padding: 10%;
+  padding: 10% 10% 0 10%;
 }
 
 #citywalker-logo {
@@ -67,9 +67,16 @@ html, body {
   margin: auto;
 }
 
+@media (min-width: 992px) and (max-width: 1200px){
+  .option-name{font-size: 215%;}
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .option-name{font-size: 205%;}
+}
+
 .clickable:hover .option-name {
-  display: table-cell;
-  vertical-align: middle;
+  display: block;
 }
 
 .clickable {
