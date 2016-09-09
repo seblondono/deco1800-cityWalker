@@ -4,14 +4,14 @@
     <meta charset="utf-8">
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css"/>
     <link rel="stylesheet" type="text/css" href="styles/style.css">
 
     <script src="js/index.js"></script>
@@ -22,24 +22,43 @@
     <div id="over-content">
       <table>
         <tr>
-          <td colspan="4">CityWalker Logo</td>
+          <!-- <td id="citywalker-logo" colspan="4">CityWalker Logo</td> -->
+          <td colspan="4" >
+            <div class="row">
+              <div class="span4"><img id="citywalker-logo" class="center-block img-responsive" src="images/citywalker_logo.png" alt="CityWalker Logo"></div>
+          </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <div class="row">
+              <form>
+                <div class="col-md-10">
+                  <input type="text" class="form-control" placeholder="What city would you like to explore?">
+                </div>
+                <div class="col-md-2">
+                  <button type="submit" class="btn btn-primary"><i class="fa fa-location-arrow"></i> Use my Location</button>
+                </div>
+              </form>
+            </div>
+          </td>
         </tr>
         <tr>
           <td>
             <div class="clickable">
-              <a href="#"><img class="option-image-index" src="images/sydney.jpg" alt="City Hall Brisbane"></a>
-              <a href="#"><p class="option-name">Brisbane</p></a>
+              <a href="interest.html"><img class="option-image-index img-responsive" src="images/brisbane_city.jpg" alt="Brisbane City"></a>
+              <a href="interest.html"><p class="option-name">Brisbane</p></a>
             </div>
           </td>
           <td>
             <div class="clickable">
-              <a href="#"><img class="option-image-index" src="images/sydney.jpg" alt="Museum of Brisbane"></a>
+              <a href="#"><img class="option-image-index img-responsive" src="images/melbourne.jpg" alt="Melbourne Beach"></a>
               <a href="#"><p class="option-name">Melbourne</p></a>
             </div>
           </td>
           <td>
             <div class="clickable">
-              <a href="#"><img class="option-image-index" src="images/sydney.jpg" alt="Historical Museum"></a>
+              <a href="#"><img class="option-image-index img-responsive" src="images/sydney.jpg" alt="Sydney Opera House"></a>
               <a href="#"><p class="option-name">Sydney</p></a>
             </div>
           </td>
