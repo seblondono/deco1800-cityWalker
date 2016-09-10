@@ -68,3 +68,11 @@ function initMap() {
   //**************************************************************************//
 
 }
+
+// Creating the autocomplete functionality. Cities search type
+var autocomplete;
+function initAutocomplete() {
+  autocomplete = new google.maps.places.Autocomplete(
+      (document.getElementById('autocomplete')),
+      {types: ['geocode']});
+}

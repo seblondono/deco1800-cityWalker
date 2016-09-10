@@ -36,7 +36,7 @@
               <!-- TODO: Change size if text input to be responsive to screen width changes -->
               <form>
                 <div class="col-md-10">
-                  <input type="text" class="form-control" placeholder="What city would you like to explore?">
+                  <input id="autocomplete" type="text" class="form-control" placeholder="What city would you like to explore?" onFocus="geolocate">
                 </div>
                 <div class="col-md-2">
                   <button type="submit" class="btn btn-primary"><i class="fa fa-location-arrow" aria-hidden="true"></i> Use my Location</button>
@@ -96,8 +96,11 @@
         </tr>
       </table>
     </div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkDPRJqm-wDrMSRZpEFrQWGhTEbTSPdcY&callback=initMap"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkDPRJqm-wDrMSRZpEFrQWGhTEbTSPdcY&libraries=places&callback=initMap"
   async defer></script>
+      
+      <!-- need to add a callback=initAutocomplete  -->
+
 
       <!-- Main Footer -->
     <footer class="main-footer">
