@@ -21,10 +21,7 @@ function initMap() {
       { "visibility": "off" }
     ]
   },{
-  }
-],
-{name: 'CityWalker'}
-);
+  }]);
   // Create a map object, and include the MapTypeId to add
   // to the map type control.
   map = new google.maps.Map(document.getElementById('map'), {
@@ -41,6 +38,8 @@ function initMap() {
   map.mapTypes.set('styled_map', styledMapType);
   map.setMapTypeId('styled_map');
 
+  //**************************************************************************//
+  //                Code to zoom into a specific location                     //
   //**************************************************************************//
 
   var brisbane = {lat: -27.4697759, lng: 153.0251235};

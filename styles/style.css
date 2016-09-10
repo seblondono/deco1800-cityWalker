@@ -13,6 +13,7 @@ html, body {
 }
 
 #over-content-interest {
+  display: none;
   position: absolute;
   top: 40%;
   left: 50%;
