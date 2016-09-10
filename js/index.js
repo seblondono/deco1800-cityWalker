@@ -54,7 +54,7 @@ function initMap() {
   function smoothZoom (map, max, cnt) {
       $("#over-content").fadeOut(1500);
       if (cnt >= max) {
-          setTimeout(function(){location.href="interest.html";}, 1500);
+          setTimeout(function(){$("#over-content-interest").fadeIn(3000);}, 1500);
           return;
       }
       else {
