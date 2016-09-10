@@ -76,3 +76,8 @@ function initAutocomplete() {
       (document.getElementById('autocomplete')),
       {types: ['geocode']});
 }
+
+function initialise() {
+    initMap();
+    initAutocomplete();
+}
