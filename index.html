@@ -36,10 +36,10 @@
               <!-- TODO: Change size if text input to be responsive to screen width changes -->
               <form>
                 <div class="col-md-10">
-                  <input id="autocomplete" type="text" class="form-control" placeholder="What city would you like to explore?" onFocus="geolocate">
+                  <input id="autocomplete" type="text" class="form-control" placeholder="What city would you like to explore?">
                 </div>
                 <div class="col-md-2">
-                  <button type="submit" class="btn btn-primary"><i class="fa fa-location-arrow" aria-hidden="true"></i> Use my Location</button>
+                  <button id="submitLocation" type="submit" class="btn btn-primary"><i class="fa fa-location-arrow" aria-hidden="true"></i> Use my Location</button>
                 </div>
               </form>
             </div>
@@ -77,19 +77,19 @@
         <tr>
           <td>
             <div class="clickable">
-              <a href="#"><img class="option-image" src="images/cityHall_brisbane.png" alt="City Hall Brisbane"></a>
+              <a href="#"><img class="option-image img-responsive" src="images/cityHall_brisbane.png" alt="City Hall Brisbane"></a>
               <a href="#"><p class="option-name">Landmarks</p></a>
             </div>
           </td>
           <td>
             <div class="clickable">
-              <a href="#"><img class="option-image" src="images/museum_brisbane.png" alt="Museum of Brisbane"></a>
+              <a href="#"><img class="option-image img-responsive" src="images/museum_brisbane.png" alt="Museum of Brisbane"></a>
               <a href="#"><p class="option-name">Museums</p></a>
             </div>
           </td>
           <td>
             <div class="clickable">
-              <a href="#"><img class="option-image" src="images/historical_museum_brisbane.png" alt="Historical Museum"></a>
+              <a href="#"><img class="option-image img-responsive" src="images/historical_museum_brisbane.png" alt="Historical Museum"></a>
               <a href="#"><p class="option-name">Historical</p></a>
             </div>
           </td>
@@ -100,11 +100,10 @@
   async defer></script>
 
       <!-- Main Footer -->
-    <footer class="main-footer">
-		     <p>In conjunction with university project for <a href="#">DECO7180</a>.</p>
-	  </footer>
-	      <footer class="main-footer">
-		     <p>In conjunction with university project for <a href="#">DECO7180</a>.</p>
-	  </footer>
+  <footer id="over-content-footer" class="footer">
+    <div class="container-fluid">
+	     <p>In conjunction with university project for <a href="#">DECO7180</a>.</p>
+    </div>
+  </footer>
   </body>
 </html>
