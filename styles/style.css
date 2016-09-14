@@ -21,6 +21,13 @@ html, body {
   z-index: 9;
 }
 
+#over-content-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 15;
+}
+
 #map {
   height: 100%;
 }
@@ -89,10 +96,13 @@ td {
   padding: 2%;
 }
 
-#main-footer {
-    position: center;
+.footer{
+  display: block;
+  width: 100%;
+  margin: 0;
+  height: 50px;
+  background-color: red;
 }
-
 .col-md-10 {
   padding: 0px !important;
 }

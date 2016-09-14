@@ -21,6 +21,33 @@ function initMap() {
       { "visibility": "off" }
     ]
   },{
+    "featureType": "administrative",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": "road.highway",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": "poi.school",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": 'road.arterial',
+    "elementType": 'geometry',
+    "stylers": [
+      { "hue": '#00ffee' },
+      { "saturation": 50 }
+    ]
+  },{
+    "featureType": 'poi.business',
+    "elementType": 'labels',
+    "stylers": [
+      { "visibility": 'off' }
+    ]
   }]);
   // Create a map object, and include the MapTypeId to add
   // to the map type control.
@@ -62,10 +89,11 @@ function initMap() {
               google.maps.event.removeListener(z);
               smoothZoom(map, max, cnt + 1);
           });
-          setTimeout(function(){map.setZoom(cnt)}, 700); // 80ms is what I found to work well on my system -- it might not work well on all systems
+          setTimeout(function(){map.setZoom(cnt)}, 700); // 700ms is what I found to work well on my system
       }
   }
   //**************************************************************************//
+
 
 }
 
