@@ -74,10 +74,41 @@ var autocomplete;
 function initAutocomplete() {
   autocomplete = new google.maps.places.Autocomplete(
       (document.getElementById('autocomplete')),
-      {types: ['geocode']});
+      {types: ['(cities)']});
 }
 
+// Enable running of both map and autocomplete simultaneously //
 function initialise() {
     initMap();
     initAutocomplete();
 }
+
+  var geocoder;
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(successFunction);
+} 
+//Get the latitude and the longitude;
+function successFunction(position) {
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+    codeLatLng(lat, lng)
+    console.log();
+}
+
+  function initialize() {
+    geocoder = new google.maps.Geocoder();
+  }
+
+  function codeLatLng(lat, lng) {
+    var latlng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode({'latLng': latlng}, function(results) {
+       
+        if (results[1]) {
+         //formatted address
+         alert(results[2].formatted_address)
+        } else {
+          alert("Enter your location");
+        }
+    });
+  }
