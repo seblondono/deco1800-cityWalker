@@ -4,6 +4,15 @@ html, body {
   padding: 0;
 }
 
+.form-control {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+
+.location-button {
+    font-family: 'Ubuntu', sans-serif;
+}
+
 #over-content {
   position: absolute;
   top: 50%;
@@ -37,11 +46,27 @@ html, body {
 }
 
 #cityName {
-  text-align: center;
   font-size: 800%;
   font-weight: bold;
-  color: blue;
-  padding: 10% 10% 0 10%;
+  color: #FF5733;
+  font-family: 'Ubuntu', sans-serif;
+  justify-content: right;
+  text-align: right;
+}
+
+#cityWelcome {
+  font-size: 600%;
+  color: #6a6a6a;
+  font-family: 'Ubuntu', sans-serif;
+  text-align: right;
+}
+
+#interestWelcome {
+  font-size: 100%;
+  color: #6a6a6a;
+  font-family: 'Ubuntu', sans-serif;
+  text-align: center;
+  background-color: white;
 }
 
 #citywalker-logo {
@@ -60,19 +85,21 @@ html, body {
   margin: auto;
   border-radius: 50%;
   box-shadow: 2px 4px 4px gray;
+  background-image: url(/images/cityWalker_logo.png);
 }
 
 .option-name {
   display: none;
-  font-size: 300%;
+  font-size: 2.5vw;
   font-weight: bold;
   text-align: center;
-  color: red;
+  color: white;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   margin: auto;
+  font-family: 'Merriweather', serif;
 }
 
 @media (min-width: 992px) and (max-width: 1200px){
@@ -92,17 +119,34 @@ html, body {
   width: 100%;
 }
 
+.img-responsive:hover {
+  height: 100px.;
+}
+
 td {
   padding: 2%;
 }
 
-.footer{
+.footer {
   display: block;
   width: 100%;
   margin: 0;
-  height: 50px;
-  background-color: red;
+  height: 4%;
+  background-color: #D4DCDE;
+  color: white;
+  text-align: center;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.footer a {
+    color: white;
+    
 }
 .col-md-10 {
   padding: 0px !important;
+}
+
+.clickable:hover img {
+    -webkit-filter: grayscale(100%);
+    -webkit-opacity: 50%;
 }
