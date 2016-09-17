@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
 
@@ -22,7 +22,7 @@
     <div id="over-content">
       <table>
         <tr>
-        <td colspan="4" >
+          <td colspan="4">
             <div class="row">
               <div class="span4"><img id="citywalker-logo" class="center-block img-responsive" src="images/citywalker_logo.png" alt="CityWalker Logo"></div>
             </div>
@@ -54,13 +54,13 @@
             </div>
           </td>
           <td>
-            <div class="clickable">
+            <div id="melbourne" class="clickable">
               <a href="#"><img class="option-image-index img-responsive" src="images/melbourne.jpg" alt="Melbourne Beach"></a>
               <a href="#"><p class="option-name">Melbourne</p></a>
             </div>
           </td>
           <td>
-            <div class="clickable">
+            <div id="sydney" class="clickable">
               <a href="#"><img class="option-image-index img-responsive" src="images/sydney.jpg" alt="Sydney Opera House"></a>
               <a href="#"><p class="option-name">Sydney</p></a>
             </div>
@@ -72,23 +72,27 @@
     <div id="over-content-interest">
       <table>
         <tr>
-          <td id="cityName" colspan="4">Brisbane</td>
+          <td colspan="4">
+            <div class="row">
+              <div id="cityName" class="span4 display-1"></div>
+            </div>
+          <td>
         </tr>
         <tr>
           <td>
-            <div class="clickable">
+            <div id="landmarks" class="clickable">
               <a href="#"><img class="option-image img-responsive" src="images/cityHall_brisbane.png" alt="City Hall Brisbane"></a>
               <a href="#"><p class="option-name">Landmarks</p></a>
             </div>
           </td>
           <td>
-            <div class="clickable">
+            <div id="museums" class="clickable">
               <a href="#"><img class="option-image img-responsive" src="images/museum_brisbane.png" alt="Museum of Brisbane"></a>
               <a href="#"><p class="option-name">Museums</p></a>
             </div>
           </td>
           <td>
-            <div class="clickable">
+            <div id="historical" class="clickable">
               <a href="#"><img class="option-image img-responsive" src="images/historical_museum_brisbane.png" alt="Historical Museum"></a>
               <a href="#"><p class="option-name">Historical</p></a>
             </div>
@@ -96,24 +100,14 @@
         </tr>
       </table>
     </div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkDPRJqm-wDrMSRZpEFrQWGhTEbTSPdcY&libraries=places&callback=initialise&sensor=false"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkDPRJqm-wDrMSRZpEFrQWGhTEbTSPdcY&libraries=places&callback=initialise"
   async defer></script>
 
-      <!-- Main Footer -->
-<<<<<<< HEAD
-    <footer class="main-footer">
-		     <p>In conjunction with university project for <a href="#">DECO7180</a>.</p>
-	  </footer>
-	      <footer class="main-footer">
-		     <p>In conjunction with university project for <a href="#">DECO7180</a>.</p>
-	  </footer>
-      
-=======
-  <footer id="over-content-footer" class="footer">
-    <div class="container-fluid">
-	     <p>In conjunction with university project for <a href="#">DECO7180</a>.</p>
-    </div>
-  </footer>
->>>>>>> b464c8276e5a510039e41af17f6e2e37ae798408
+  <!-- Main Footer -->
+    <footer id="over-content-footer" class="footer">
+      <div class="container-fluid">
+  	     <p>In conjunction with university project for <a href="#">DECO7180</a>.</p>
+      </div>
+    </footer>
   </body>
 </html>

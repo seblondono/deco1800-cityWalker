@@ -25,7 +25,7 @@ html, body {
   position: absolute;
   bottom: 0;
   left: 0;
-  z-index: 15;
+  z-index: 9;
 }
 
 #map {
@@ -38,7 +38,7 @@ html, body {
 
 #cityName {
   text-align: center;
-  font-size: 800%;
+  font-size: 7em;
   font-weight: bold;
   color: blue;
   padding: 10% 10% 0 10%;
@@ -46,6 +46,7 @@ html, body {
 
 #citywalker-logo {
   margin: auto;
+  width: 65%;
 }
 
 .option-image {
@@ -64,7 +65,7 @@ html, body {
 
 .option-name {
   display: none;
-  font-size: 300%;
+  font-size: 2.5em;
   font-weight: bold;
   text-align: center;
   color: red;
@@ -76,11 +77,13 @@ html, body {
 }
 
 @media (min-width: 992px) and (max-width: 1200px){
-  .option-name{font-size: 215%;}
+  .option-name{font-size: 2.2em;}
+  #cityName{font-size: 6em;}
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-  .option-name{font-size: 205%;}
+  .option-name{font-size: 1.5em;}
+  #cityName{font-size: 4em;}
 }
 
 .clickable:hover .option-name {
@@ -90,9 +93,14 @@ html, body {
 .clickable {
   position: relative;
   width: 100%;
+  padding: 5%;
 }
 
 td {
+  padding: 0px;
+}
+
+.has-image {
   padding: 2%;
 }
 
@@ -100,8 +108,8 @@ td {
   display: block;
   width: 100%;
   margin: 0;
-  height: 50px;
-  background-color: red;
+  height: 30px;
+  background-color: orange;
 }
 .col-md-10 {
   padding: 0px !important;
