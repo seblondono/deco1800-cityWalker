@@ -119,25 +119,25 @@ function initMap() {
   var melbourne = {lat: -37.8136276, lng: 144.9630576};
 
 
-  $("#brisbane").click(function(){
+  $(".brisbane").click(function(){
     $("#cityName").text("BRISBANE");
     map.setCenter(brisbane);
     smoothZoom(map, 14, map.getZoom());
   });
 
-  $("#melbourne").click(function(){
+  $(".melbourne").click(function(){
     $("#cityName").text("MELBOURNE");
     map.setCenter(melbourne);
     smoothZoom(map, 14, map.getZoom());
   });
 
-  $("#sydney").click(function(){
+  $(".sydney").click(function(){
     $("#cityName").text("SYDNEY");
     map.setCenter(sydney);
     smoothZoom(map, 14, map.getZoom());
   });
 
-  $("#museums").click(function(){
+  $(".museums").click(function(){
     smoothZoom(map, 16, map.getZoom());
     $("#over-content-interest").fadeOut(1000);
     //constructs the name of the key to make reference in the cities interest object
@@ -146,7 +146,7 @@ function initMap() {
     set_places(interestLocations[m]);
   });
 
-  $("#historical").click(function(){
+  $(".historical").click(function(){
     smoothZoom(map, 16, map.getZoom());
     $("#over-content-interest").fadeOut(1000);
     //constructs the name of the key to make reference in the cities interest object
@@ -155,7 +155,7 @@ function initMap() {
     set_places(interestLocations[h]);
   });
 
-  $("#landmarks").click(function(){
+  $(".landmarks").click(function(){
     smoothZoom(map, 16, map.getZoom());
     $("#over-content-interest").fadeOut(1000);
     //constructs the name of the key to make reference in the cities interest object
