@@ -120,19 +120,19 @@ function initMap() {
 
 
   $("#brisbane").click(function(){
-    $("#cityName").text("Brisbane");
+    $("#cityName").text("BRISBANE");
     map.setCenter(brisbane);
     smoothZoom(map, 14, map.getZoom());
   });
 
   $("#melbourne").click(function(){
-    $("#cityName").text("Melbourne");
+    $("#cityName").text("MELBOURNE");
     map.setCenter(melbourne);
     smoothZoom(map, 14, map.getZoom());
   });
 
   $("#sydney").click(function(){
-    $("#cityName").text("Sydney");
+    $("#cityName").text("SYDNEY");
     map.setCenter(sydney);
     smoothZoom(map, 14, map.getZoom());
   });

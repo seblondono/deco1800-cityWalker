@@ -2,6 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <!-- Google Web Fonts -->
+      <link href="https://fonts.googleapis.com/css?family=Merriweather:900|Titillium+Web:300|Ubuntu" rel="stylesheet">
+
+    <!-- Menu styling -->
+      <link rel="stylesheet" type="text/css" href="styles/menu.css">
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -39,7 +44,7 @@
                   <input id="autocomplete" type="text" class="form-control" placeholder="What city would you like to explore?">
                 </div>
                 <div class="col-md-2">
-                  <button id="submitLocation" type="submit" class="btn btn-primary"><i class="fa fa-location-arrow" aria-hidden="true"></i> Use my Location</button>
+                  <button id="submitLocation" type="submit" class="btn btn-primary location-button"><i class="fa fa-location-arrow" aria-hidden="true"></i> Use my Location</button>
                 </div>
               </form>
             </div>
@@ -72,12 +77,22 @@
     <div id="over-content-interest">
       <table>
         <tr>
-          <td colspan="4">
+          <td id="cityWelcome" colspan="4">
+            <div class="row">
+              <div class="span4 display-1">Welcome to</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
             <div class="row">
               <div id="cityName" class="span4 display-1"></div>
             </div>
-          <td>
+          </td>
         </tr>
+        <div>
+          <td id="interestWelcome" colspan="4">Please select an interest:</td>
+        </div>
         <tr>
           <td>
             <div id="landmarks" class="clickable">
@@ -103,7 +118,73 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkDPRJqm-wDrMSRZpEFrQWGhTEbTSPdcY&libraries=places&callback=initialise"
   async defer></script>
 
-  <!-- Main Footer -->
+      <!-- MENU HTML CODE -->
+<nav class="main-menu">
+    <div class="citylogo"></div>
+      <ul>
+        <li>
+            <div class="menuheading">
+            <span class="nav-text"> - LOCATIONS - </span>
+            </div>
+        </li>
+        <li>
+          <a href="http://startific.com">
+            <i class="fa faedit fa-location-arrow fa-lg"></i>
+            <span class="nav-text">Brisbane</span>
+          </a>
+        </li>
+        <li>
+          <a href="http://startific.com">
+            <i class="fa faedit fa-location-arrow fa-lg"></i>
+            <span class="nav-text">Melbourne</span>
+          </a>
+        </li>
+        <li>
+          <a href="http://startific.com">
+            <i class="fa faedit fa-location-arrow fa-lg"></i>
+            <span class="nav-text">Sydney</span>
+          </a>
+        </li>
+        <li>
+            <div class="menuheading">
+            <span class="nav-text">- INTERESTS -</span>
+            </div>
+        </li>
+        <li class="darkerlishadow">
+          <a href="http://startific.com">
+            <i class="fa faedit fa-picture-o fa-lg"></i>
+            <span class="nav-text">Mueseums</span>
+          </a>
+        </li>
+        <li class="darkerli">
+          <a href="http://startific.com">
+            <i class="fa faedit fa-picture-o fa-lg"></i>
+            <span class="nav-text">landmarks</span>
+          </a>
+        </li>
+        <li class="darkerlishadowdown">
+          <a href="http://startific.com">
+            <i class="fa faedit fa-picture-o fa-lg"></i>
+            <span class="nav-text">Locations</span>
+          </a>
+        </li>
+        <li>
+          <a href="http://startific.com">
+            <i class="fa faedit fa-question-circle fa-lg"></i>
+            <span class="nav-text">Help</span>
+          </a>
+        </li>
+      </ul>
+      <ul class="logout">
+        <li>
+          <a href="http://startific.com">
+            <i class="fa faedit fa-lightbulb-o fa-lg"></i>
+            <span class="nav-text">BLOG</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+// Footer
     <footer id="over-content-footer" class="footer">
       <div class="container-fluid">
   	     <p>In conjunction with university project for <a href="#">DECO7180</a>.</p>
