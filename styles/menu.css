@@ -1,18 +1,13 @@
-body {}
-
-@import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
-
-}
+@import url((http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
 @import url(http://fonts.googleapis.com/css?family=Titillium+Web:300);
-.logo {}
 
 .citylogo {
-  height: 15%;
-  width: auto;
-  background: url(/../images/cityWalker_logo.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  vertical-align: middle;
+  display: none;
+  float: left;
+  text-align: left;
+  margin: 0px;
+  height: 21%;
+  width:auto;
 }
 
 .fa-lg {
@@ -22,27 +17,31 @@ body {}
 .faedit {
   position: relative;
   display: table-cell;
-  width: 100%;
+  width: 65%;
   height: 2em;
   text-align: center;
-  top: 0.75em;o
+  top: 0.75em;
 }
 
 .main-menu:hover,
 nav.main-menu.expanded {
-  width: auto;
+  width: 200px;
+  height: 63%;
   overflow: hidden;
   opacity: 1;
+}
+
+.main-menu:hover .citylogo{
+  display: block;
 }
 
 .main-menu {
   background: #F7F7F7;
   position: absolute;
-  top: 5%;
   bottom: 21%;
   left: 0.5%;
-  width: 4%;
-  min-width: 50px;
+  width: 35px;
+  height: 50%;
   overflow: hidden;
   -webkit-transition: width .2s linear;
   transition: width .2s linear;
