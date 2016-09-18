@@ -9,7 +9,7 @@ body {}
 .citylogo {
   height: 15%;
   width: auto;
-  background: url(images/cityWalker_logo.png);
+  background: url(/../images/cityWalker_logo.png);
   background-size: contain;
   background-repeat: no-repeat;
   vertical-align: middle;
@@ -19,13 +19,13 @@ body {}
   font-size: 1em;
 }
 
-.fa {
+.faedit {
   position: relative;
   display: table-cell;
   width: 100%;
   height: 2em;
   text-align: center;
-  top: 0.75em;
+  top: 0.75em;o
 }
 
 .main-menu:hover,
@@ -42,6 +42,7 @@ nav.main-menu.expanded {
   bottom: 21%;
   left: 0.5%;
   width: 4%;
+  min-width: 50px;
   overflow: hidden;
   -webkit-transition: width .2s linear;
   transition: width .2s linear;
@@ -57,7 +58,7 @@ nav.main-menu.expanded {
   width: 200px;
 }
 
-.main-menu li>a,
+.main-menu li>.menuDesign,
 .menuheading {
   position: relative;
   width: inherit;
@@ -124,15 +125,15 @@ nav li {
 }
 
 /* Darker element side menu End*/
-.main-menu li:hover>a,
-nav.main-menu li.active>a,
-.dropdown-menu>li>a:hover,
-.dropdown-menu>li>a:focus,
-.dropdown-menu>.active>a,
-.dropdown-menu>.active>a:hover,
-.dropdown-menu>.active>a:focus,
-.no-touch .dashboard-page nav.dashboard-menu ul li:hover a,
-.dashboard-page nav.dashboard-menu ul li.active a {
+.main-menu li:hover>.menuDesign,
+nav.main-menu li.active>.menuDesign,
+.dropdown-menu>li>.menuDesign:hover,
+.dropdown-menu>li>.menuDesign:focus,
+.dropdown-menu>.active>.menuDesign,
+.dropdown-menu>.active>.menuDesign:hover,
+.dropdown-menu>.active>.menuDesign:focus,
+.no-touch .dashboard-page nav.dashboard-menu ul li:hover .menuDesign,
+.dashboard-page nav.dashboard-menu ul li.active .menuDesign {
   color: #fff;
   background-color: #FF5733;
   text-shadow: 0px 0px 0px;
