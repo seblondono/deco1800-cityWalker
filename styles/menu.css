@@ -6,7 +6,7 @@
   float: left;
   text-align: left;
   margin: 0px;
-  height: 21%;
+  height: 7em;
   width:auto;
 }
 
@@ -17,17 +17,17 @@
 .faedit {
   position: relative;
   display: table-cell;
-  width: 65%;
+  width: 2em;
   height: 2em;
   text-align: center;
-  top: 0.75em;
+  top: 0.60em;
 }
 
 .main-menu:hover,
 nav.main-menu.expanded {
   cursor: pointer;
   width: 200px;
-  height: 63%;
+  height: 22.5em;
   overflow: hidden;
   opacity: 1;
 }
@@ -43,10 +43,10 @@ nav.main-menu.expanded {
 .main-menu {
   background: #F7F7F7;
   position: absolute;
-  bottom: 25%;
+  bottom: 35%;
   left: 0.5%;
   width: 35px;
-  height: 50%;
+  height: 15.7em;
   overflow: hidden;
   -webkit-transition: width .2s linear;
   transition: width .2s linear;
@@ -78,6 +78,10 @@ nav.main-menu.expanded {
   font-family: 'Strait', sans-serif;
   border-top: 1px solid #f2f2f2;
   text-shadow: 1px 1px 1px #fff;
+}
+
+#nav-interest {
+  display: none;
 }
 
 .menuheading {
