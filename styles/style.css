@@ -9,7 +9,7 @@ html, body {
 }
 
 
-.location-button {
+#submitLocation {
     font-family: 'Ubuntu', sans-serif;
 }
 
@@ -87,8 +87,7 @@ html, body {
   margin: auto;
   border-radius: 50%;
   box-shadow: 2px 4px 4px gray;
-  background-image: url(/images/cityWalker_logo.png);
-}
+  }
 
 .option-name {
   display: none;
