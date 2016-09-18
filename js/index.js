@@ -198,11 +198,11 @@ function initMap() {
   function setNavCss(){
     $("#nav-interest").css("display", "block");
     $(".main-menu").css("bottom", "25%");
-    $(".main-menu").css("height", "25.7em");
+    $(".main-menu").css("height", "25.5em");
     $(".main-menu").hover(function(){
-      $(this).css("height", "32.7em");//hover in
+      $(this).css("height", "32.5em");//hover in
     }, function(){
-      $(this).css("height", "25.7em");//hover out
+      $(this).css("height", "25.5em");//hover out
     });
   } //set the nav bar to show interest only when focus is on interes page
 

@@ -1,3 +1,6 @@
+@import url('http://fonts.googleapis.com/css?family=Lato:300');
+@import url('http://weloveiconfonts.com/api/?family=entypo');
+
 html, body {
   height: 100%;
   margin: 0;
@@ -79,14 +82,14 @@ html, body {
   width: 100%;
   margin: auto;
   border-radius: 50%;
-  box-shadow: 2px 4px 4px gray;
+  box-shadow: 0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
 }
 
 .option-image-index {
   width: 100%;
   margin: auto;
   border-radius: 50%;
-  box-shadow: 2px 4px 4px gray;
+  box-shadow: 0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
   }
 
 .option-name {
@@ -133,6 +136,49 @@ td {
 
 .has-image {
   padding: 2%;
+}
+
+.footer {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.social {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  margin: 0 10px;
+  line-height: 1.5em;
+  font-family: Entypo;
+  font-size: 1.5em;
+  text-align: center;
+  color: #bbb;
+  border-radius: 50%;
+  background: #eee;
+  overflow: hidden;
+  transition: color .3s;
+}
+
+.social-f:hover {
+  color: #3b5998;
+  cursor: pointer;
+}
+
+.social-t:hover {
+  color: #59d;
+  cursor: pointer;
+}
+
+.social-g:hover {
+  color: rgb(219, 68, 55);
+  cursor: pointer;
+}
+
+.social-t, .social-f, .social-g {
+  box-shadow: 0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
 }
 
 /*.footer {
