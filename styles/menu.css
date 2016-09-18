@@ -25,6 +25,7 @@
 
 .main-menu:hover,
 nav.main-menu.expanded {
+  cursor: pointer;
   width: 200px;
   height: 63%;
   overflow: hidden;
@@ -35,10 +36,14 @@ nav.main-menu.expanded {
   display: block;
 }
 
+.menuheading:hover {
+  cursor: default;
+}
+
 .main-menu {
   background: #F7F7F7;
   position: absolute;
-  bottom: 21%;
+  bottom: 25%;
   left: 0.5%;
   width: 35px;
   height: 50%;

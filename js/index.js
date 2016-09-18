@@ -164,6 +164,10 @@ function initMap() {
     set_places(interestLocations[l]);
   });
 
+  $(".citylogo").click(function(){
+    window.location = "index.html";
+  });
+
   // the smooth zoom function
   function smoothZoom (map, max, cnt) {//map to zoom into, final zoom value, initial zoom value
       $("#over-content").fadeOut(1500);

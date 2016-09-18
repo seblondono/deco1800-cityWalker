@@ -51,12 +51,10 @@ html, body {
   font-weight: bold;
   color: #FF5733;
   font-family: 'Ubuntu', sans-serif;
-  justify-content: right;
-  text-align: right;
 }
 
 #cityWelcome {
-  font-size: 600%;
+  font-size: 2em;
   color: #6a6a6a;
   font-family: 'Ubuntu', sans-serif;
   text-align: right;
@@ -91,7 +89,7 @@ html, body {
 
 .option-name {
   display: none;
-  font-size: 2.5em;
+  font-size: 2.1em;
   font-weight: bold;
   text-align: center;
   color: white;
