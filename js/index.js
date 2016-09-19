@@ -266,13 +266,9 @@ function initMap() {
       map: map
     });
 
-<<<<<<< HEAD
-    var contentString = '<div><h4>' + place.name + '</h4></div>'
-=======
     markers.push(marker);
 
-    var contentString = '<div><h3>' + place.name + '</h3></div>'
->>>>>>> 4a34f8b1c06521d6e9123ba3e8c6b8ee843302c6
+    var contentString = '<div><h3>' + place.name + '</h3></div>';
 
     var infoWindow = new google.maps.InfoWindow({
       content: contentString
