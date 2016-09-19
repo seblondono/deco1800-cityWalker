@@ -1,3 +1,6 @@
+@import url('http://fonts.googleapis.com/css?family=Lato:300');
+@import url('http://weloveiconfonts.com/api/?family=entypo');
+
 html, body {
   height: 100%;
   margin: 0;
@@ -5,6 +8,8 @@ html, body {
 }
 
 .form-control {
+    /*display: block;*/
+    /*padding: 10px;*/
     font-family: 'Ubuntu', sans-serif;
 }
 
@@ -51,12 +56,10 @@ html, body {
   font-weight: bold;
   color: #FF5733;
   font-family: 'Ubuntu', sans-serif;
-  justify-content: right;
-  text-align: right;
 }
 
 #cityWelcome {
-  font-size: 600%;
+  font-size: 2em;
   color: #6a6a6a;
   font-family: 'Ubuntu', sans-serif;
   text-align: right;
@@ -79,19 +82,19 @@ html, body {
   width: 100%;
   margin: auto;
   border-radius: 50%;
-  box-shadow: 2px 4px 4px gray;
+  box-shadow: 0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
 }
 
 .option-image-index {
   width: 100%;
   margin: auto;
   border-radius: 50%;
-  box-shadow: 2px 4px 4px gray;
+  box-shadow: 0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
   }
 
 .option-name {
   display: none;
-  font-size: 2.5em;
+  font-size: 2.1em;
   font-weight: bold;
   text-align: center;
   color: white;
@@ -103,12 +106,12 @@ html, body {
   font-family: 'Merriweather', serif;
 }
 
-@media (min-width: 992px) and (max-width: 1200px){
-  .option-name{font-size: 2.2em;}
-  #cityName{font-size: 6em;}
+@media (min-width: 992px) and (max-width: 1400px){
+  .option-name{font-size: 1.8em;}
+  #cityName{font-size: 5.5em;}
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
+@media (min-width: 700px) and (max-width: 991px) {
   .option-name{font-size: 1.5em;}
   #cityName{font-size: 4em;}
 }
@@ -136,19 +139,63 @@ td {
 }
 
 .footer {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.social {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  margin: 0 10px;
+  line-height: 1.5em;
+  font-family: Entypo;
+  font-size: 1.5em;
+  text-align: center;
+  color: #bbb;
+  border-radius: 50%;
+  background: #eee;
+  overflow: hidden;
+  transition: color .3s;
+}
+
+.social-f:hover {
+  color: #3b5998;
+  cursor: pointer;
+}
+
+.social-t:hover {
+  color: #59d;
+  cursor: pointer;
+}
+
+.social-g:hover {
+  color: rgb(219, 68, 55);
+  cursor: pointer;
+}
+
+.social-t, .social-f, .social-g {
+  box-shadow: 0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
+}
+
+/*.footer {
   display: block;
   width: 100%;
-  margin: 0;
+  margin: 0px;
   height: 4%;
-  background-color: #D4DCDE;
+  background-color: #3ec8f5;
   color: white;
-  text-align: center;
   font-family: 'Ubuntu', sans-serif;
 }
 
-.footer a {
+.footer a, p {
+    margin: auto;
     color: white;
-}
+}*/
+
 .col-md-10 {
   padding: 0px !important;
 }

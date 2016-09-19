@@ -34,24 +34,22 @@
             </td>
           </tr>
           <tr>
-            <td colspan="4">
-              <div class="row">
-              <!-- TODO: Get location of user, put it in the text input and change button to show Go! -->
-              <!-- TODO: Auto complete the name of cities as user types in -->
-              <!-- TODO: Change size if text input to be responsive to screen width changes -->
-                <form>
-                  <div class="col-md-10">
-                    <input id="autocomplete" type="text" class="form-control" placeholder="What city would you like to explore?">
-                  </div>
-                  <div class="col-md-2">
-                    <button id="submitLocation" type="submit" class="btn btn-primary"><i class="fa fa-location-arrow" aria-hidden="true"></i> Use my Location</button>
-                  </div>
-                </form>
-              </div>
-            </td>
+              <td colspan="3">
+                <div class="row">
+                <!-- TODO: Get location of user, put it in the text input and change button to show Go! -->
+                <!-- TODO: Auto complete the name of cities as user types in, only Brisbane, Melbourne and Sydney -->
+                  <form>
+                    <div class="col-md-9">
+                      <input id="autocomplete" type="text" class="form-control" placeholder="What city would you like to explore?">
+                    </div>
+                    <div class="col-md-2">
+                      <button id="submitLocation" type="submit" class="btn btn-primary"><i class="fa fa-location-arrow" aria-hidden="true"></i> Use my Location</button>
+                    </div>
+                  </form>
+                </div>
+              </td>
           </tr>
           <tr>
-          <!-- TODO: Change font family and font color of cities -->
             <td>
               <div class="clickable brisbane">
                 <a href="#"><img class="option-image-index img-responsive" src="images/brisbane_city.jpg" alt="Brisbane City"></a>
@@ -77,22 +75,24 @@
       <div id="over-content-interest">
         <table>
           <tr>
-            <td id="cityWelcome" colspan="4">
+            <div class="container-fluid">
+            <td id="cityWelcome" colspan="3">
               <div class="row">
-                <div class="span4 display-1">Welcome to</div>
+                <div class="span4 display-2 text-center">Welcome to</div>
               </div>
             </td>
           </tr>
           <tr>
-            <td colspan="2">
+            <td colspan="3">
               <div class="row">
-                <div id="cityName" class="span4 display-1"></div>
+                <div id="cityName" class=" display-1 text-center"></div>
               </div>
             </td>
+          </div>
           </tr>
           <tr>
             <div>
-              <td id="interestWelcome" colspan="4">Please select an interest:</td>
+              <td id="interestWelcome" colspan="3" class="text-center">Please select an interest</td>
             </div>
           </tr>
           <tr>
@@ -150,6 +150,7 @@
                 <span class="nav-text">Sydney</span>
               </span>
             </li>
+            <div id="nav-interest">
             <li>
               <div class="menuheading">
                 <span class="nav-text">- INTERESTS -</span>
@@ -157,22 +158,23 @@
             </li>
             <li class="darkerlishadow">
               <span class="menuDesign museums">
-                <i class="fa faedit fa-picture-o fa-lg"></i>
+                <i class="fa faedit fa-building-o fa-lg"></i>
                 <span class="nav-text">Museums</span>
               </span>
             </li>
             <li class="darkerli">
               <span class="menuDesign landmarks">
-                <i class="fa faedit fa-picture-o fa-lg"></i>
+                <i class="fa faedit fa-university fa-lg"></i>
                 <span class="nav-text">landmarks</span>
               </span>
             </li>
             <li class="darkerlishadowdown">
               <span class="menuDesign historical">
-                <i class="fa faedit fa-picture-o fa-lg"></i>
-                <span class="nav-text">Locations</span>
+                <i class="fa faedit fa-road fa-lg"></i>
+                <span class="nav-text">Historical Locations</span>
               </span>
             </li>
+          </div>
             <li>
               <span class="menuDesign">
                 <i class="fa faedit fa-question-circle fa-lg"></i>
@@ -190,11 +192,10 @@
           </ul>
         </div>
       </nav>
-      <!-- Footer -->
-      <footer id="over-content-footer" class="footer">
-        <div class="container-fluid">
-          <p>In conjunction with university project for <a href="#">DECO7180</a>.</p>
-        </div>
-      </footer>
+      <div class="footer">
+        <div class="social social-f">&#62220;</div>
+        <div class="social social-t">&#62217;</div>
+        <div class="social social-g">&#62223;</div>
+      </div>
   </body>
 </html>

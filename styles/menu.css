@@ -6,7 +6,7 @@
   float: left;
   text-align: left;
   margin: 0px;
-  height: 21%;
+  height: 7em;
   width:auto;
 }
 
@@ -17,16 +17,17 @@
 .faedit {
   position: relative;
   display: table-cell;
-  width: 65%;
+  width: 2em;
   height: 2em;
   text-align: center;
-  top: 0.75em;
+  top: 0.60em;
 }
 
 .main-menu:hover,
 nav.main-menu.expanded {
+  cursor: pointer;
   width: 200px;
-  height: 63%;
+  height: 22.5em;
   overflow: hidden;
   opacity: 1;
 }
@@ -35,13 +36,17 @@ nav.main-menu.expanded {
   display: block;
 }
 
+.menuheading:hover {
+  cursor: default;
+}
+
 .main-menu {
   background: #F7F7F7;
   position: absolute;
-  bottom: 21%;
+  bottom: 35%;
   left: 0.5%;
   width: 35px;
-  height: 50%;
+  height: 15.5em;
   overflow: hidden;
   -webkit-transition: width .2s linear;
   transition: width .2s linear;
@@ -66,24 +71,25 @@ nav.main-menu.expanded {
   border-spacing: 0;
   color: #8a8a8a;
   font-size: 0.9em;
-  text-decoration: none;
   -webkit-transform: translateZ(0) scale(1, 1);
   -webkit-transition: all .14s linear;
   transition: all .14s linear;
   font-family: 'Strait', sans-serif;
   border-top: 1px solid #f2f2f2;
-  text-shadow: 1px 1px 1px #fff;
+}
+
+#nav-interest {
+  display: none;
 }
 
 .menuheading {
-  color: dimgrey;
+  color: #fff;
   font-size: 20px;
-  text-decoration: none;
   border-top: none;
   display: table;
   text-align: center;
   vertical-align: middle;
-  background: #33E0FF;
+  background-color: #59d;
   width: inherit;
 }
 
@@ -134,7 +140,7 @@ nav.main-menu li.active>.menuDesign,
 .no-touch .dashboard-page nav.dashboard-menu ul li:hover .menuDesign,
 .dashboard-page nav.dashboard-menu ul li.active .menuDesign {
   color: #fff;
-  background-color: #FF5733;
+  background-color: #ff6c4d;
   text-shadow: 0px 0px 0px;
 }
 
