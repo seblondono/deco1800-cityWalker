@@ -188,7 +188,7 @@ function initMap() {
       map: map
     });
 
-    var contentString = '<div><h1>' + place.name + '</h1></div>'
+    var contentString = '<div><h4>' + place.name + '</h4></div>'
 
     var infoWindow = new google.maps.InfoWindow({
       content: contentString
