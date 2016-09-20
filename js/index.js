@@ -208,7 +208,7 @@ function initMap() {
     //it uses the initial of the interest + the name of the city
     var m = "m_" + $("#cityName").text().toLowerCase();
     set_places(interestLocations[m]);
-    setTimeout(function(){$('#interestPrompt').modal('show');}, 3000);
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".historical").click(function(){
@@ -219,7 +219,7 @@ function initMap() {
     //it uses the initial of the interest + the name of the city
     var h = "h_" + $("#cityName").text().toLowerCase();
     set_places(interestLocations[h]);
-    $('#locationPrompt').modal('show');
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".landmarks").click(function(){
@@ -230,7 +230,7 @@ function initMap() {
     //it uses the initial of the interest + the name of the city
     var l = "l_" + $("#cityName").text().toLowerCase();
     set_places(interestLocations[l]);
-    $('#locationPrompt').modal('show');
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".citylogo").click(function(){

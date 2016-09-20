@@ -5,11 +5,14 @@
     <!-- Google Web Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Merriweather:900|Titillium+Web:300|Ubuntu" rel="stylesheet">
 
-    <!-- Menu styling -->
-    <link rel="stylesheet" type="text/css" href="styles/menu.css">
-
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      
+    <!-- Menu styling -->
+    <link rel="stylesheet" type="text/css" href="styles/menu.css">
+      
+    <!-- Modal styling -->
+    <link rel="stylesheet" type="text/css" href="styles/modal.css">
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -40,7 +43,7 @@
                 <!-- TODO: Auto complete the name of cities as user types in, only Brisbane, Melbourne and Sydney -->
                   <form>
                     <div class="col-md-9">
-                      <input id="autocomplete" type="text" class="form-control" placeholder="What city would you like to explore?">
+                      <input id="autocomplete" type="text" class="form-control" placeholder="Which city would you like to explore?">
                     </div>
                     <div class="col-md-2">
                       <button id="submitLocation" type="submit" class="btn btn-primary"><i class="fa fa-location-arrow" aria-hidden="true"></i> Use my Location</button>
@@ -201,28 +204,44 @@
         
         
 <!-- Modal Information-->
-<div class="container">
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
+        
+<!-- Location Prompt-->
+
+  <div class="modal fade" id="locationPrompt" role="dialog">
+    <div class="modal-dialog modal-sm">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+          <h4 class="modal-title">Select Locations</h4>
         </div>
         <div class="modal-body">
-          <p>Some text in the modal.</p>
+          <p>Please select the sites you'd like to explore. You can select individual sites for more information</p>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+    
+    </div>
+  </div>
+</div>
+        
+<!-- Interest Prompt-->
+
+  <div class="modal fade" id="interestPrompt" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Select an Interest</h4>
+        </div>
+        <div class="modal-body">
+          <p>Please select an interest to explore with.</p>
         </div>
       </div>
       
     </div>
   </div>
-  
-</div>
+
         
   </body>
 </html>
