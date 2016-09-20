@@ -1,0 +1,23 @@
+.modal-header {
+    background: #FF5733;
+    color: white;
+}
+
+.modal-content {
+    font-family: 'Ubuntu', sans-serif;
+    border-style: solid;
+    border-color: white;
+    border-width: 4px;
+}
+
+#interestPrompt {
+    position: fixed;
+    top: 40%;
+    left: 0%;
+}
+
+#locationPrompt {
+    position: fixed;
+    top: 5%;
+    left: 60%;
+}

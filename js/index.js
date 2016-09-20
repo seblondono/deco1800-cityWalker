@@ -67,9 +67,8 @@ $.getJSON(url, function(data) {
   console.log(data);
   //printImages();
 });
-
 //create searh query
-var url = "http://api.trove.nla.gov.au/result?key=" + apiKey + "&l-availability=y%2Ff&encoding=json&zone=picture" + "&sortby=relevance&n=2&q=" + "historical location" + "Brisbane" + "&callback=?";
+var url = "http://api.trove.nla.gov.au/result?key=" + apiKey + "&l-availability=y%2Ff&encoding=json&zone=picture" + "&sortby=relevance&n=2&q=" + "historical location" + " " + "Brisbane" + "&callback=?";
 
 //get the JSON information we need to display the images
 $.getJSON(url, function(data) {
@@ -83,6 +82,7 @@ $.getJSON(url, function(data) {
 function initMap() {
   // Create a new StyledMapType object, passing it an array of styles,
   // and the name to be displayed on the map type control.
+
   var styledMapType = new google.maps.StyledMapType(
     [
     {
@@ -163,6 +163,7 @@ function initMap() {
       map.setCenter(brisbane);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
+      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
   });
 
@@ -178,6 +179,7 @@ function initMap() {
       map.setCenter(melbourne);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
+      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
   });
 
@@ -193,6 +195,7 @@ function initMap() {
       map.setCenter(sydney);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
+      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
   });
 
@@ -204,6 +207,7 @@ function initMap() {
     //it uses the initial of the interest + the name of the city
     var m = "m_" + $("#cityName").text().toLowerCase();
     set_places(interestLocations[m]);
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".historical").click(function(){
@@ -214,6 +218,7 @@ function initMap() {
     //it uses the initial of the interest + the name of the city
     var h = "h_" + $("#cityName").text().toLowerCase();
     set_places(interestLocations[h]);
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".landmarks").click(function(){
@@ -224,6 +229,7 @@ function initMap() {
     //it uses the initial of the interest + the name of the city
     var l = "l_" + $("#cityName").text().toLowerCase();
     set_places(interestLocations[l]);
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".citylogo").click(function(){

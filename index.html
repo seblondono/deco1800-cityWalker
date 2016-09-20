@@ -5,11 +5,14 @@
     <!-- Google Web Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Merriweather:900|Titillium+Web:300|Ubuntu" rel="stylesheet">
 
-    <!-- Menu styling -->
-    <link rel="stylesheet" type="text/css" href="styles/menu.css">
-
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      
+    <!-- Menu styling -->
+    <link rel="stylesheet" type="text/css" href="styles/menu.css">
+      
+    <!-- Modal styling -->
+    <link rel="stylesheet" type="text/css" href="styles/modal.css">
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -22,7 +25,7 @@
     <script src="js/index.js"></script>
     <title>CityWalker</title>
   </head>
-    <body>
+    <body>      
       <div id="map" class="container-fluid"></div>
       <div id="over-content">
         <table>
@@ -40,7 +43,7 @@
                 <!-- TODO: Auto complete the name of cities as user types in, only Brisbane, Melbourne and Sydney -->
                   <form>
                     <div class="col-md-9">
-                      <input id="autocomplete" type="text" class="form-control" placeholder="What city would you like to explore?">
+                      <input id="autocomplete" type="text" class="form-control" placeholder="Which city would you like to explore?">
                     </div>
                     <div class="col-md-2">
                       <button id="submitLocation" type="submit" class="btn btn-primary"><i class="fa fa-location-arrow" aria-hidden="true"></i> Use my Location</button>
@@ -81,6 +84,7 @@
                 <div class="span4 display-2 text-center">Welcome to</div>
               </div>
             </td>
+              </div>
           </tr>
           <tr>
             <td colspan="3">
@@ -88,7 +92,6 @@
                 <div id="cityName" class=" display-1 text-center"></div>
               </div>
             </td>
-          </div>
           </tr>
           <tr>
             <div>
@@ -197,5 +200,48 @@
         <div class="social social-t">&#62217;</div>
         <div class="social social-g">&#62223;</div>
       </div>
+        
+        
+        
+<!-- Modal Information-->
+        
+<!-- Location Prompt-->
+
+  <div class="modal fade" id="locationPrompt" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Select Locations</h4>
+        </div>
+        <div class="modal-body">
+          <p>Please select the sites you'd like to explore. You can select individual sites for more information</p>
+        </div>
+
+    
+    </div>
+  </div>
+</div>
+        
+<!-- Interest Prompt-->
+
+  <div class="modal fade" id="interestPrompt" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Select an Interest</h4>
+        </div>
+        <div class="modal-body">
+          <p>Please select an interest to explore with.</p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+        
   </body>
 </html>
