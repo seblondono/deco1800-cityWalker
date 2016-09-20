@@ -294,7 +294,7 @@ function initMap() {
       map.setCenter(brisbane);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
-      // setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
+      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
   });
 
@@ -310,7 +310,7 @@ function initMap() {
       map.setCenter(melbourne);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
-      // setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
+      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
   });
 
@@ -326,7 +326,7 @@ function initMap() {
       map.setCenter(sydney);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
-      // setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
+      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
   });
 
@@ -339,7 +339,7 @@ function initMap() {
     var cityName = $("#cityName").text().toLowerCase();
     var m = "m_" + cityName;
     set_places(interestLocations[m]);
-    // setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".historical").click(function(){
@@ -351,7 +351,7 @@ function initMap() {
     var cityName = $("#cityName").text().toLowerCase();
     var h = "h_" + cityName;
     set_places(interestLocations[h]);
-    // setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".landmarks").click(function(){
@@ -363,7 +363,7 @@ function initMap() {
     var cityName = $("#cityName").text().toLowerCase();
     var l = "l_" + cityName;
     set_places(interestLocations[l]);
-    // setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".citylogo").click(function(){
@@ -430,9 +430,9 @@ function initMap() {
     // }
 
     var contentString;
-    setTimeout(function(){ contentString = '<div class="text-center" style="width:300px;"><h3>' + place.name +
+    setTimeout(function(){ contentString = '<div style="width:300px;"><h3 class="text-center">' + place.name +
     '</h3><img  src="' + loadedImages[3] +
-    '" style="width: 150px; display: inline-block;">' +
+    '" style="width: 150px; heigth: 200px; display: inline-block;">' +
     '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div>';
     console.log(contentString);
     console.log(loadedImages[0]);
