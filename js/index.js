@@ -165,6 +165,7 @@ function initMap() {
       map.setCenter(brisbane);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
+      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
   });
 
@@ -180,6 +181,7 @@ function initMap() {
       map.setCenter(melbourne);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
+      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
   });
 
@@ -195,6 +197,7 @@ function initMap() {
       map.setCenter(sydney);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
+      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
   });
 
@@ -206,6 +209,7 @@ function initMap() {
     //it uses the initial of the interest + the name of the city
     var m = "m_" + $("#cityName").text().toLowerCase();
     set_places(interestLocations[m]);
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".historical").click(function(){
@@ -216,6 +220,7 @@ function initMap() {
     //it uses the initial of the interest + the name of the city
     var h = "h_" + $("#cityName").text().toLowerCase();
     set_places(interestLocations[h]);
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".landmarks").click(function(){
@@ -226,6 +231,7 @@ function initMap() {
     //it uses the initial of the interest + the name of the city
     var l = "l_" + $("#cityName").text().toLowerCase();
     set_places(interestLocations[l]);
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".citylogo").click(function(){
@@ -269,7 +275,7 @@ function initMap() {
 
     markers.push(marker);
 
-    var contentString = '<div><h3>' + place.name + '</h3></div>'
+    var contentString = '<div><h3>' + place.name + '</h3></div>';
 
     var infoWindow = new google.maps.InfoWindow({
       content: contentString
