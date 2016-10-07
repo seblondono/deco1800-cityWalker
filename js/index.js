@@ -45,41 +45,9 @@ var interestLocations = {h_brisbane:[{name:"Customs house",location:{lat:-27.465
   {name:"Old Treasury Building", location: {lat:-37.8131847, lng:144.9744379}},
   {name:"Jewish Museum of Australia", location: {lat:-37.8604756, lng:144.9854532}}]};
 
-// //create searh query
-// var url = "http://api.trove.nla.gov.au/result?key=" + apiKey + "&l-availability=y%2Ff&encoding=json&zone=picture" + "&sortby=relevance&n=2&q=" + "Landmark" + " " + "Brisbane" + "&callback=?";
-//
-// //get the JSON information we need to display the images
-// $.getJSON(url, function(data) {
-//   $('#output').empty();
-//   console.log(data);
-//   //printImages();
-//
-// });
-//
-// //create searh query
-// var url = "http://api.trove.nla.gov.au/result?key=" + apiKey + "&l-availability=y%2Ff&encoding=json&zone=picture" + "&sortby=relevance&n=2&q=" + "Museum" + " " + "Brisbane" + "&callback=?";
-//
-// //get the JSON information we need to display the images
-// $.getJSON(url, function(data) {
-//   $('#output').empty();
-//   console.log(data);
-//   //printImages();
-// });
-// //create searh query
-// var url = "http://api.trove.nla.gov.au/result?key=" + apiKey + "&l-availability=y%2Ff&encoding=json&zone=picture" + "&sortby=relevance&n=2&q=" + "historical location" + " " + "Brisbane" + "&callback=?";
-//
-// //get the JSON information we need to display the images
-// $.getJSON(url, function(data) {
-//   $('#output').empty();
-//   console.log(data);
-//   //printImages();
-//
-// });
-
 var loadedImages = [];
 var urlPatterns = ["flickr.com", "nla.gov.au", "artsearch.nga.gov.au", "recordsearch.naa.gov.au", "images.slsa.sa.gov.au"];
 var found = 0;
-// (function($){
 
 function waitForFlickr() {
 	if(found == loadedImages.length) {
@@ -89,124 +57,96 @@ function waitForFlickr() {
 	}
 }
 
-// $("form#searchTrove").submit(function(event) {
-//         event.preventDefault();
 function searchImages(interest, cityName){
 
-        loadedImages = [];
-	      found = 0;
-        //get input values
-        // var searchTerm = $("#searchTerm").val().trim();
-        // searchTerm = searchTerm.replace(/ /g, "%20");
-        // var sortBy = $("#sortBy").val();
-        var apiKey = "ekq3l7c47bcs61ts";
+    loadedImages = [];
+    found = 0;
 
-        //create searh query
-        var url = "http://api.trove.nla.gov.au/result?key=" + apiKey + "&l-availability=y%2Ff&encoding=json&zone=picture" + "&sortby=relevance&n=100&q=" + interest + " " + cityName + "&callback=?";
+    var apiKey = "ekq3l7c47bcs61ts";
 
-        //get the JSON information we need to display the images
-        $.getJSON(url, function(data) {
-            // $('#output').empty();
-            // console.log(data);
-            $.each(data.response.zone[0].records.work, processImages);
-            //printImages();
+    //create searh query
+    var url = "http://api.trove.nla.gov.au/result?key=" + apiKey + "&l-availability=y%2Ff&encoding=json&zone=picture" + "&sortby=relevance&n=100&q=" + interest + " " + cityName + "&callback=?";
 
-	          // waitForFlickr(); // Waits for the flickr images to load
-        });
+    //get the JSON information we need to display the images
+    $.getJSON(url, function(data) {
+        $.each(data.response.zone[0].records.work, processImages);
+        while(waitForFlickr() == false){}; // Waits for the flickr images to load
+    });
 
-        // console.log(loadedImages);
+    console.log(loadedImages);
+    return loadedImages;
+}
+/*
+ *   Depending where the image comes from, there is a special way to get that image from the website.
+ *   This function works out where the image is from, and gets the image URL
+ */
+function processImages(index, troveItem) {
+    var imgUrl = troveItem.identifier[0].value;
+    if (imgUrl.indexOf(urlPatterns[0]) >= 0) { // flickr
+        found++;
+        addFlickrItem(imgUrl, troveItem);
+
+    } else if (imgUrl.indexOf(urlPatterns[1]) >= 0) { // nla.gov
+        // found++;
+        // loadedImages.push(
+        // imgUrl + "/representativeImage?wid=900" // change ?wid=900 to scale the image
+        // );
+
+    } else if (imgUrl.indexOf(urlPatterns[2]) >= 0) { //artsearch
+        found++;
+        loadedImages.push(
+          "http://artsearch.nga.gov.au/IMAGES/LRG/" + getQueryVariable("IRN", imgUrl) + ".jpg"
+        );
+
+    } else if (imgUrl.indexOf(urlPatterns[3]) >= 0) { //recordsearch
+        found++;
+        loadedImages.push(
+            "http://recordsearch.naa.gov.au/NAAMedia/ShowImage.asp?T=P&S=1&B=" + getQueryVariable("Number", imgUrl)
+        );
+
+    } else if (imgUrl.indexOf(urlPatterns[4]) >= 0) { //slsa
+        found++;
+        loadedImages.push(
+            imgUrl.slice(0, imgUrl.length - 3) + "jpg"
+            );
+
+    } else { // Could not reliably load image for item
+        // UNCOMMENT FOR DEBUG:
+        //  console.log("Not available: " + imgUrl);
     }
-    /*
-     *   Depending where the image comes from, there is a special way to get that image from the website.
-     *   This function works out where the image is from, and gets the image URL
-     */
-    function processImages(index, troveItem) {
-        var imgUrl = troveItem.identifier[0].value;
-        if (imgUrl.indexOf(urlPatterns[0]) >= 0) { // flickr
-            // console.log('flickr');
-		        found++;
-            addFlickrItem(imgUrl, troveItem);
+}// closes processImages()
 
-        } else if (imgUrl.indexOf(urlPatterns[1]) >= 0) { // nla.gov
-		        // found++;
-            // loadedImages.push(
-            // imgUrl + "/representativeImage?wid=900" // change ?wid=900 to scale the image
-            // );
+function addFlickrItem(imgUrl, troveItem) {
+    var flickr_key = "d34bba3ae62284a964b13d7a4053901a";
+    var flickr_secret = "5df8caa59cfaab6b";
+    var flickr_url = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=" + flickr_key + "&photo_id=";
+    var url_comps = imgUrl.split("/");
+    var photo_id = url_comps[url_comps.length - 1];
 
-        } else if (imgUrl.indexOf(urlPatterns[2]) >= 0) { //artsearch
-            // console.log('artSearch');
-            // found++;
-            // loadedImages.push(
-            //   "http://artsearch.nga.gov.au/IMAGES/LRG/" + getQueryVariable("IRN", imgUrl) + ".jpg"
-            // );
+    $.getJSON(flickr_url + photo_id + "&format=json&nojsoncallback=1", function(data) {
+        if (data.stat == "ok") {
+            var flickr_image_url = data.sizes.size[data.sizes.size.length - 1].source;
+            // console.log(flickr_image_url);
+            loadedImages.push(
+                flickr_image_url
+            );
+        }
+    });
 
-        } else if (imgUrl.indexOf(urlPatterns[3]) >= 0) { //recordsearch
-          // console.log('recorssearch');
-		        // found++;
-            // loadedImages.push(
-            //     "http://recordsearch.naa.gov.au/NAAMedia/ShowImage.asp?T=P&S=1&B=" + getQueryVariable("Number", imgUrl)
-            // );
+}
 
-        } else if (imgUrl.indexOf(urlPatterns[4]) >= 0) { //slsa
-          // console.log("slsa");
-    //         found++;
-    //         loadedImages.push(
-    //             imgUrl.slice(0, imgUrl.length - 3) + "jpg"
-		// );
-
-        } else { // Could not reliably load image for item
-            // UNCOMMENT FOR DEBUG:
-	          //  console.log("Not available: " + imgUrl);
+// from http://css-tricks.com/snippets/javascript/get-url-variables/
+function getQueryVariable(variable, url) {
+    var query = url.split("?");
+    var vars = query[1].split("&");
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if (pair[0] == variable) {
+            return pair[1];
         }
     }
-
-    function addFlickrItem(imgUrl, troveItem) {
-        var flickr_key = "d34bba3ae62284a964b13d7a4053901a";
-        var flickr_secret = "5df8caa59cfaab6b";
-        var flickr_url = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=" + flickr_key + "&photo_id=";
-        var url_comps = imgUrl.split("/");
-        var photo_id = url_comps[url_comps.length - 1];
-
-        $.getJSON(flickr_url + photo_id + "&format=json&nojsoncallback=1", function(data) {
-            if (data.stat == "ok") {
-                var flickr_image_url = data.sizes.size[data.sizes.size.length - 1].source;
-                // console.log(flickr_image_url);
-                loadedImages.push(
-                    flickr_image_url
-                );
-            }
-        });
-
-    }
-
-// function printImages() {
-// 	// Print out all images
-//   for (var i in loadedImages) {
-//       var image = new Image();
-//       image.src = loadedImages[i];
-//       image.style.display = "inline-block";
-//       image.style.width = "48%";
-//       image.style.margin = "1%";
-//       image.style.verticalAlign = "top";
-//
-//       $("#output").append(image);
-//   }
-// }
-
-    // from http://css-tricks.com/snippets/javascript/get-url-variables/
-    // function getQueryVariable(variable, url) {
-    //     var query = url.split("?");
-    //     var vars = query[1].split("&");
-    //     for (var i = 0; i < vars.length; i++) {
-    //         var pair = vars[i].split("=");
-    //         if (pair[0] == variable) {
-    //             return pair[1];
-    //         }
-    //     }
-    //     return (false);
-    // }
-
-    // }(jQuery));
+    return (false);
+}
 
 //****************************************************************************//
 
@@ -294,7 +234,7 @@ function initMap() {
       map.setCenter(brisbane);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
-      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
+      // setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
   });
 
@@ -339,7 +279,7 @@ function initMap() {
     var cityName = $("#cityName").text().toLowerCase();
     var m = "m_" + cityName;
     set_places(interestLocations[m]);
-    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
+    // setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".historical").click(function(){
@@ -409,42 +349,32 @@ function initMap() {
 
     var cityName = $("#cityName").text().toLowerCase();
 
-    searchImages(place.name, cityName);
-    // console.log(loadedImages);
+    var images = searchImages(place.name, cityName);
 
-
-    // var image;
-
-    // if(loadedImages.length > 0){
-      // for(var image in loadedImages){
-        // if(image == Undefined){
-        // } else{
-          // var image = new Image();
-          // image.src = loadedImages[0];
-          // image.style.display = "inline-block";
-          // image.style.width = "48%";
-          // image.style.margin = "1%";
-          // image.style.verticalAlign = "top";
-        // }
-    //  }
-    // }
-
-    var contentString;
-    setTimeout(function(){ contentString = '<div style="width:300px;"><h3 class="text-center">' + place.name +
-    '</h3><img  src="' + loadedImages[3] +
-    '" style="width: 150px; heigth: 200px; display: inline-block;">' +
-    '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div>';
-    console.log(contentString);
-    console.log(loadedImages[0]);
+    var contentString = '<div style="width:300px;"><h3 class="text-center">' + place.name +
+    '</h3>';
+    // setTimeout(function(){ contentString = '<div style="width:300px;"><h3 class="text-center">' + place.name +
+    // '</h3><img  src="' + images[3] +
+    // '" style="width: 150px; heigth: 200px; display: inline-block;">' +
+    // '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div>';
+    // console.log(contentString);
+    // console.log(loadedImages[0]);
 
     var infoWindow = new google.maps.InfoWindow({
       content: contentString
     });
 
     marker.addListener('click', function(){
+      infoWindow.content = '<div style="width:300px;"><h3 class="text-center">' + place.name +
+      '</h3><img  src="http://pix.iemoji.com/images/emoji/apple/ios-9/256/smiling-face-with-open-mouth-and-smiling-eyes.png"' +  'style="width: 150px; heigth: 200px; display: inline-block;">' +
+      '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div>';
       infoWindow.open(map, marker);
+      console.log(infoWindow.content);
+      console.log(place.name);
+      console.log($("#cityName").text().toLowerCase());
+      // infoWindow.content.append("<img src='http://pix.iemoji.com/images/emoji/apple/ios-9/256/smiling-face-with-open-mouth-and-smiling-eyes.png'>");
     });
-  }, 3000);
+  // }, 3000);
   }//closes setMarker
 
   function set_places(places){ // gets an object places
