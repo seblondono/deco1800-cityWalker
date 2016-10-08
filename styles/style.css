@@ -204,3 +204,7 @@ td {
     -webkit-filter: grayscale(100%);
     -webkit-opacity: 50%;
 }
+
+.container-fluid {
+  padding: 0px;
+}
