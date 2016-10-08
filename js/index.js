@@ -4,7 +4,7 @@ var interestLocations = {h_brisbane:[{name:"Customs house",location:{lat:-27.465
   {name:"State Library of Queensland",location:{lat:-27.4711627, lng:153.0181129}},
   {name:"All Saints Wickham Terrace",location:{lat:-27.4644891, lng:153.0280164}},
   {name:"Newstead House",location:{lat:-27.442735, lng:153.046019}},
-  {name:"St Stephen's Cathedral",location:{lat:-27.4686764, lng:153.0289744}}],
+  {name:"St Stephens Cathedral",location:{lat:-27.4686764, lng:153.0289744}}],
   l_brisbane:[{name:"Story Bridge",location:{lat:-27.4639732, lng:153.0357618}},
   {name:"City Hall",location:{lat:-27.4689672, lng:153.0235021}},
   {name:"Parliament House",location:{lat:-27.4747659, lng:153.0272611}},
@@ -12,7 +12,7 @@ var interestLocations = {h_brisbane:[{name:"Customs house",location:{lat:-27.465
   {name:"The Old Windmill",location:{lat:-27.465808, lng:153.0231051}}],
   m_brisbane: [{name:"Old Museum",location:{lat:-27.4517953, lng:153.0294874}},
   {name:"Mercy Heritage Centre",location:{lat:-27.46129, lng:153.032933}},
-  {name:"Queensland Museum & Sciencentre",location:{lat:-27.4725981, lng:153.0183005}},
+  {name:"Queensland Museum",location:{lat:-27.4725981, lng:153.0183005}},
   {name:"Queensland Maritime Museum",location:{lat:-27.4808822, lng:153.0266005}},
   {name:"Queensland Gallery of Modern Art",location:{lat:-27.470649, lng:153.0170464}}],
   m_sydney:[{name:"Powerhouse Museum", location:{lat:-33.878518, lng:151.1995418}},
@@ -23,11 +23,11 @@ var interestLocations = {h_brisbane:[{name:"Customs house",location:{lat:-27.465
   l_sydney:[{name:"Sydney Opera House", location:{lat:-33.8567844, lng:151.2152967}},
   {name:"Sydney Harbour Bridge", location:{lat:-33.8523063, lng:151.2107871}},
   {name:"Sydney Observatory", location:{lat:-33.859587, lng:151.2045228}},
-  {name:"St Mary's Cathedral", location:{lat:-33.8711906, lng:151.2133259}},
+  {name:"St Marys Cathedral", location:{lat:-33.8711906, lng:151.2133259}},
   {name:"Sydney Tower Eye", location:{lat:-33.8704512, lng:151.2087607}}],
-  h_sydney:[{name:"Sydney Park in St. Peters", location:{lat:-33.9098337, lng:151.1851663}},
+  h_sydney:[{name:"Sydney Park in St Peters", location:{lat:-33.9098337, lng:151.1851663}},
   {name:"Government House", location:{lat:-33.8596449, lng:151.2148494}},
-  {name:"St. Francis Xavier's Church", location:{lat:-33.8416647, lng:151.2073388}},
+  {name:"St Francis Xaviers Church", location:{lat:-33.8416647, lng:151.2073388}},
   {name:"Fortune of War Pub", location:{lat:-33.8603379, lng:151.2084268}}],
   h_melbourne:[{name:"Federation Square", location: {lat:-37.8179789, lng:144.9690576}},
   {name:"Flemington", location: {lat:-37.7909705, lng:144.9118915}},
@@ -43,70 +43,89 @@ var interestLocations = {h_brisbane:[{name:"Customs house",location:{lat:-27.465
   {name:"National Gallery of Victoria", location: {lat:-37.8225942, lng:144.9689278}},
   {name:"Immigration Museum", location: {lat:-37.819277, lng:144.9604653}},
   {name:"Old Treasury Building", location: {lat:-37.8131847, lng:144.9744379}},
-  {name:"Jewish Museum of Australia", location: {lat:-37.8604756, lng:144.9854532}}]};
+  {name:"Jewish Museum", location: {lat:-37.8604756, lng:144.9854532}}]};
 
-var loadedImages = [];
+// var loadedImages = {brisbane: {landmarks:[], museums:[], historical:[]}, melbourne:{landmarks:[], museums:[], historical:[]},sydney:{landmarks:[],museums:[], historical:[]}};
 var urlPatterns = ["flickr.com", "nla.gov.au", "artsearch.nga.gov.au", "recordsearch.naa.gov.au", "images.slsa.sa.gov.au"];
-var found = 0;
 
-function waitForFlickr() {
-	if(found == loadedImages.length) {
-		return true;
-	} else {
-		setTimeout(waitForFlickr, 250);
-	}
+var cities = ["brisbane", "melbourne", "sydney"];
+var interests = ["landmarks", "museums", "historical"];
+var imagesData = {brisbane:{historical:["Customs house", "State Library Queensland", "All Saint Wickham Terrace", "Newstead House", "St Stephens Cathedral"],
+                            landmarks:["Story Bridge", "City Hall", "Parliament House", "Wheel of Brisbane", "The Old Windmill"],
+                            museums: ["Old Museum", "Mercy Heritage", "Queensland Museum", "Queensland Maritime Museum", "Queensland Gallery Modern Art"]},
+                  melbourne:{historical:["Federation Square", "Flemington", "Old Treasury Building", "The Great Melbourne Telescope", "The Shrine Remembrance"],
+                            landmarks:["Star Observation Wheel", "Royal Botanic Gardens", "Queen Victoria Market", "Flinders Street Station", "Royal Exhibition Building"],
+                            museums:["Melbourne Museum", "National Gallery Victoria", "Immigration Museum", "Old Treasury Building", "Jewish Museum"]},
+                  sydney:{historical:["Sydney Park St Peters", "Government House", "St Francis Xaviers Church", "Fortune War Pub"],
+                          landmarks:["Sydney Opera House", "Sydney Harbour Bridge", "Sydney Observatory", "St Marys Cathedral", "Sydney Tower Eye"],
+                          museums:["Powerhouse Museum", "Australian National Maritime Museum", "Australian Museum", "Museum Sydney", "Hyde Park Barracks Museum"]}};
+
+var loadedImages = {brisbane:{historical:{Customshouse:[],StateLibraryQueensland:[],AllSaintWickhamTerrace:[],NewsteadHouse:[],StStephensCathedral:[]},
+  landmarks:{StoryBridge:[],CityHall:[],ParliamentHouse:[],WheelofBrisbane:[],TheOldWindmill:[]},
+  museums:{OldMuseum:[],MercyHeritage:[],QueenslandMuseum:[],QueenslandMaritimeMuseum:[],QueenslandGalleryModernArt:[]}},
+  melbourne:{historical:{FederationSquare:[],Flemington:[],OldTreasuryBuilding:[],TheGreatMelbourneTelescope:[],TheShrineRemembrance:[]},
+  landmarks:{StarObservationWheel:[],RoyalBotanicGardens:[],QueenVictoriaMarket:[],FlindersStreetStation:[],RoyalExhibitionBuilding:[]},
+  museums:{MelbourneMuseum:[],NationalGalleryVictoria:[],ImmigrationMuseum:[],OldTreasuryBuilding:[],JewishMuseum:[]}},
+  sydney:{historical:{SydneyParkStPeters:[],GovernmentHouse:[],StFrancisXaviersChurch:[],FortuneWarPub:[]},
+  landmarks:{SydneyOperaHouse:[],SydneyHarbourBridge:[],SydneyObservatory:[],StMarysCathedral:[],SydneyTowerEye:[]},
+  museums:{PowerhouseMuseum:[],AustralianNationalMaritimeMuseum:[],AustralianMuseum:[],MuseumSydney:[],HydeParkBarracksMuseum:[]}}};
+
+function getImagesOnLoad(){
+  for(var city in cities){
+    for(var interest in interests){
+      for(var location in imagesData[cities[city]][interests[interest]]){
+        if(imagesData[cities[city]][interests[interest]][location] == ""){
+
+        } else{
+          searchImages(cities[city], interests[interest], imagesData[cities[city]][interests[interest]][location]);
+        }
+      }
+    }
+  }
 }
 
-function searchImages(interest, cityName){
+$(document).ready(function(){
+  getImagesOnLoad();
+});
 
-    loadedImages = [];
-    found = 0;
+setTimeout(function(){console.log(loadedImages);},5000);
+
+function searchImages(cityName, interest, location){
 
     var apiKey = "ekq3l7c47bcs61ts";
 
     //create searh query
-    var url = "http://api.trove.nla.gov.au/result?key=" + apiKey + "&l-availability=y%2Ff&encoding=json&zone=picture" + "&sortby=relevance&n=100&q=" + interest + " " + cityName + "&callback=?";
+    var url = "http://api.trove.nla.gov.au/result?key=" + apiKey + "&l-availability=y%2Ff&encoding=json&zone=picture" + "&sortby=relevance&n=100&q=" + location + " " + cityName + "&callback=?";
 
     //get the JSON information we need to display the images
     $.getJSON(url, function(data) {
-        $.each(data.response.zone[0].records.work, processImages);
-        while(waitForFlickr() == false){}; // Waits for the flickr images to load
+        // passes item, index and arr to processImages, and passes [interest, location, cityName] as "this" value to processImages
+        location = location.replace(/\s+/g, '');
+        data.response.zone[0].records.work.forEach(processImages,[interest, location, cityName]);
     });
-
-    console.log(loadedImages);
-    return loadedImages;
 }
 /*
  *   Depending where the image comes from, there is a special way to get that image from the website.
  *   This function works out where the image is from, and gets the image URL
  */
-function processImages(index, troveItem) {
+function processImages(troveItem, index) {
     var imgUrl = troveItem.identifier[0].value;
     if (imgUrl.indexOf(urlPatterns[0]) >= 0) { // flickr
-        found++;
-        addFlickrItem(imgUrl, troveItem);
-
-    } else if (imgUrl.indexOf(urlPatterns[1]) >= 0) { // nla.gov
-        // found++;
-        // loadedImages.push(
-        // imgUrl + "/representativeImage?wid=900" // change ?wid=900 to scale the image
-        // );
+        addFlickrItem(imgUrl, troveItem, this);
 
     } else if (imgUrl.indexOf(urlPatterns[2]) >= 0) { //artsearch
-        found++;
-        loadedImages.push(
+
+        loadedImages[this[2]][this[0]][this[1]].push(
           "http://artsearch.nga.gov.au/IMAGES/LRG/" + getQueryVariable("IRN", imgUrl) + ".jpg"
         );
 
     } else if (imgUrl.indexOf(urlPatterns[3]) >= 0) { //recordsearch
-        found++;
-        loadedImages.push(
+        loadedImages[this[2]][this[0]][this[1]].push(
             "http://recordsearch.naa.gov.au/NAAMedia/ShowImage.asp?T=P&S=1&B=" + getQueryVariable("Number", imgUrl)
         );
 
     } else if (imgUrl.indexOf(urlPatterns[4]) >= 0) { //slsa
-        found++;
-        loadedImages.push(
+        loadedImages[this[2]][this[0]][this[1]].push(
             imgUrl.slice(0, imgUrl.length - 3) + "jpg"
             );
 
@@ -116,7 +135,7 @@ function processImages(index, troveItem) {
     }
 }// closes processImages()
 
-function addFlickrItem(imgUrl, troveItem) {
+function addFlickrItem(imgUrl, troveItem, searchCriteria) {
     var flickr_key = "d34bba3ae62284a964b13d7a4053901a";
     var flickr_secret = "5df8caa59cfaab6b";
     var flickr_url = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=" + flickr_key + "&photo_id=";
@@ -126,13 +145,11 @@ function addFlickrItem(imgUrl, troveItem) {
     $.getJSON(flickr_url + photo_id + "&format=json&nojsoncallback=1", function(data) {
         if (data.stat == "ok") {
             var flickr_image_url = data.sizes.size[data.sizes.size.length - 1].source;
-            // console.log(flickr_image_url);
-            loadedImages.push(
+            loadedImages[searchCriteria[2]][searchCriteria[0]][searchCriteria[1]].push(
                 flickr_image_url
             );
         }
     });
-
 }
 
 // from http://css-tricks.com/snippets/javascript/get-url-variables/
@@ -278,7 +295,7 @@ function initMap() {
     //it uses the initial of the interest + the name of the city
     var cityName = $("#cityName").text().toLowerCase();
     var m = "m_" + cityName;
-    set_places(interestLocations[m]);
+    set_places(cityName, "museums", interestLocations[m]);
     // setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
@@ -290,7 +307,7 @@ function initMap() {
     //it uses the initial of the interest + the name of the city
     var cityName = $("#cityName").text().toLowerCase();
     var h = "h_" + cityName;
-    set_places(interestLocations[h]);
+    set_places(cityName, "historical", interestLocations[h]);
     // setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
@@ -302,7 +319,7 @@ function initMap() {
     //it uses the initial of the interest + the name of the city
     var cityName = $("#cityName").text().toLowerCase();
     var l = "l_" + cityName;
-    set_places(interestLocations[l]);
+    set_places(cityName, "landmarks", interestLocations[l]);
     // setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
@@ -339,50 +356,47 @@ function initMap() {
       }
   }
   //**************************************************************************//
-  function setMarker(place){
+  function setMarker(city, interest, place){
     var marker = new google.maps.Marker({
       position: place.location,
       map: map
     });
 
+    var placeNameTrim = place.name.replace(/\s+/g, '');
     markers.push(marker);
 
-    var cityName = $("#cityName").text().toLowerCase();
-
-    var images = searchImages(place.name, cityName);
-
-    var contentString = '<div style="width:300px;"><h3 class="text-center">' + place.name +
-    '</h3>';
-    // setTimeout(function(){ contentString = '<div style="width:300px;"><h3 class="text-center">' + place.name +
-    // '</h3><img  src="' + images[3] +
-    // '" style="width: 150px; heigth: 200px; display: inline-block;">' +
-    // '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div>';
-    // console.log(contentString);
-    // console.log(loadedImages[0]);
+    // console.log(loadedImages[city][interest][placeNameTrim][0]);
+    var contentString = '<div style="width:300px;"><h3 id="info-window-title" class="text-center">' + place.name +
+    '</h3><div style="display: inline-block; position: relative;"><img id="info-window-image" src="' + loadedImages[city][interest][placeNameTrim][0] +
+    '" style="width: 150px; height: 200px; display: inline-block;"/><i id="refreshImage" class="fa fa-refresh" aria-hidden="true" style="cursor:pointer; position: absolute; top: 2%; right: 3%; height:20px; width:20px; border-radius: 50%; padding: 1px 0px 0px 1.7px; line-height:20px; text-align:center; background-color: white; color: #59d;"></i></div>' +
+    '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div>';
 
     var infoWindow = new google.maps.InfoWindow({
       content: contentString
     });
 
     marker.addListener('click', function(){
-      infoWindow.content = '<div style="width:300px;"><h3 class="text-center">' + place.name +
-      '</h3><img  src="http://pix.iemoji.com/images/emoji/apple/ios-9/256/smiling-face-with-open-mouth-and-smiling-eyes.png"' +  'style="width: 150px; heigth: 200px; display: inline-block;">' +
-      '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div>';
       infoWindow.open(map, marker);
-      console.log(infoWindow.content);
-      console.log(place.name);
-      console.log($("#cityName").text().toLowerCase());
-      // infoWindow.content.append("<img src='http://pix.iemoji.com/images/emoji/apple/ios-9/256/smiling-face-with-open-mouth-and-smiling-eyes.png'>");
+      google.maps.event.addDomListener(document.getElementById('refreshImage'), 'click', function(){
+        var imageArray = loadedImages[city][interest][placeNameTrim];
+        var maxIndex = imageArray.length;
+        var imageIndex = getRandom(maxIndex);
+        document.getElementById("info-window-image").src = loadedImages[city][interest][placeNameTrim][imageIndex];
+      });
     });
-  // }, 3000);
   }//closes setMarker
 
-  function set_places(places){ // gets an object places
+  function getRandom(maxIndex){
+    var imageIndex = Math.floor(Math.random() * maxIndex);
+    return imageIndex;
+  }
+
+  function set_places(city, interest, places){ // gets an object places
     map.draggable = true;
     map.scrollwheel = true;
     for(var i = 0; i < places.length; i++){
       var place = places[i];
-      setMarker(place);
+      setMarker(city, interest, place);
     }
   }
 
@@ -412,7 +426,7 @@ function initialise() {
     initMap();
     initAutocomplete();
 }
-//
+// Geolocation service
 //   var geocoder;
 //
 //   if (navigator.geolocation) {
