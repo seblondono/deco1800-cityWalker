@@ -355,6 +355,91 @@ function initMap() {
           setTimeout(function(){map.setZoom(cnt)}, 500);
       }
   }
+    
+    
+    
+var directionsService = new google.maps.DirectionsService;
+var directionsDisplay = new google.maps.DirectionsRenderer;
+directionsDisplay.setMap(map);    
+document.getElementById("directions").addEventListener("click", function(){
+    getDirections(directionsService, directionsDisplay);
+});
+    
+var points = [];
+ function getLocationInfo(latlng, locationName) {
+    "use strict";
+    if (latlng != null) {
+        var point = { LatLng: latlng, LocationName: locationName };
+        console.log(point);
+        points.push(point);
+        buildPoints();
+        console.log(points);
+    }
+}
+   
+function buildPoints() {
+    "use strict";
+    var html = "";
+    for (var i = 0; i < points.length; i++) {
+        var marker = new google.maps.Marker({
+            position: points[i].LatLng,
+            icon: "https://www.doogal.co.uk/images/red.png",
+            title: points[i].LocationName
+        });
+        markers.push(marker);
+        marker.setMap(map);
+        html += "<tr><td>" + points[i].LocationName + "</td><td>" + points[i].LatLng.lat() +
+            "</td><td>" + points[i].LatLng.lng() +
+            "</td><td><button class=\"delete btn btn-default\" onclick=\"removeRow(" + i + ");\">X</button></td><td>";
+        if (i < points.length - 1) {
+            html += "<button class=\"moveDown btn btn-default\" onclick=\"moveRowDown(" + i + ");\">Dn</button>";
+        }
+        html += "</td><td>";
+        if (i > 0) {
+            html += "<button class=\"moveUp btn btn-default\" onclick=\"moveRowUp(" + i + ");\">Up</button>";
+        }
+        html += "</td></tr>";
+    }
+    $("#locationlist tbody").html(html);
+}
+    
+    
+    
+ function getDirections(directionsService, directionsDisplay) {
+    "use strict";
+    if (points.length < 2) {
+        showError("You need to add at least two locations");
+        return;
+    }
+    //var directionsDiv = document.getElementById("directions");
+    $("#directions").html("Loading...");
+    var directions = new google.maps.DirectionsService();
+    // build array of waypoints (excluding start and end)
+    var waypts = [];
+    var end = points.length - 1;
+    var dest = points[end].LatLng;
+    for (var i = 1; i < end; i++) {
+        waypts.push({ location: points[i].LatLng });
+    }
+     console.log(waypts);
+
+    directionsService.route({
+        origin: points[0].LatLng,
+        destination: dest,
+        waypoints: waypts,
+        travelMode: 'WALKING',
+        optimizeWaypoints: true
+    }, function(response, status) {
+          if (status === 'OK') {         
+          directionsDisplay.setDirections(response);
+          clearMarkers();
+          var route = response.routes[0];
+          } 
+        });
+}    
+    
+    
+    
   //**************************************************************************//
   function setMarker(city, interest, place){
     var marker = new google.maps.Marker({
@@ -377,6 +462,7 @@ function initMap() {
 
     marker.addListener('click', function(){
       infoWindow.open(map, marker);
+      getLocationInfo(marker.position, place.name); 
       google.maps.event.addDomListener(document.getElementById('refreshImage'), 'click', function(){
         var imageArray = loadedImages[city][interest][placeNameTrim];
         var maxIndex = imageArray.length;

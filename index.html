@@ -11,6 +11,9 @@
     <!-- Menu styling -->
     <link rel="stylesheet" type="text/css" href="styles/menu.css">
       
+    <!-- Location Table styling -->
+    <link rel="stylesheet" type="text/css" href="styles/locationinfo.css">
+      
     <!-- Modal styling -->
     <link rel="stylesheet" type="text/css" href="styles/modal.css">
 
@@ -195,6 +198,32 @@
           </ul>
         </div>
       </nav>
+        
+        
+                <!-- TABLE HTML CODE -->
+      <nav class="placestosee">
+          <table id="locationlist" class="table table-striped">
+          <thead class="tableheading nav-text">
+            <tr>
+              <th style="text-align:left;">Location</th>
+              <th style="text-align:left;">X</th>
+              <th style="text-align:left;">up</th>
+              <th style="text-align:left;">dn</th>
+            </tr> 
+          </thead>
+          <tbody>
+            <tr>
+            <input type="button" id="directions"  value="Get directions" class="btn btn-primary">
+            </tr>
+            <tr>
+                <div id='directions-panel'></div>
+            </tr>
+          </tbody>
+        </table>
+      </nav>
+        
+        
+        
       <div class="footer">
         <div class="social social-f">&#62220;</div>
         <div class="social social-t">&#62217;</div>
