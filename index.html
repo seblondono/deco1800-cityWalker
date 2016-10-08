@@ -8,6 +8,9 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
       
+    <!-- Location Table styling -->
+    <link rel="stylesheet" type="text/css" href="styles/locationinfo.css">
+      
     <!-- Menu styling -->
     <link rel="stylesheet" type="text/css" href="styles/menu.css">
       
@@ -120,7 +123,7 @@
           </tr>
         </table>
       </div>
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkDPRJqm-wDrMSRZpEFrQWGhTEbTSPdcY&libraries=places&callback=initialise"
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZszKxpqNr2VQioCVtgv-EILUx-p-UnQc&libraries=places&callback=initialise"
     async defer></script>
 
       <!-- MENU HTML CODE -->
@@ -195,13 +198,37 @@
           </ul>
         </div>
       </nav>
+      
+        <!-- TABLE HTML CODE -->
+      <nav class="placestosee">
+          <table id="locationlist" class="table table-striped">
+          <thead class="tableheading nav-text">
+            <tr>
+              <th style="text-align:left;">Location</th>
+              <th style="text-align:left;">X</th>
+              <th style="text-align:left;">up</th>
+              <th style="text-align:left;">dn</th>
+            </tr> 
+          </thead>
+          <tbody>
+            <tr>
+            <input type="button" id="directions"  value="Get directions" class="btn btn-primary">
+            </tr>
+            <tr>
+                <div id='directions-panel'></div>
+            </tr>
+          </tbody>
+        </table>
+      </nav>
+        
+      <!-- Footer/Social Media -->
       <div class="footer">
         <div class="social social-f">&#62220;</div>
         <div class="social social-t">&#62217;</div>
         <div class="social social-g">&#62223;</div>
       </div>
         
-        
+    
         
 <!-- Modal Information-->
         
@@ -242,6 +269,7 @@
     </div>
   </div>
 
+        
         
   </body>
 </html>

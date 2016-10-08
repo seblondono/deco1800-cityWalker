@@ -1,5 +1,6 @@
 var map;
 var markers = [];
+
 var interestLocations = {h_brisbane:[{name:"Customs house",location:{lat:-27.465441, lng:153.031123}},
   {name:"State Library of Queensland",location:{lat:-27.4711627, lng:153.0181129}},
   {name:"All Saints Wickham Terrace",location:{lat:-27.4644891, lng:153.0280164}},
@@ -92,7 +93,7 @@ function waitForFlickr() {
 // $("form#searchTrove").submit(function(event) {
 //         event.preventDefault();
 function searchImages(interest, cityName){
-
+        console.log("search images has just started running");
         loadedImages = [];
 	      found = 0;
         //get input values
@@ -398,7 +399,91 @@ function initMap() {
           setTimeout(function(){map.setZoom(cnt)}, 500);
       }
   }
-  //**************************************************************************//
+var directionsService = new google.maps.DirectionsService;
+var directionsDisplay = new google.maps.DirectionsRenderer;
+directionsDisplay.setMap(map);    
+document.getElementById("directions").addEventListener("click", function(){
+    getDirections(directionsService, directionsDisplay);
+});
+    
+var points = [];
+ function getLocationInfo(latlng, locationName) {
+    "use strict";
+    if (latlng != null) {
+        var point = { LatLng: latlng, LocationName: locationName };
+        console.log(point);
+        points.push(point);
+        buildPoints();
+        console.log(points);
+    }
+}
+   
+function buildPoints() {
+    "use strict";
+    var html = "";
+    for (var i = 0; i < points.length; i++) {
+        var marker = new google.maps.Marker({
+            position: points[i].LatLng,
+            icon: "https://www.doogal.co.uk/images/red.png",
+            title: points[i].LocationName
+        });
+        markers.push(marker);
+        marker.setMap(map);
+        html += "<tr><td>" + points[i].LocationName + "</td><td>" + points[i].LatLng.lat() +
+            "</td><td>" + points[i].LatLng.lng() +
+            "</td><td><button class=\"delete btn btn-default\" onclick=\"removeRow(" + i + ");\">X</button></td><td>";
+        if (i < points.length - 1) {
+            html += "<button class=\"moveDown btn btn-default\" onclick=\"moveRowDown(" + i + ");\">Dn</button>";
+        }
+        html += "</td><td>";
+        if (i > 0) {
+            html += "<button class=\"moveUp btn btn-default\" onclick=\"moveRowUp(" + i + ");\">Up</button>";
+        }
+        html += "</td></tr>";
+    }
+    $("#locationlist tbody").html(html);
+}
+    
+    
+    
+ function getDirections(directionsService, directionsDisplay) {
+    "use strict";
+    if (points.length < 2) {
+        showError("You need to add at least two locations");
+        return;
+    }
+    //var directionsDiv = document.getElementById("directions");
+    $("#directions").html("Loading...");
+    var directions = new google.maps.DirectionsService();
+    // build array of waypoints (excluding start and end)
+    var waypts = [];
+    var end = points.length - 1;
+    var dest = points[end].LatLng;
+    for (var i = 1; i < end; i++) {
+        waypts.push({ location: points[i].LatLng });
+    }
+     console.log(waypts);
+
+    directionsService.route({
+        origin: points[0].LatLng,
+        destination: dest,
+        waypoints: waypts,
+        travelMode: 'WALKING',
+        optimizeWaypoints: true
+    }, function(response, status) {
+          if (status === 'OK') {         
+          directionsDisplay.setDirections(response);
+          clearMarkers();
+          var route = response.routes[0];
+          } 
+        });
+}
+   
+    
+    
+    
+    
+ //**************************************************************************//
   function setMarker(place){
     var marker = new google.maps.Marker({
       position: place.location,
@@ -432,20 +517,30 @@ function initMap() {
     var contentString;
     setTimeout(function(){ contentString = '<div style="width:300px;"><h3 class="text-center">' + place.name +
     '</h3><img  src="' + loadedImages[3] +
-    '" style="width: 150px; heigth: 200px; display: inline-block;">' +
-    '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div>';
+    '" style="width: 150px; height: 200px; display: inline-block;">' +
+    '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p><button id="submitLocation" type="submit" class="btn btn-primary"><i class="fa fa-location-arrow" aria-hidden="true"></i>Add Location</button></div>';
     console.log(contentString);
     console.log(loadedImages[0]);
 
     var infoWindow = new google.maps.InfoWindow({
       content: contentString
     });
-
+                          
     marker.addListener('click', function(){
       infoWindow.open(map, marker);
+      getLocationInfo(marker.position, place.name); 
+      console.log(getLocationInfo);
     });
+    
+    document.getElementById("submitlocation").addEventListener("click", function(){
+    getLocationInfo(directionsService, directionsDisplay);
+});
+//    marker.addListener('mouseout', function() {
+//      infoWindow.close(map, marker);	
+//    });
   }, 3000);
   }//closes setMarker
+    
 
   function set_places(places){ // gets an object places
     map.draggable = true;
@@ -468,6 +563,7 @@ function initMap() {
   }
 
 }// closes initMap
+
 
 // Creating the autocomplete functionality. Cities search type
 var autocomplete;
