@@ -1,5 +1,8 @@
+// Map object to be passed to the google maps API
 var map;
+// Array of markers created in the interests pages, it gets reseted when user changes interests
 var markers = [];
+// Preloaded locations to be displayed in each interest page. There are 5 locations per interest per city
 var interestLocations = {h_brisbane:[{name:"Customs house",location:{lat:-27.465441, lng:153.031123}},
   {name:"State Library of Queensland",location:{lat:-27.4711627, lng:153.0181129}},
   {name:"All Saints Wickham Terrace",location:{lat:-27.4644891, lng:153.0280164}},
@@ -45,11 +48,16 @@ var interestLocations = {h_brisbane:[{name:"Customs house",location:{lat:-27.465
   {name:"Old Treasury Building", location: {lat:-37.8131847, lng:144.9744379}},
   {name:"Jewish Museum", location: {lat:-37.8604756, lng:144.9854532}}]};
 
-// var loadedImages = {brisbane: {landmarks:[], museums:[], historical:[]}, melbourne:{landmarks:[], museums:[], historical:[]},sydney:{landmarks:[],museums:[], historical:[]}};
+// URL patterns to be used when loading images form Trove, in order to identify the origin of the images
 var urlPatterns = ["flickr.com", "nla.gov.au", "artsearch.nga.gov.au", "recordsearch.naa.gov.au", "images.slsa.sa.gov.au"];
 
+// List of cities where we have the service. To be used in the getImagesOnLoad()
 var cities = ["brisbane", "melbourne", "sydney"];
+
+// List of interests at each city. To be used in the getImagesOnLoad()
 var interests = ["landmarks", "museums", "historical"];
+
+// Object {city:{interest:[location]}. To be used in the getImagesOnLoad()
 var imagesData = {brisbane:{historical:["Customs house", "State Library Queensland", "All Saint Wickham Terrace", "Newstead House", "St Stephens Cathedral"],
                             landmarks:["Story Bridge", "City Hall", "Parliament House", "Wheel of Brisbane", "The Old Windmill"],
                             museums: ["Old Museum", "Mercy Heritage", "Queensland Museum", "Queensland Maritime Museum", "Queensland Gallery Modern Art"]},
@@ -58,8 +66,11 @@ var imagesData = {brisbane:{historical:["Customs house", "State Library Queensla
                             museums:["Melbourne Museum", "National Gallery Victoria", "Immigration Museum", "Old Treasury Building", "Jewish Museum"]},
                   sydney:{historical:["Sydney Park St Peters", "Government House", "St Francis Xaviers Church", "Fortune War Pub"],
                           landmarks:["Sydney Opera House", "Sydney Harbour Bridge", "Sydney Observatory", "St Marys Cathedral", "Sydney Tower Eye"],
+                          // List of cities where we have the service. To be used in the getImagesOnLoad()
                           museums:["Powerhouse Museum", "Australian National Maritime Museum", "Australian Museum", "Museum Sydney", "Hyde Park Barracks Museum"]}};
 
+
+// Object {city:{interest:{location:[]}}. To be used in the searchImages(). When searching for location images, the URLs are stored in city.interest.location
 var loadedImages = {brisbane:{historical:{Customshouse:[],StateLibraryQueensland:[],AllSaintWickhamTerrace:[],NewsteadHouse:[],StStephensCathedral:[]},
   landmarks:{StoryBridge:[],CityHall:[],ParliamentHouse:[],WheelofBrisbane:[],TheOldWindmill:[]},
   museums:{OldMuseum:[],MercyHeritage:[],QueenslandMuseum:[],QueenslandMaritimeMuseum:[],QueenslandGalleryModernArt:[]}},
@@ -71,27 +82,26 @@ var loadedImages = {brisbane:{historical:{Customshouse:[],StateLibraryQueensland
   museums:{PowerhouseMuseum:[],AustralianNationalMaritimeMuseum:[],AustralianMuseum:[],MuseumSydney:[],HydeParkBarracksMuseum:[]}}};
 
 function getImagesOnLoad(){
+  // Gets images for every location in each city and interest. Its called when page finished loading
+  //getImagesOnLoad() -> None
+
   for(var city in cities){
     for(var interest in interests){
       for(var location in imagesData[cities[city]][interests[interest]]){
-        if(imagesData[cities[city]][interests[interest]][location] == ""){
-
-        } else{
           searchImages(cities[city], interests[interest], imagesData[cities[city]][interests[interest]][location]);
-        }
       }
     }
   }
-}
+}//close getImagesOnLoad
 
+// Calls getImagesOnLoad
 $(document).ready(function(){
   getImagesOnLoad();
 });
 
-setTimeout(function(){console.log(loadedImages);},5000);
-
 function searchImages(cityName, interest, location){
-
+  // Search for images with the Trove API
+  // searchImages(cityName, interest, location) -> None
     var apiKey = "ekq3l7c47bcs61ts";
 
     //create searh query
@@ -99,32 +109,44 @@ function searchImages(cityName, interest, location){
 
     //get the JSON information we need to display the images
     $.getJSON(url, function(data) {
-        // passes item, index and arr to processImages, and passes [interest, location, cityName] as "this" value to processImages
+        // Removes the spaces in the name of the location, to correspond with the format of the Object loadedImages
         location = location.replace(/\s+/g, '');
+        // passes item, index and arr to processImages, and passes [interest, location, cityName] as "this" value to processImages
         data.response.zone[0].records.work.forEach(processImages,[interest, location, cityName]);
     });
-}
+}//close searchImages
+
 /*
  *   Depending where the image comes from, there is a special way to get that image from the website.
  *   This function works out where the image is from, and gets the image URL
+ *   From http://deco1800.uqcloud.net/examples/troveImage.php
  */
 function processImages(troveItem, index) {
+  //Process images from Trove API and loads URLs into loadedImages
+  // processImages(troveItem, index, arr, this) -> None
+
+    //get the image URL from the troveItem
     var imgUrl = troveItem.identifier[0].value;
+
+    //Depnding on the origin the URLs get a different treatment
     if (imgUrl.indexOf(urlPatterns[0]) >= 0) { // flickr
+        //Gets the images from Flickr API
         addFlickrItem(imgUrl, troveItem, this);
 
     } else if (imgUrl.indexOf(urlPatterns[2]) >= 0) { //artsearch
-
+        // loads image URL into loadedImages
         loadedImages[this[2]][this[0]][this[1]].push(
           "http://artsearch.nga.gov.au/IMAGES/LRG/" + getQueryVariable("IRN", imgUrl) + ".jpg"
         );
 
     } else if (imgUrl.indexOf(urlPatterns[3]) >= 0) { //recordsearch
+        // loads image URL into loadedImages
         loadedImages[this[2]][this[0]][this[1]].push(
             "http://recordsearch.naa.gov.au/NAAMedia/ShowImage.asp?T=P&S=1&B=" + getQueryVariable("Number", imgUrl)
         );
 
     } else if (imgUrl.indexOf(urlPatterns[4]) >= 0) { //slsa
+        // lloads image URL into loadedImages
         loadedImages[this[2]][this[0]][this[1]].push(
             imgUrl.slice(0, imgUrl.length - 3) + "jpg"
             );
@@ -136,21 +158,25 @@ function processImages(troveItem, index) {
 }// closes processImages()
 
 function addFlickrItem(imgUrl, troveItem, searchCriteria) {
+  // Gets images found in Trove from Flickr API
+  // addFlickrItem(imgUrl, troveItem, searchCriteria) -> None
     var flickr_key = "d34bba3ae62284a964b13d7a4053901a";
     var flickr_secret = "5df8caa59cfaab6b";
     var flickr_url = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=" + flickr_key + "&photo_id=";
     var url_comps = imgUrl.split("/");
     var photo_id = url_comps[url_comps.length - 1];
 
+    //Asynchronous call to Flickr API
     $.getJSON(flickr_url + photo_id + "&format=json&nojsoncallback=1", function(data) {
         if (data.stat == "ok") {
             var flickr_image_url = data.sizes.size[data.sizes.size.length - 1].source;
+            //loads image URl into loadedImages
             loadedImages[searchCriteria[2]][searchCriteria[0]][searchCriteria[1]].push(
                 flickr_image_url
             );
         }
     });
-}
+}//close addFlickrItem()
 
 // from http://css-tricks.com/snippets/javascript/get-url-variables/
 function getQueryVariable(variable, url) {
@@ -166,11 +192,15 @@ function getQueryVariable(variable, url) {
 }
 
 //****************************************************************************//
+/*            Finishes the block to process Images from Trove API             */
+//****************************************************************************//
+
 
 function initMap() {
   // Create a new StyledMapType object, passing it an array of styles,
   // and the name to be displayed on the map type control.
 
+  //Custom style for the map
   var styledMapType = new google.maps.StyledMapType(
     [
     {
@@ -217,6 +247,7 @@ function initMap() {
         { "visibility": 'off' }
       ]
   }]);
+
   // Create a map object, and include the MapTypeId to add
   // to the map type control.
   map = new google.maps.Map(document.getElementById('map'), {
@@ -234,20 +265,45 @@ function initMap() {
   map.mapTypes.set('styled_map', styledMapType);
   map.setMapTypeId('styled_map');
 
+  // Coordinates for each of the cities in the app
   var brisbane = {lat: -27.4697759, lng: 153.0251235};
   var sydney = {lat: -33.8688197, lng: 151.2092955};
   var melbourne = {lat: -37.8136276, lng: 144.9630576};
 
-
+  // This code is executed when user click on the city at the home page
   $(".brisbane").click(function(){
+    // Removes all the markers from the global markers variable
     clearMarkers(null);
-    if(map.getZoom() == 15 && $("#cityName").text() != "BRISBANE"){
+
+    // If the user is in the location page (zoom 15) and not in Brisbane
+    if(map.getZoom() == 15 && ($("#cityName").text() != "BRISBANE" || $("#cityName").text() == "BRISBANE")){
+      //Zoom in to location
       map.setZoom(13);
+      // set Brisbane as center
       map.setCenter(brisbane);
+      //Change the name of the city to Brisbane
       $("#cityName").text("BRISBANE");
+      // Set images to correspond eith the interest and  city
+      $("#landmark").attr("src","images/b_landmark.png");
+      $("#landmark").attr({alt: "Brisbane City Hall"});
+      $("#museum").attr("src","images/b_museum.png");
+      $("#museum").attr({alt: "Brisbane Museum"});
+      $("#historical").attr("src","images/b_historical.png");
+      $("#historical").attr({alt: "Brisbane Old Museum"});
+      // Fade in interest menu
       setTimeout(function(){$("#over-content-interest").fadeIn(3000);}, 1100);
-    } else {
+      console.log(map.getZoom());
+    } else { // when user is at interest page
+      // change the name of the city to Brisbane
       $("#cityName").text("BRISBANE");
+      // Set images to correspond eith the interest and  city
+      $("#landmark").attr("src","images/b_landmark.png");
+      $("#landmark").attr({alt: "Brisbane City Hall"});
+      $("#museum").attr("src","images/b_museum.png");
+      $("#museum").attr({alt: "Brisbane Museum"});
+      $("#historical").attr("src","images/b_historical.png");
+      $("#historical").attr({alt: "Brisbane Old Museum"});
+      // set the center of the map to Brisbane
       map.setCenter(brisbane);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
@@ -257,13 +313,25 @@ function initMap() {
 
   $(".melbourne").click(function(){
     clearMarkers(null);
-    if(map.getZoom() == 15 && $("#cityName").text() != "MELBOURNE"){
+    if(map.getZoom() == 15 && ($("#cityName").text() != "MELBOURNE" || $("#cityName").text() == "MELBOURNE")){
       map.setZoom(13);
       map.setCenter(melbourne);
       $("#cityName").text("MELBOURNE");
+      $("#landmark").attr("src","images/m_landmark.jpg");
+      $("#landmark").attr({alt: "Melbourne Central Train Station"});
+      $("#museum").attr("src","images/m_museum.jpg");
+      $("#museum").attr({alt: "Melbourne Museum"});
+      $("#historical").attr("src","images/m_historical.jpg");
+      $("#historical").attr({alt: "Melbourne Church"});
       setTimeout(function(){$("#over-content-interest").fadeIn(3000);}, 1100);
     } else {
       $("#cityName").text("MELBOURNE");
+      $("#landmark").attr("src","images/m_landmark.jpg");
+      $("#landmark").attr({alt: "Melbourne Central Train Station"});
+      $("#museum").attr("src","images/m_museum.jpg");
+      $("#museum").attr({alt: "Melbourne Museum"});
+      $("#historical").attr("src","images/m_historical.jpg");
+      $("#historical").attr({alt: "Melbourne Church"});
       map.setCenter(melbourne);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
@@ -273,13 +341,25 @@ function initMap() {
 
   $(".sydney").click(function(){
     clearMarkers(null);
-    if(map.getZoom() == 15 && $("#cityName").text() != "SYDNEY"){
+    if(map.getZoom() == 15 && ($("#cityName").text() != "SYDNEY" || $("#cityName").text() == "SYDNEY")){
       map.setZoom(13);
       map.setCenter(sydney);
       $("#cityName").text("SYDNEY");
+      $("#landmark").attr("src","images/s_landmark.jpg");
+      $("#landmark").attr({alt: "Sydney Opera House"});
+      $("#museum").attr("src","images/s_museum.jpg");
+      $("#museum").attr({alt: "Sydney Museum"});
+      $("#historical").attr("src","images/s_historical.jpg");
+      $("#historical").attr({alt: "Sydney City Hall"});
       setTimeout(function(){$("#over-content-interest").fadeIn(3000);}, 1100);
     } else {
       $("#cityName").text("SYDNEY");
+      $("#landmark").attr("src","images/s_landmark.jpg");
+      $("#landmark").attr({alt: "Sydney Opera House"});
+      $("#museum").attr("src","images/s_museum.jpg");
+      $("#museum").attr({alt: "Sydney Museum"});
+      $("#historical").attr("src","images/s_historical.jpg");
+      $("#historical").attr({alt: "Sydney City Hall"});
       map.setCenter(sydney);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
@@ -328,6 +408,7 @@ function initMap() {
   });
 
   function setNavCss(){
+    // amkes available the interest option in the main nav bar
     $("#nav-interest").css("display", "block");
     $(".main-menu").css("bottom", "25%");
     $(".main-menu").css("height", "25.5em");
@@ -339,13 +420,16 @@ function initMap() {
   } //set the nav bar to show interest only when focus is on interes page
 
   // the smooth zoom function
-  function smoothZoom (map, max, cnt) {//map to zoom into, final zoom value, initial zoom value
+  function smoothZoom (map, max, cnt) {
+    //map to zoom into, final zoom value, initial zoom value
+    // Recursive funtion to zoom into a city
       $("#over-content").fadeOut(1500);
       if (cnt >= max) {
           if (cnt == 14){
+            // shows the interest page options
             setTimeout(function(){$("#over-content-interest").fadeIn(3000);}, 1100);
           }
-          return;
+          return; // exits recursive function
       }
       else {
           z = google.maps.event.addListener(map, 'zoom_changed', function(event){
@@ -354,17 +438,15 @@ function initMap() {
           });
           setTimeout(function(){map.setZoom(cnt)}, 500);
       }
-  }
-    
-    
-    
+  }//close smoothZoom()
+
 var directionsService = new google.maps.DirectionsService;
 var directionsDisplay = new google.maps.DirectionsRenderer;
-directionsDisplay.setMap(map);    
+directionsDisplay.setMap(map);
 document.getElementById("directions").addEventListener("click", function(){
     getDirections(directionsService, directionsDisplay);
 });
-    
+
 var points = [];
  function getLocationInfo(latlng, locationName) {
     "use strict";
@@ -376,7 +458,7 @@ var points = [];
         console.log(points);
     }
 }
-   
+
 function buildPoints() {
     "use strict";
     var html = "";
@@ -402,9 +484,9 @@ function buildPoints() {
     }
     $("#locationlist tbody").html(html);
 }
-    
-    
-    
+
+
+
  function getDirections(directionsService, directionsDisplay) {
     "use strict";
     if (points.length < 2) {
@@ -430,24 +512,34 @@ function buildPoints() {
         travelMode: 'WALKING',
         optimizeWaypoints: true
     }, function(response, status) {
-          if (status === 'OK') {         
+          if (status === 'OK') {
           directionsDisplay.setDirections(response);
           clearMarkers();
           var route = response.routes[0];
-          } 
+          }
         });
-}    
-    
-    
-    
-  //**************************************************************************//
+}
+
+
+
+/*
+ *   This block of code Generates the Markers for the locations stored at interestLocations object
+ *   It also set the HTML code that goes in the infowindow for each marker
+ *   Finally it contains the clearMarkers function to reset the markers when the user changes interest or city
+ */
   function setMarker(city, interest, place){
+    // Sets a marker into the map
+
+    // creates marker object
     var marker = new google.maps.Marker({
       position: place.location,
       map: map
     });
 
+    // gets the name of the location and removes the spaces to make it be according to the object loadedImages
     var placeNameTrim = place.name.replace(/\s+/g, '');
+
+    //
     markers.push(marker);
 
     // console.log(loadedImages[city][interest][placeNameTrim][0]);
@@ -462,7 +554,7 @@ function buildPoints() {
 
     marker.addListener('click', function(){
       infoWindow.open(map, marker);
-      getLocationInfo(marker.position, place.name); 
+      getLocationInfo(marker.position, place.name);
       google.maps.event.addDomListener(document.getElementById('refreshImage'), 'click', function(){
         var imageArray = loadedImages[city][interest][placeNameTrim];
         var maxIndex = imageArray.length;
@@ -497,7 +589,19 @@ function buildPoints() {
     }
   }
 
+  $(".social-f").click(function(){
+    window.open("https://www.facebook.com/sharer/sharer.php?u=www.google.com");
+});
+$(".social-g").click(function(){
+  window.open("https://plus.google.com/share?url=www.google.com");
+});
+$(".social-t").click(function(){
+  window.open("https://twitter.com/home?status=I%20found%20this%20amazing%20site,%20take%20a%20look%20at%20it!%20www.google.com");
+});
+
+
 }// closes initMap
+
 
 // Creating the autocomplete functionality. Cities search type
 var autocomplete;

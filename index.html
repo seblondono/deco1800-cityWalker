@@ -7,13 +7,13 @@
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-      
+
     <!-- Menu styling -->
     <link rel="stylesheet" type="text/css" href="styles/menu.css">
-      
+
     <!-- Location Table styling -->
     <link rel="stylesheet" type="text/css" href="styles/locationinfo.css">
-      
+
     <!-- Modal styling -->
     <link rel="stylesheet" type="text/css" href="styles/modal.css">
 
@@ -28,7 +28,8 @@
     <script src="js/index.js"></script>
     <title>CityWalker</title>
   </head>
-    <body>      
+    <body>
+      <!-- INDEX PAGE -->
       <div id="map" class="container-fluid"></div>
       <div id="over-content">
         <table>
@@ -58,7 +59,7 @@
           <tr>
             <td>
               <div class="clickable brisbane">
-                <a href="#"><img class="option-image-index img-responsive" src="images/brisbane_city.jpg" alt="Brisbane City"></a>
+                <a href="#"><img class="option-image-index img-responsive" src="images/brisbane.jpg" alt="Brisbane City"></a>
                 <a href="#"><p class="option-name">Brisbane</p></a>
               </div>
             </td>
@@ -77,7 +78,8 @@
           </tr>
         </table>
       </div>
-      <!-- After zooming into the cities -->
+
+      <!-- INTERESTS PAGE -->
       <div id="over-content-interest">
         <table>
           <tr>
@@ -104,19 +106,19 @@
           <tr>
             <td>
               <div class="clickable landmarks">
-                <a href="#"><img class="option-image img-responsive" src="images/cityHall_brisbane.png" alt="City Hall Brisbane"></a>
+                <a href="#"><img id="landmark" class="option-image img-responsive" src="" alt=""></a>
                 <a href="#"><p class="option-name">Landmarks</p></a>
               </div>
             </td>
             <td>
               <div class="clickable museums">
-                <a href="#"><img class="option-image img-responsive" src="images/museum_brisbane.png" alt="Museum of Brisbane"></a>
+                <a href="#"><img id="museum" class="option-image img-responsive" src="" alt=""></a>
                 <a href="#"><p class="option-name">Museums</p></a>
               </div>
             </td>
             <td>
               <div class="clickable historical">
-                <a href="#"><img class="option-image img-responsive" src="images/historical_museum_brisbane.png" alt="Historical Museum"></a>
+                <a href="#"><img id="historical" class="option-image img-responsive" src="" alt=""></a>
                 <a href="#"><p class="option-name">Historical</p></a>
               </div>
             </td>
@@ -198,10 +200,9 @@
           </ul>
         </div>
       </nav>
-        
-        
-                <!-- TABLE HTML CODE -->
-      <nav class="placestosee">
+
+      <!-- TABLE HTML CODE -->
+      <nav class="placestosee" style="display:none;">
           <table id="locationlist" class="table table-striped">
           <thead class="tableheading nav-text">
             <tr>
@@ -209,7 +210,7 @@
               <th style="text-align:left;">X</th>
               <th style="text-align:left;">up</th>
               <th style="text-align:left;">dn</th>
-            </tr> 
+            </tr>
           </thead>
           <tbody>
             <tr>
@@ -221,56 +222,44 @@
           </tbody>
         </table>
       </nav>
-        
-        
-        
+
+      <!-- FOOTER SOCIAL MEDIA  -->
       <div class="footer">
         <div class="social social-f">&#62220;</div>
         <div class="social social-t">&#62217;</div>
         <div class="social social-g">&#62223;</div>
       </div>
-        
-        
-        
-<!-- Modal Information-->
-        
-<!-- Location Prompt-->
 
-  <div class="modal fade" id="locationPrompt" role="dialog">
-    <div class="modal-dialog modal-sm">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Select Locations</h4>
-        </div>
-        <div class="modal-body">
-          <p>Please select the sites you'd like to explore. You can select individual sites for more information</p>
-        </div>
-
-    
-    </div>
-  </div>
-</div>
-        
-<!-- Interest Prompt-->
-
-  <div class="modal fade" id="interestPrompt" role="dialog">
-    <div class="modal-dialog modal-sm">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Select an Interest</h4>
-        </div>
-        <div class="modal-body">
-          <p>Please select an interest to explore with.</p>
+      <!-- Modal Information-->
+      <div class="modal fade" id="locationPrompt" role="dialog">
+        <div class="modal-dialog modal-sm">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Select Locations</h4>
+            </div>
+            <div class="modal-body">
+              <p>Please select the sites you'd like to explore. You can select individual sites for more information</p>
+            </div>
         </div>
       </div>
-      
     </div>
-  </div>
 
-        
+    <!-- Interest Prompt-->
+    <div class="modal fade" id="interestPrompt" role="dialog">
+      <div class="modal-dialog modal-sm">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Select an Interest</h4>
+          </div>
+          <div class="modal-body">
+            <p>Please select an interest to explore with.</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
