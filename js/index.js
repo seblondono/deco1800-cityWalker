@@ -546,7 +546,7 @@ function buildPoints() {
     var contentString = '<div style="width:300px;"><h3 id="info-window-title" class="text-center">' + place.name +
     '</h3><div style="display: inline-block; position: relative;"><img id="info-window-image" src="' + loadedImages[city][interest][placeNameTrim][0] +
     '" style="width: 150px; height: 200px; display: inline-block;"/><i id="refreshImage" class="fa fa-refresh" aria-hidden="true" style="cursor:pointer; position: absolute; top: 2%; right: 3%; height:20px; width:20px; border-radius: 50%; padding: 1px 0px 0px 1.7px; line-height:20px; text-align:center; background-color: white; color: #59d;"></i></div>' +
-    '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div>';
+    '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div><input type="button" id="addLocation"  value="Add Location" class="btn btn-primary">';
 
     var infoWindow = new google.maps.InfoWindow({
       content: contentString
@@ -554,8 +554,11 @@ function buildPoints() {
 
     marker.addListener('click', function(){
       infoWindow.open(map, marker);
-      getLocationInfo(marker.position, place.name);
-      google.maps.event.addDomListener(document.getElementById('refreshImage'), 'click', function(){
+     
+        google.maps.event.addDomListener(document.getElementById('addLocation'), 'click', function(){
+        getLocationInfo(marker.position, place.name);
+      });
+        google.maps.event.addDomListener(document.getElementById('refreshImage'), 'click', function(){
         var imageArray = loadedImages[city][interest][placeNameTrim];
         var maxIndex = imageArray.length;
         var imageIndex = getRandom(maxIndex);
