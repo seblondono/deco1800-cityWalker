@@ -458,6 +458,7 @@ function initMap() {
       }
   }//close smoothZoom()
 
+//sets up the direction service to display route between locations//
   var directionsService = new google.maps.DirectionsService;
   var directionsDisplay = new google.maps.DirectionsRenderer;
   directionsDisplay.setMap(map);
@@ -465,6 +466,7 @@ function initMap() {
       getDirections(directionsService, directionsDisplay);
   });
 
+//function used to add a particular location to the list of ones to visit//
   var points = [];
    function getLocationInfo(latlng, locationName) {
       "use strict";
@@ -477,34 +479,61 @@ function initMap() {
       }
   }
 
+//removes location from current to do list//
+$(function removeRow(index) {
+    "use strict";
+    points.splice(index, 1);
+    buildPoints();
+    clearRouteDetails();
+});
+ 
+//changes hierarchy of locations DOWN//
+function moveRowDown(index) {
+    "use strict";
+    var item = points[index];
+    points.splice(index, 1);
+    points.splice(index + 1, 0, item);
+    buildPoints();
+    clearRouteDetails();
+}
+
+//changes hierarchy of locations Up//
+function moveRowUp(index) {
+    "use strict";
+    var item = points[index];
+    points.splice(index, 1);
+    points.splice(index - 1, 0, item);
+    buildPoints();
+    clearRouteDetails();
+}
+
+//forms the table of locations to see, along with modification buttons//
   function buildPoints() {
       "use strict";
       var html = "";
       for (var i = 0; i < points.length; i++) {
           var marker = new google.maps.Marker({
               position: points[i].LatLng,
-              icon: "https://www.doogal.co.uk/images/red.png",
               title: points[i].LocationName
           });
           markers.push(marker);
           marker.setMap(map);
-          html += "<tr><td>" + points[i].LocationName + "</td><td>" + points[i].LatLng.lat() +
-              "</td><td>" + points[i].LatLng.lng() +
-              "</td><td><button class=\"delete btn btn-default\" onclick=\"removeRow(" + i + ");\">X</button></td><td>";
+          html += "<tr><td>" + points[i].LocationName +
+              "</td><td><button onclick=\"removeRow(" + i + ");\" class=\"delete btn btn-xs btn-danger\"><i class=\"glyphicon glyphicon-remove\"></i></button></td><td><script></script>";
           if (i < points.length - 1) {
-              html += "<button class=\"moveDown btn btn-default\" onclick=\"moveRowDown(" + i + ");\">Dn</button>";
+              html += "<button onclick=\"moveDown(" + i + ");\" class=\"moveDown btn btn-xs btn-primary\"><i class=\"glyphicon glyphicon-chevron-down\"></i></button>";
           }
           html += "</td><td>";
           if (i > 0) {
-              html += "<button class=\"moveUp btn btn-default\" onclick=\"moveRowUp(" + i + ");\">Up</button>";
+              html += "<button onclick=\"moveUp(" + i + ");\" class=\"moveUp btn btn-xs btn-primary\"><i class=\"glyphicon glyphicon-chevron-up\"></i></button>";
           }
           html += "</td></tr>";
       }
       $("#locationlist tbody").html(html);
-  }
+  } 
 
-
-
+//runs the google directions api to form a route//
+//More detail to be addded to allow greater user flexibility (walking/driving/bus etc)//
    function getDirections(directionsService, directionsDisplay) {
       "use strict";
       if (points.length < 2) {
