@@ -457,6 +457,7 @@ function initMap() {
   });
 
   var coordinates = {};
+  var locationMarkers = {};
 
 //forms the table of locations to see, along with modification buttons//
   function buildPoints(marker) {
@@ -466,7 +467,10 @@ function initMap() {
       var index = markersRout.length;
       var locationIndex = "location" + index;
       Object.defineProperty(coordinates, locationIndex, {writable : true, enumerable : true, configurable : true});
+      Object.defineProperty(locationMarkers, locationIndex, {writable : true, enumerable : true, configurable : true});
       coordinates[locationIndex] = {lat:marker.getPosition().lat(), lng:marker.getPosition().lng()};
+      locationMarkers[locationIndex] = marker;
+
       var html = "";
       html = "<li class='locationList' id='location" + index + "'><i style='margin:5px 20px 5px 5px;' class='fa fa-arrows-v' aria-hidden='true'></i>" + marker.title + "<button id='locationButton" + index + "' style='position:absolute; right:5px; top:1px;' class='btn btn-xs btn-danger'>X</button></li>";
       $("#placesToSee ol").append(html);
@@ -488,7 +492,11 @@ function initMap() {
           showError("You need to add at least two locations");
           return;
       }
+
       //var directionsDiv = document.getElementById("directions");
+
+
+
       var directions = new google.maps.DirectionsService();
       // build array of waypoints (excluding start and end)
       var waypts = [];
@@ -503,7 +511,6 @@ function initMap() {
       for (var i = 1; i < end; i++) {
           waypts.push({ location: {lat:locationsRoutFinalOrder[i].lat, lng:locationsRoutFinalOrder[i].lng} });
       }
-      //  console.log(waypts);
 
     var journeyStyle = $("#journeyStyle").val();
     var travelMode = google.maps.TravelMode.WALKING;
@@ -533,8 +540,6 @@ function initMap() {
             }
           });
   }
-
-
 
 /*
  *   This block of code Generates the Markers for the locations stored at interestLocations object
@@ -594,10 +599,6 @@ function initMap() {
             // makes the navbar draggable
             $("#placesToSee").draggable();
           buildPoints(marker);
-          $("#locationsToSee").on("click", "#locationButton1", function(){
-            // console.log("works");
-            document.getElementById("location1").remove();
-          });
         });
 
         // adds listener to the refreshImage button in the infowindow
@@ -662,6 +663,36 @@ function initMap() {
   // makes the items in the locations navbar sortable
   $( "#locationsToSee" ).sortable();
   $( "#locationsToSee" ).disableSelection();
+
+  $("#locationsToSee").on("click", "#locationButton1", function(){
+    locationMarkers.location1.setIcon('http://maps.google.com/mapfiles/ms/icons/red-circle.png');
+    delete coordinates.location1;
+    document.getElementById("location1").remove();
+  });
+
+  $("#locationsToSee").on("click", "#locationButton2", function(){
+    locationMarkers.location2.setIcon('http://maps.google.com/mapfiles/ms/icons/red-circle.png');
+    delete coordinates.location2;
+    document.getElementById("location2").remove();
+  });
+
+  $("#locationsToSee").on("click", "#locationButton3", function(){
+    locationMarkers.location3.setIcon('http://maps.google.com/mapfiles/ms/icons/red-circle.png');
+    delete coordinates.location3;
+    document.getElementById("location3").remove();
+  });
+
+  $("#locationsToSee").on("click", "#locationButton4", function(){
+    locationMarkers.location4.setIcon('http://maps.google.com/mapfiles/ms/icons/red-circle.png');
+    delete coordinates.location4;
+    document.getElementById("location4").remove();
+  });
+
+  $("#locationsToSee").on("click", "#locationButton5", function(){
+    locationMarkers.location5.setIcon('http://maps.google.com/mapfiles/ms/icons/red-circle.png');
+    delete coordinates.location5;
+    document.getElementById("location5").remove();
+  });
 
 }// closes initMap
 
