@@ -480,15 +480,15 @@ function initMap() {
   }
 
 //removes location from current to do list//
-$(function removeRow(index) {
+window.removeRow = function(index) {
     "use strict";
     points.splice(index, 1);
     buildPoints();
     clearRouteDetails();
-});
+};
  
 //changes hierarchy of locations DOWN//
-function moveRowDown(index) {
+window.moveRowDown = function(index) {
     "use strict";
     var item = points[index];
     points.splice(index, 1);
@@ -498,7 +498,7 @@ function moveRowDown(index) {
 }
 
 //changes hierarchy of locations Up//
-function moveRowUp(index) {
+window.moveRowUp = function(index) {
     "use strict";
     var item = points[index];
     points.splice(index, 1);
@@ -521,11 +521,11 @@ function moveRowUp(index) {
           html += "<tr><td>" + points[i].LocationName +
               "</td><td><button onclick=\"removeRow(" + i + ");\" class=\"delete btn btn-xs btn-danger\"><i class=\"glyphicon glyphicon-remove\"></i></button></td><td><script></script>";
           if (i < points.length - 1) {
-              html += "<button onclick=\"moveDown(" + i + ");\" class=\"moveDown btn btn-xs btn-primary\"><i class=\"glyphicon glyphicon-chevron-down\"></i></button>";
+              html += "<button onclick=\"moveRowDown(" + i + ");\" class=\"moveDown btn btn-xs btn-primary\"><i class=\"glyphicon glyphicon-chevron-down\"></i></button>";
           }
           html += "</td><td>";
           if (i > 0) {
-              html += "<button onclick=\"moveUp(" + i + ");\" class=\"moveUp btn btn-xs btn-primary\"><i class=\"glyphicon glyphicon-chevron-up\"></i></button>";
+              html += "<button onclick=\"moveRowUp(" + i + ");\" class=\"moveUp btn btn-xs btn-primary\"><i class=\"glyphicon glyphicon-chevron-up\"></i></button>";
           }
           html += "</td></tr>";
       }
@@ -533,7 +533,7 @@ function moveRowUp(index) {
   } 
 
 //runs the google directions api to form a route//
-//More detail to be addded to allow greater user flexibility (walking/driving/bus etc)//
+//More detail to be addded to allow greater user flexibility (walking/driving/bus etc)
    function getDirections(directionsService, directionsDisplay) {
       "use strict";
       if (points.length < 2) {
