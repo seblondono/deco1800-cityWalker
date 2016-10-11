@@ -498,7 +498,7 @@ window.removeRow = function(index) {
     buildPoints();
     clearRouteDetails();
 };
- 
+
 //changes hierarchy of locations DOWN//
 window.moveRowDown = function(index) {
     "use strict";
@@ -555,7 +555,7 @@ window.moveRowUp = function(index) {
           html += "</td></tr>";
       }
       $("#locationlist tbody").html(html);
-  } 
+  }
 >>>>>>> 661781f7c8c80993b91e428e3664ca3ad5a60a87
 
 //runs the google directions api to form a route//
