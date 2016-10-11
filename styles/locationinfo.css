@@ -11,18 +11,19 @@
   background: #F7F7F7;
   position: absolute;
   right: 10px;
-  width: 250px;
+  width: 260px;
   overflow: hidden;
   border-width: 15px;
   -webkit-transform: translateZ(0) scale(1, 1);
-  box-shadow: 1px 0 15px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
   opacity: 1;
-  border-radius: 8px;
+  border-radius: 5px;
   border-color: #59d;
 }
 
 #placesToSee li {
   position: inherit;
+  padding: 3px;
   display: block;
   width: 100%;
 }
@@ -38,7 +39,6 @@
 
 #locationsToSee {
   position: relative;
-  margin:5px;
   padding:0px;
   font-family: 'Titillium Web', sans-serif;
 }
@@ -52,8 +52,19 @@
 }
 
 #directions {
+    margin: 5px;
     background-color: #ff6c4d;
     border-color: none;
+}
+
+label {
+  font-size: 14px;
+  margin: 0px;
+  padding: 3px 5px 3px 8px;
+}
+
+#journeyStyle {
+  margin: 5px;
 }
 
 .ui-state-highlight { height: 1.5em; line-height: 1.2em; }

@@ -386,7 +386,7 @@ function initMap() {
     clearMarkers(null);
     smoothZoom(map, 16, map.getZoom());
     $("#over-content-interest").fadeOut(1000);
-      
+
     //constructs the name of the key to make reference in the cities interest object
     //it uses the initial of the interest + the name of the city
     var cityName = $("#cityName").text().toLowerCase();
@@ -399,7 +399,7 @@ function initMap() {
     clearMarkers(null);
     smoothZoom(map, 16, map.getZoom());
     $("#over-content-interest").fadeOut(1000);
-    
+
     //constructs the name of the key to make reference in the cities interest object
     //it uses the initial of the interest + the name of the city
     var cityName = $("#cityName").text().toLowerCase();
@@ -472,7 +472,7 @@ function initMap() {
       locationMarkers[locationIndex] = marker;
 
       var html = "";
-      html = "<li class='locationList' id='location" + index + "'><i style='margin:5px 20px 5px 5px;' class='fa fa-arrows-v' aria-hidden='true'></i>" + marker.title + "<button id='locationButton" + index + "' style='position:absolute; right:5px; top:1px;' class='btn btn-xs btn-danger'>X</button></li>";
+      html = "<li class='locationList' id='location" + index + "'><i style='margin:5px 20px 5px 5px;' class='fa fa-arrows-v' aria-hidden='true'></i>" + marker.title + "<button id='locationButton" + index + "' style='position:absolute; right:5px; top:4px;' class='btn btn-xs btn-danger'>X</button></li>";
       $("#placesToSee ol").append(html);
     }
   }
@@ -492,40 +492,35 @@ function initMap() {
           showError("You need to add at least two locations");
           return;
       }
-
-      //var directionsDiv = document.getElementById("directions");
-
-
-
       var directions = new google.maps.DirectionsService();
       // build array of waypoints (excluding start and end)
       var waypts = [];
       var end = locationsRoutFinalOrder.length - 1;
       var dest = locationsRoutFinalOrder[end];
-       
+
       if (document.getElementById("roundTrip").checked) {
         end = locationsRoutFinalOrder.length;
         dest = locationsRoutFinalOrder[0];
-      } 
-       
+      }
+
       for (var i = 1; i < end; i++) {
           waypts.push({ location: {lat:locationsRoutFinalOrder[i].lat, lng:locationsRoutFinalOrder[i].lng} });
       }
 
-    var journeyStyle = $("#journeyStyle").val();
-    var travelMode = google.maps.TravelMode.WALKING;
-    if (journeyStyle === "driving") {
-        travelMode = google.maps.TravelMode.DRIVING;
-    }
-/*    else if (journeyStyle === "public transport") {
-        travelMode = google.maps.TravelMode.TRANSIT;
-    }*/
-    else if (journeyStyle === "cycling") {
-        travelMode = google.maps.TravelMode.BICYCLING;
-    }
-       
-    var fastestRoute = document.getElementById("fastestRoute").checked;
-       
+      var journeyStyle = $("#journeyStyle").val();
+      var travelMode = google.maps.TravelMode.WALKING;
+      if (journeyStyle === "driving") {
+          travelMode = google.maps.TravelMode.DRIVING;
+      }
+      /*    else if (journeyStyle === "public transport") {
+          travelMode = google.maps.TravelMode.TRANSIT;
+      }*/
+      else if (journeyStyle === "cycling") {
+          travelMode = google.maps.TravelMode.BICYCLING;
+      }
+
+      var fastestRoute = document.getElementById("fastestRoute").checked;
+
       directionsService.route({
           origin: locationsRoutFinalOrder[0],
           destination: dest,
@@ -539,24 +534,27 @@ function initMap() {
             var route = response.routes[0];
             }
           });
-  }
+   }
 
 /*
  *   This block of code Generates the Markers for the locations stored at interestLocations object
  *   It also set the HTML code that goes in the infowindow for each marker
  *   Finally it contains the clearMarkers function to reset the markers when the user changes interest or city
  */
+
+ var infoWindows = [];
+
   function setMarker(city, interest, place){
     // Sets a marker into the map
     var markerDesign;
     if (interest === "landmarks") {
-        markerDesign = '/../images/landmarks.png'
+        markerDesign = 'images/landmarks.png';
     }
     else if (interest === "museums") {
-        markerDesign = '/../images/museums.png'
+        markerDesign = 'images/museums.png';
     }
     else if (interest === "historical") {
-        markerDesign = '/../images/historical.png'
+        markerDesign = 'images/historical.png';
     }
     // creates marker object
     var marker = new google.maps.Marker({
@@ -584,20 +582,23 @@ function initMap() {
     });
 
     // Adds a listener to the marker of the location
-    marker.addListener('click', function(){
+    google.maps.event.addListener(marker,'click', function(){
       // passes the map and marker to the infowindow obeject
-      infoWindow.open(map, marker);
+      infoWindows.forEach(function(){this.close();});
+
+      infoWindow.open(map, this);
+      infoWindows.push(infoWindow);
 
         // adds a listener to addLocation button in the infowindow
         google.maps.event.addDomListener(document.getElementById('addLocation'), 'click', function(){
           markersRout.push(marker);
-            //sets initial position of location table
-            $("#placesToSee").css({'top': '15%', 'right': '5%'});
-            // shows the navigation bar for places to visit
-            $("#placesToSee").fadeIn(1200);
+          //sets initial position of location table
+          $("#placesToSee").css({'top': '15%', 'right': '5%'});
+          // shows the navigation bar for places to visit
+          $("#placesToSee").fadeIn(1200);
 
-            // makes the navbar draggable
-            $("#placesToSee").draggable();
+          // makes the navbar draggable
+          $("#placesToSee").draggable();
           buildPoints(marker);
         });
 
@@ -665,7 +666,7 @@ function initMap() {
   $( "#locationsToSee" ).disableSelection();
 
   $("#locationsToSee").on("click", "#locationButton1", function(){
-    locationMarkers.location1.setIcon('http://maps.google.com/mapfiles/ms/icons/red-circle.png');
+    locationMarkers.location1.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
     delete coordinates.location1;
     document.getElementById("location1").remove();
   });
