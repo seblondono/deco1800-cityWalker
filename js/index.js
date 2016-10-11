@@ -374,11 +374,6 @@ function initMap() {
     smoothZoom(map, 16, map.getZoom());
     $("#over-content-interest").fadeOut(1000);
 
-    // shows the navigation bar for places to visit
-    $("#placesToSee").fadeIn(1200);
-
-    // makes the navbar draggable
-    $("#placesToSee").draggable();
     //constructs the name of the key to make reference in the cities interest object
     //it uses the initial of the interest + the name of the city
     var cityName = $("#cityName").text().toLowerCase();
@@ -391,12 +386,7 @@ function initMap() {
     clearMarkers(null);
     smoothZoom(map, 16, map.getZoom());
     $("#over-content-interest").fadeOut(1000);
-
-    // shows the navigation bar for places to visit
-    $("#placesToSee").fadeIn(1200);
-
-    // makes the navbar draggable
-    $("#placesToSee").draggable();
+      
     //constructs the name of the key to make reference in the cities interest object
     //it uses the initial of the interest + the name of the city
     var cityName = $("#cityName").text().toLowerCase();
@@ -409,12 +399,7 @@ function initMap() {
     clearMarkers(null);
     smoothZoom(map, 16, map.getZoom());
     $("#over-content-interest").fadeOut(1000);
-
-    // shows the navigation bar for places to visit
-    $("#placesToSee").fadeIn(1200);
-
-    // makes the navbar draggable
-    $("#placesToSee").draggable();
+    
     //constructs the name of the key to make reference in the cities interest object
     //it uses the initial of the interest + the name of the city
     var cityName = $("#cityName").text().toLowerCase();
@@ -483,7 +468,7 @@ function initMap() {
       Object.defineProperty(coordinates, locationIndex, {writable : true, enumerable : true, configurable : true});
       coordinates[locationIndex] = {lat:marker.getPosition().lat(), lng:marker.getPosition().lng()};
       var html = "";
-      html = "<li id='location" + index + "'><i style='margin:5px 20px 5px 5px;' class='fa fa-arrows-v' aria-hidden='true'></i>" + marker.title + "<button id='locationButton" + index + "' style='position:absolute; right:5px; top:1px;' class='btn btn-xs btn-danger'>X</button></li>";
+      html = "<li class='locationList' id='location" + index + "'><i style='margin:5px 20px 5px 5px;' class='fa fa-arrows-v' aria-hidden='true'></i>" + marker.title + "<button id='locationButton" + index + "' style='position:absolute; right:5px; top:1px;' class='btn btn-xs btn-danger'>X</button></li>";
       $("#placesToSee ol").append(html);
     }
   }
@@ -504,27 +489,46 @@ function initMap() {
           return;
       }
       //var directionsDiv = document.getElementById("directions");
-      $("#directions").html("Loading...");
       var directions = new google.maps.DirectionsService();
       // build array of waypoints (excluding start and end)
       var waypts = [];
       var end = locationsRoutFinalOrder.length - 1;
       var dest = locationsRoutFinalOrder[end];
+       
+      if (document.getElementById("roundTrip").checked) {
+        end = locationsRoutFinalOrder.length;
+        dest = locationsRoutFinalOrder[0];
+      } 
+       
       for (var i = 1; i < end; i++) {
           waypts.push({ location: {lat:locationsRoutFinalOrder[i].lat, lng:locationsRoutFinalOrder[i].lng} });
       }
       //  console.log(waypts);
 
+    var journeyStyle = $("#journeyStyle").val();
+    var travelMode = google.maps.TravelMode.WALKING;
+    if (journeyStyle === "driving") {
+        travelMode = google.maps.TravelMode.DRIVING;
+    }
+/*    else if (journeyStyle === "public transport") {
+        travelMode = google.maps.TravelMode.TRANSIT;
+    }*/
+    else if (journeyStyle === "cycling") {
+        travelMode = google.maps.TravelMode.BICYCLING;
+    }
+       
+    var fastestRoute = document.getElementById("fastestRoute").checked;
+       
       directionsService.route({
           origin: locationsRoutFinalOrder[0],
           destination: dest,
           waypoints: waypts,
-          travelMode: 'WALKING',
-          optimizeWaypoints: true
+          travelMode: travelMode,
+          optimizeWaypoints: fastestRoute
       }, function(response, status) {
             if (status === 'OK') {
             directionsDisplay.setDirections(response);
-            clearMarkers();
+            directionsDisplay.setOptions( { suppressMarkers: true } );
             var route = response.routes[0];
             }
           });
@@ -539,12 +543,22 @@ function initMap() {
  */
   function setMarker(city, interest, place){
     // Sets a marker into the map
-
+    var markerDesign;
+    if (interest === "landmarks") {
+        markerDesign = '/../images/landmarks.png'
+    }
+    else if (interest === "museums") {
+        markerDesign = '/../images/museums.png'
+    }
+    else if (interest === "historical") {
+        markerDesign = '/../images/historical.png'
+    }
     // creates marker object
     var marker = new google.maps.Marker({
       position: place.location,
       title: place.name,
-      map: map
+      map: map,
+      icon: markerDesign
     });
 
     // gets the name of the location and removes the spaces to make it be according to the object loadedImages
@@ -572,6 +586,13 @@ function initMap() {
         // adds a listener to addLocation button in the infowindow
         google.maps.event.addDomListener(document.getElementById('addLocation'), 'click', function(){
           markersRout.push(marker);
+            //sets initial position of location table
+            $("#placesToSee").css({'top': '15%', 'right': '5%'});
+            // shows the navigation bar for places to visit
+            $("#placesToSee").fadeIn(1200);
+
+            // makes the navbar draggable
+            $("#placesToSee").draggable();
           buildPoints(marker);
           $("#locationsToSee").on("click", "#locationButton1", function(){
             // console.log("works");
