@@ -471,11 +471,54 @@ function initMap() {
     getDirections(directionsService, directionsDisplay);
   });
 
+<<<<<<< HEAD
   $("#locationsToSee").on("click", "locationButton1", function(){
     console.log("works");
   });
 
   var coordinates = {};
+=======
+//function used to add a particular location to the list of ones to visit//
+  var points = [];
+   function getLocationInfo(latlng, locationName) {
+      "use strict";
+      if (latlng != null) {
+          var point = { LatLng: latlng, LocationName: locationName };
+          console.log(point);
+          points.push(point);
+          buildPoints();
+          console.log(points);
+      }
+  }
+
+//removes location from current to do list//
+window.removeRow = function(index) {
+    "use strict";
+    points.splice(index, 1);
+    buildPoints();
+    clearRouteDetails();
+};
+ 
+//changes hierarchy of locations DOWN//
+window.moveRowDown = function(index) {
+    "use strict";
+    var item = points[index];
+    points.splice(index, 1);
+    points.splice(index + 1, 0, item);
+    buildPoints();
+    clearRouteDetails();
+}
+
+//changes hierarchy of locations Up//
+window.moveRowUp = function(index) {
+    "use strict";
+    var item = points[index];
+    points.splice(index, 1);
+    points.splice(index - 1, 0, item);
+    buildPoints();
+    clearRouteDetails();
+}
+>>>>>>> 661781f7c8c80993b91e428e3664ca3ad5a60a87
 
 //forms the table of locations to see, along with modification buttons//
   function buildPoints(marker) {
@@ -487,13 +530,36 @@ function initMap() {
       Object.defineProperty(coordinates, locationIndex, {writable : true, enumerable : true, configurable : true});
       coordinates[locationIndex] = {lat:marker.getPosition().lat(), lng:marker.getPosition().lng()};
       var html = "";
+<<<<<<< HEAD
       html = "<li id='location" + index + "'><i style='margin:5px 20px 5px 5px;' class='fa fa-arrows-v' aria-hidden='true'></i>" + marker.title + "<button id='locationButton" + index + "' style='position:absolute; right:5px; top:1px;' class='btn btn-xs btn-danger'>X</button></li>";
       $("#placesToSee ol").append(html);
     }
   }
+=======
+      for (var i = 0; i < points.length; i++) {
+          var marker = new google.maps.Marker({
+              position: points[i].LatLng,
+              title: points[i].LocationName
+          });
+          markers.push(marker);
+          marker.setMap(map);
+          html += "<tr><td>" + points[i].LocationName +
+              "</td><td><button onclick=\"removeRow(" + i + ");\" class=\"delete btn btn-xs btn-danger\"><i class=\"glyphicon glyphicon-remove\"></i></button></td><td><script></script>";
+          if (i < points.length - 1) {
+              html += "<button onclick=\"moveRowDown(" + i + ");\" class=\"moveDown btn btn-xs btn-primary\"><i class=\"glyphicon glyphicon-chevron-down\"></i></button>";
+          }
+          html += "</td><td>";
+          if (i > 0) {
+              html += "<button onclick=\"moveRowUp(" + i + ");\" class=\"moveUp btn btn-xs btn-primary\"><i class=\"glyphicon glyphicon-chevron-up\"></i></button>";
+          }
+          html += "</td></tr>";
+      }
+      $("#locationlist tbody").html(html);
+  } 
+>>>>>>> 661781f7c8c80993b91e428e3664ca3ad5a60a87
 
 //runs the google directions api to form a route//
-//More detail to be addded to allow greater user flexibility (walking/driving/bus etc)//
+//More detail to be addded to allow greater user flexibility (walking/driving/bus etc)
    function getDirections(directionsService, directionsDisplay) {
       "use strict";
       var locationsRoutFinalOrder = [];
