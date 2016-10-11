@@ -374,11 +374,6 @@ function initMap() {
     smoothZoom(map, 16, map.getZoom());
     $("#over-content-interest").fadeOut(1000);
 
-    // shows the navigation bar for places to visit
-    $("#placesToSee").fadeIn(1200);
-
-    // makes the navbar draggable
-    $("#placesToSee").draggable();
     //constructs the name of the key to make reference in the cities interest object
     //it uses the initial of the interest + the name of the city
     var cityName = $("#cityName").text().toLowerCase();
@@ -391,12 +386,7 @@ function initMap() {
     clearMarkers(null);
     smoothZoom(map, 16, map.getZoom());
     $("#over-content-interest").fadeOut(1000);
-
-    // shows the navigation bar for places to visit
-    $("#placesToSee").fadeIn(1200);
-
-    // makes the navbar draggable
-    $("#placesToSee").draggable();
+      
     //constructs the name of the key to make reference in the cities interest object
     //it uses the initial of the interest + the name of the city
     var cityName = $("#cityName").text().toLowerCase();
@@ -409,12 +399,7 @@ function initMap() {
     clearMarkers(null);
     smoothZoom(map, 16, map.getZoom());
     $("#over-content-interest").fadeOut(1000);
-
-    // shows the navigation bar for places to visit
-    $("#placesToSee").fadeIn(1200);
-
-    // makes the navbar draggable
-    $("#placesToSee").draggable();
+    
     //constructs the name of the key to make reference in the cities interest object
     //it uses the initial of the interest + the name of the city
     var cityName = $("#cityName").text().toLowerCase();
@@ -472,6 +457,7 @@ function initMap() {
   });
 
   var coordinates = {};
+  var locationMarkers = {};
 
 //forms the table of locations to see, along with modification buttons//
   function buildPoints(marker) {
@@ -481,9 +467,12 @@ function initMap() {
       var index = markersRout.length;
       var locationIndex = "location" + index;
       Object.defineProperty(coordinates, locationIndex, {writable : true, enumerable : true, configurable : true});
+      Object.defineProperty(locationMarkers, locationIndex, {writable : true, enumerable : true, configurable : true});
       coordinates[locationIndex] = {lat:marker.getPosition().lat(), lng:marker.getPosition().lng()};
+      locationMarkers[locationIndex] = marker;
+
       var html = "";
-      html = "<li id='location" + index + "'><i style='margin:5px 20px 5px 5px;' class='fa fa-arrows-v' aria-hidden='true'></i>" + marker.title + "<button id='locationButton" + index + "' style='position:absolute; right:5px; top:1px;' class='btn btn-xs btn-danger'>X</button></li>";
+      html = "<li class='locationList' id='location" + index + "'><i style='margin:5px 20px 5px 5px;' class='fa fa-arrows-v' aria-hidden='true'></i>" + marker.title + "<button id='locationButton" + index + "' style='position:absolute; right:5px; top:1px;' class='btn btn-xs btn-danger'>X</button></li>";
       $("#placesToSee ol").append(html);
     }
   }
@@ -503,34 +492,54 @@ function initMap() {
           showError("You need to add at least two locations");
           return;
       }
+
       //var directionsDiv = document.getElementById("directions");
-      $("#directions").html("Loading...");
+
+
+
       var directions = new google.maps.DirectionsService();
       // build array of waypoints (excluding start and end)
       var waypts = [];
       var end = locationsRoutFinalOrder.length - 1;
       var dest = locationsRoutFinalOrder[end];
+       
+      if (document.getElementById("roundTrip").checked) {
+        end = locationsRoutFinalOrder.length;
+        dest = locationsRoutFinalOrder[0];
+      } 
+       
       for (var i = 1; i < end; i++) {
           waypts.push({ location: {lat:locationsRoutFinalOrder[i].lat, lng:locationsRoutFinalOrder[i].lng} });
       }
-      //  console.log(waypts);
 
+    var journeyStyle = $("#journeyStyle").val();
+    var travelMode = google.maps.TravelMode.WALKING;
+    if (journeyStyle === "driving") {
+        travelMode = google.maps.TravelMode.DRIVING;
+    }
+/*    else if (journeyStyle === "public transport") {
+        travelMode = google.maps.TravelMode.TRANSIT;
+    }*/
+    else if (journeyStyle === "cycling") {
+        travelMode = google.maps.TravelMode.BICYCLING;
+    }
+       
+    var fastestRoute = document.getElementById("fastestRoute").checked;
+       
       directionsService.route({
           origin: locationsRoutFinalOrder[0],
           destination: dest,
           waypoints: waypts,
-          travelMode: 'WALKING',
-          optimizeWaypoints: true
+          travelMode: travelMode,
+          optimizeWaypoints: fastestRoute
       }, function(response, status) {
             if (status === 'OK') {
             directionsDisplay.setDirections(response);
-            clearMarkers();
+            directionsDisplay.setOptions( { suppressMarkers: true } );
             var route = response.routes[0];
             }
           });
   }
-
-
 
 /*
  *   This block of code Generates the Markers for the locations stored at interestLocations object
@@ -539,12 +548,22 @@ function initMap() {
  */
   function setMarker(city, interest, place){
     // Sets a marker into the map
-
+    var markerDesign;
+    if (interest === "landmarks") {
+        markerDesign = '/../images/landmarks.png'
+    }
+    else if (interest === "museums") {
+        markerDesign = '/../images/museums.png'
+    }
+    else if (interest === "historical") {
+        markerDesign = '/../images/historical.png'
+    }
     // creates marker object
     var marker = new google.maps.Marker({
       position: place.location,
       title: place.name,
-      map: map
+      map: map,
+      icon: markerDesign
     });
 
     // gets the name of the location and removes the spaces to make it be according to the object loadedImages
@@ -572,11 +591,14 @@ function initMap() {
         // adds a listener to addLocation button in the infowindow
         google.maps.event.addDomListener(document.getElementById('addLocation'), 'click', function(){
           markersRout.push(marker);
+            //sets initial position of location table
+            $("#placesToSee").css({'top': '15%', 'right': '5%'});
+            // shows the navigation bar for places to visit
+            $("#placesToSee").fadeIn(1200);
+
+            // makes the navbar draggable
+            $("#placesToSee").draggable();
           buildPoints(marker);
-          $("#locationsToSee").on("click", "#locationButton1", function(){
-            // console.log("works");
-            document.getElementById("location1").remove();
-          });
         });
 
         // adds listener to the refreshImage button in the infowindow
@@ -641,6 +663,36 @@ function initMap() {
   // makes the items in the locations navbar sortable
   $( "#locationsToSee" ).sortable();
   $( "#locationsToSee" ).disableSelection();
+
+  $("#locationsToSee").on("click", "#locationButton1", function(){
+    locationMarkers.location1.setIcon('http://maps.google.com/mapfiles/ms/icons/red-circle.png');
+    delete coordinates.location1;
+    document.getElementById("location1").remove();
+  });
+
+  $("#locationsToSee").on("click", "#locationButton2", function(){
+    locationMarkers.location2.setIcon('http://maps.google.com/mapfiles/ms/icons/red-circle.png');
+    delete coordinates.location2;
+    document.getElementById("location2").remove();
+  });
+
+  $("#locationsToSee").on("click", "#locationButton3", function(){
+    locationMarkers.location3.setIcon('http://maps.google.com/mapfiles/ms/icons/red-circle.png');
+    delete coordinates.location3;
+    document.getElementById("location3").remove();
+  });
+
+  $("#locationsToSee").on("click", "#locationButton4", function(){
+    locationMarkers.location4.setIcon('http://maps.google.com/mapfiles/ms/icons/red-circle.png');
+    delete coordinates.location4;
+    document.getElementById("location4").remove();
+  });
+
+  $("#locationsToSee").on("click", "#locationButton5", function(){
+    locationMarkers.location5.setIcon('http://maps.google.com/mapfiles/ms/icons/red-circle.png');
+    delete coordinates.location5;
+    document.getElementById("location5").remove();
+  });
 
 }// closes initMap
 

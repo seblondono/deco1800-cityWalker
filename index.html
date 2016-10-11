@@ -21,6 +21,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- JQuery UI -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+      
+      
 
     <!-- Latest compiled JavaScript -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -180,7 +182,7 @@
             </li>
             <li class="darkerlishadowdown">
               <span class="menuDesign historical">
-                <i class="fa faedit fa-road fa-lg"></i>
+                <i class="fa faedit fa-balance-scale fa-lg"></i>
                 <span class="nav-text">Historical Locations</span>
               </span>
             </li>
@@ -204,11 +206,22 @@
       </nav>
 
       <!-- PLACES TO VISIT NAVIGATION BAR -->
-        </table>
       <nav id="placesToSee" style="display: none;">
+        <span class="menuheading nav-text">- Selected Locations -</span>
         <ol id='locationsToSee'>
         </ol>
+          <div class="userOptions">
+        <select id="journeyStyle">
+                <option value="walking">Walking</option>
+                <option value="driving">Car</option>
+<!--                <option value="public transport">Public Transport</option>-->
+                <option value="cycling">Cycling</option>
+                
+          </select>
+          <input type="checkbox" id="fastestRoute"><label for="fastestRoute">   Fastest?</label>
+          <input type="checkbox" id="roundTrip"><label for="roundTrip">   Round Trip?</label>
         <button id="directions" class="btn btn-primary">Get Directions</button>
+              </div>
       </nav>
 
       <!-- FOOTER SOCIAL MEDIA  -->
