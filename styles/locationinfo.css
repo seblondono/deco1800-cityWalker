@@ -7,23 +7,12 @@
   top: 0.60em;
 }
 
-.placestosee:hover,
-nav.placestosee.expanded {
-  cursor: pointer;
-  overflow: hidden;
-  opacity: 1;
-}
-
-.placestosee:hover .citylogo{
-  display: block;
-}
-
-.placestosee {
+#placesToSee {
   background: #F7F7F7;
   position: absolute;
-  bottom: 35%;
-  right: 5%;
-  height: 200px;
+  bottom: 10%;
+  right: 10px;
+  height: 170px;
   width: 400px;
   overflow: hidden;
   -webkit-transform: translateZ(0) scale(1, 1);
@@ -32,55 +21,26 @@ nav.placestosee.expanded {
   border-radius: 8px;
 }
 
-.placestosee li {
+#placesToSee li {
   position: inherit;
   display: block;
-  width: 200px;
+  width: 100%;
 }
 
-.placestosee li>.menuDesign,
-.tableheading {
+#placesToSee li:hover {
+  cursor: all-scroll;
+}
+
+#locationsToSee {
   position: relative;
-  width: inherit;
-  display: table;
-  color: #8a8a8a;
-  font-size: 0.4em;
-  font-family: 'Strait', sans-serif;
-  border-top: 1px solid #f2f2f2;
+  margin:5px;
+  padding:0px;
 }
 
-#nav-interest {
-  display: none;
+#directions {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
 }
 
-.tableheading {
-  color: #fff;
-  font-size: 12px;
-  border-top: none;
-  display: table;
-  text-align: center;
-  vertical-align: middle;
-  background-color: #59d;
-  width: inherit;
-}
-
-.placestosee .nav-text {
-  display: table-cell;
-  vertical-align: middle;
-  width: 75%;
-  font-family: 'Titillium Web', sans-serif;
-}
-
-nav ul,
-nav li {
-  outline: 0;
-  margin: 0;
-  padding: 0;
-  text-transform: uppercase;
-}
-
-/* Darker element side menu Start*/
-.darkerli {
-  background-color: #ededed;
-  text-transform: capitalize;
-}
+.ui-state-highlight { height: 1.5em; line-height: 1.2em; }

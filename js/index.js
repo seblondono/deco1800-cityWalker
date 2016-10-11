@@ -2,6 +2,8 @@
 var map;
 // Array of markers created in the interests pages, it gets reseted when user changes interests
 var markers = [];
+// Array of markers selected by the user to walk and explore
+var markersRout = [];
 // Preloaded locations to be displayed in each interest page. There are 5 locations per interest per city
 var interestLocations = {h_brisbane:[{name:"Customs house",location:{lat:-27.465441, lng:153.031123}},
   {name:"State Library of Queensland",location:{lat:-27.4711627, lng:153.0181129}},
@@ -373,10 +375,10 @@ function initMap() {
     $("#over-content-interest").fadeOut(1000);
 
     // shows the navigation bar for places to visit
-    $(".placestosee").fadeIn(1200);
+    $("#placesToSee").fadeIn(1200);
 
     // makes the navbar draggable
-    $(".placestosee").draggable();
+    $("#placesToSee").draggable();
     //constructs the name of the key to make reference in the cities interest object
     //it uses the initial of the interest + the name of the city
     var cityName = $("#cityName").text().toLowerCase();
@@ -391,10 +393,10 @@ function initMap() {
     $("#over-content-interest").fadeOut(1000);
 
     // shows the navigation bar for places to visit
-    $(".placestosee").fadeIn(1200);
+    $("#placesToSee").fadeIn(1200);
 
     // makes the navbar draggable
-    $(".placestosee").draggable();
+    $("#placesToSee").draggable();
     //constructs the name of the key to make reference in the cities interest object
     //it uses the initial of the interest + the name of the city
     var cityName = $("#cityName").text().toLowerCase();
@@ -409,10 +411,10 @@ function initMap() {
     $("#over-content-interest").fadeOut(1000);
 
     // shows the navigation bar for places to visit
-    $(".placestosee").fadeIn(1200);
+    $("#placesToSee").fadeIn(1200);
 
     // makes the navbar draggable
-    $(".placestosee").draggable();
+    $("#placesToSee").draggable();
     //constructs the name of the key to make reference in the cities interest object
     //it uses the initial of the interest + the name of the city
     var cityName = $("#cityName").text().toLowerCase();
@@ -458,85 +460,50 @@ function initMap() {
       }
   }//close smoothZoom()
 
-//sets up the direction service to display route between locations//
+//sets up the direction service to display route between locations
   var directionsService = new google.maps.DirectionsService;
   var directionsDisplay = new google.maps.DirectionsRenderer;
   directionsDisplay.setMap(map);
-  document.getElementById("directions").addEventListener("click", function(){
-      getDirections(directionsService, directionsDisplay);
+  // document.getElementById("directions").addEventListener("click", function(){
+  //     getDirections(directionsService, directionsDisplay);
+  // });
+  $("#directions").click(function(){
+    getDirections(directionsService, directionsDisplay);
   });
 
-//function used to add a particular location to the list of ones to visit//
-  var points = [];
-   function getLocationInfo(latlng, locationName) {
-      "use strict";
-      if (latlng != null) {
-          var point = { LatLng: latlng, LocationName: locationName };
-          console.log(point);
-          points.push(point);
-          buildPoints();
-          console.log(points);
-      }
-  }
+  $("#locationsToSee").on("click", "locationButton1", function(){
+    console.log("works");
+  });
 
-//removes location from current to do list//
-$(function removeRow(index) {
-    "use strict";
-    points.splice(index, 1);
-    buildPoints();
-    clearRouteDetails();
-});
- 
-//changes hierarchy of locations DOWN//
-function moveRowDown(index) {
-    "use strict";
-    var item = points[index];
-    points.splice(index, 1);
-    points.splice(index + 1, 0, item);
-    buildPoints();
-    clearRouteDetails();
-}
-
-//changes hierarchy of locations Up//
-function moveRowUp(index) {
-    "use strict";
-    var item = points[index];
-    points.splice(index, 1);
-    points.splice(index - 1, 0, item);
-    buildPoints();
-    clearRouteDetails();
-}
+  var coordinates = {};
 
 //forms the table of locations to see, along with modification buttons//
-  function buildPoints() {
-      "use strict";
+  function buildPoints(marker) {
+    "use strict";
+    if(marker != undefined){
+      marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+      var index = markersRout.length;
+      var locationIndex = "location" + index;
+      Object.defineProperty(coordinates, locationIndex, {writable : true, enumerable : true, configurable : true});
+      coordinates[locationIndex] = {lat:marker.getPosition().lat(), lng:marker.getPosition().lng()};
       var html = "";
-      for (var i = 0; i < points.length; i++) {
-          var marker = new google.maps.Marker({
-              position: points[i].LatLng,
-              title: points[i].LocationName
-          });
-          markers.push(marker);
-          marker.setMap(map);
-          html += "<tr><td>" + points[i].LocationName +
-              "</td><td><button onclick=\"removeRow(" + i + ");\" class=\"delete btn btn-xs btn-danger\"><i class=\"glyphicon glyphicon-remove\"></i></button></td><td><script></script>";
-          if (i < points.length - 1) {
-              html += "<button onclick=\"moveDown(" + i + ");\" class=\"moveDown btn btn-xs btn-primary\"><i class=\"glyphicon glyphicon-chevron-down\"></i></button>";
-          }
-          html += "</td><td>";
-          if (i > 0) {
-              html += "<button onclick=\"moveUp(" + i + ");\" class=\"moveUp btn btn-xs btn-primary\"><i class=\"glyphicon glyphicon-chevron-up\"></i></button>";
-          }
-          html += "</td></tr>";
-      }
-      $("#locationlist tbody").html(html);
-  } 
+      html = "<li id='location" + index + "'><i style='margin:5px 20px 5px 5px;' class='fa fa-arrows-v' aria-hidden='true'></i>" + marker.title + "<button id='locationButton" + index + "' style='position:absolute; right:5px; top:1px;' class='btn btn-xs btn-danger'>X</button></li>";
+      $("#placesToSee ol").append(html);
+    }
+  }
 
 //runs the google directions api to form a route//
 //More detail to be addded to allow greater user flexibility (walking/driving/bus etc)//
    function getDirections(directionsService, directionsDisplay) {
       "use strict";
-      if (points.length < 2) {
+      var locationsRoutFinalOrder = [];
+      var numberOfItems = $("#placesToSee li").size();
+      for(var i =0; i < numberOfItems; i++){
+        var item = $("#placesToSee li").eq(i).attr("id");
+        locationsRoutFinalOrder.push(coordinates[item]);
+      }
+
+      if (locationsRoutFinalOrder.length < 2) {
           showError("You need to add at least two locations");
           return;
       }
@@ -545,15 +512,15 @@ function moveRowUp(index) {
       var directions = new google.maps.DirectionsService();
       // build array of waypoints (excluding start and end)
       var waypts = [];
-      var end = points.length - 1;
-      var dest = points[end].LatLng;
+      var end = locationsRoutFinalOrder.length - 1;
+      var dest = locationsRoutFinalOrder[end];
       for (var i = 1; i < end; i++) {
-          waypts.push({ location: points[i].LatLng });
+          waypts.push({ location: {lat:locationsRoutFinalOrder[i].lat, lng:locationsRoutFinalOrder[i].lng} });
       }
-       console.log(waypts);
+      //  console.log(waypts);
 
       directionsService.route({
-          origin: points[0].LatLng,
+          origin: locationsRoutFinalOrder[0],
           destination: dest,
           waypoints: waypts,
           travelMode: 'WALKING',
@@ -580,6 +547,7 @@ function moveRowUp(index) {
     // creates marker object
     var marker = new google.maps.Marker({
       position: place.location,
+      title: place.name,
       map: map
     });
 
@@ -593,7 +561,7 @@ function moveRowUp(index) {
     var contentString = '<div style="width:300px;"><h3 id="info-window-title" class="text-center">' + place.name +
     '</h3><div style="display: inline-block; position: relative;"><img id="info-window-image" src="' + loadedImages[city][interest][placeNameTrim][0] +
     '" style="width: 150px; height: 200px; display: inline-block;"/><i id="refreshImage" class="fa fa-refresh" aria-hidden="true" style="cursor:pointer; position: absolute; top: 2%; right: 3%; height:20px; width:20px; border-radius: 50%; padding: 1px 0px 0px 1.7px; line-height:20px; text-align:center; background-color: white; color: #59d;"></i></div>' +
-    '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div><input type="button" id="addLocation"  value="Add Location" class="btn btn-primary">';
+    '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div><button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button>';
 
     // Creates the infowindow for the marker
     var infoWindow = new google.maps.InfoWindow({
@@ -607,7 +575,12 @@ function moveRowUp(index) {
 
         // adds a listener to addLocation button in the infowindow
         google.maps.event.addDomListener(document.getElementById('addLocation'), 'click', function(){
-          getLocationInfo(marker.position, place.name);
+          markersRout.push(marker);
+          buildPoints(marker);
+          $("#locationsToSee").on("click", "#locationButton1", function(){
+            // console.log("works");
+            document.getElementById("location1").remove();
+          });
         });
 
         // adds listener to the refreshImage button in the infowindow
@@ -669,6 +642,9 @@ function moveRowUp(index) {
     window.open("https://twitter.com/home?status=I%20found%20this%20amazing%20site,%20take%20a%20look%20at%20it!%20www.google.com");
   });
 
+  // makes the items in the locations navbar sortable
+  $( "#locationsToSee" ).sortable();
+  $( "#locationsToSee" ).disableSelection();
 
 }// closes initMap
 

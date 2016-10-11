@@ -204,27 +204,10 @@
       </nav>
 
       <!-- PLACES TO VISIT NAVIGATION BAR -->
-      <nav class="placestosee" style="display: none;">
-          <table id="locationlist" class="table table-striped">
-          <thead class="tableheading nav-text">
-            <tr>
-              <th style="text-align:left;">Location</th>
-              <th style="text-align:left;">X</th>
-              <th style="text-align:left;">up</th>
-              <th style="text-align:left;">dn</th>
-            </tr>
-          </thead>
-              <tbody>
-              </tbody>
-          <tfoot>
-            <br>
-  
-            <td>
-            <input type="button" id="directions"  value="Get directions" class="btn btn-primary">
-                </td>
-   
-          </tfoot>
-        </table>
+      <nav id="placesToSee" style="display: none;">
+        <ol id='locationsToSee'>
+        </ol>
+        <button id="directions" class="btn btn-primary">Get Directions</button>
       </nav>
 
       <!-- FOOTER SOCIAL MEDIA  -->
