@@ -278,8 +278,17 @@ function initMap() {
     clearMarkers(null);
 
     // If the user is in the location page (zoom 15) and not in Brisbane
-    if(map.getZoom() == 15 && ($("#cityName").text() != "BRISBANE" || $("#cityName").text() == "BRISBANE")){
+    if(map.getZoom() >= 15 && ($("#cityName").text() != "BRISBANE" || $("#cityName").text() == "BRISBANE")){
       //Zoom in to location
+
+      for(var i=1; i < 6; i++){
+        var itemName = "location" + i;
+        if (coordinates[itemName]){
+          delete coordinates[itemName];
+          document.getElementById(itemName).remove();
+        }
+      }
+      $("#placesToSee").fadeOut(100);
       map.setZoom(13);
       // set Brisbane as center
       map.setCenter(brisbane);
@@ -315,7 +324,15 @@ function initMap() {
   $(".melbourne").click(function(){
     clearMarkers(null);
 
-    if(map.getZoom() == 15 && ($("#cityName").text() != "MELBOURNE" || $("#cityName").text() == "MELBOURNE")){
+    if(map.getZoom() >= 15 && ($("#cityName").text() != "MELBOURNE" || $("#cityName").text() == "MELBOURNE")){
+      for(var i=1; i < 6; i++){
+        var itemName = "location" + i;
+        if (coordinates[itemName]){
+          delete coordinates[itemName];
+          document.getElementById(itemName).remove();
+        }
+      }
+      $("#placesToSee").fadeOut(100);
       map.setZoom(13);
       map.setCenter(melbourne);
       $("#cityName").text("MELBOURNE");
@@ -343,7 +360,15 @@ function initMap() {
 
   $(".sydney").click(function(){
     clearMarkers(null);
-    if(map.getZoom() == 15 && ($("#cityName").text() != "SYDNEY" || $("#cityName").text() == "SYDNEY")){
+    if(map.getZoom() >= 15 && ($("#cityName").text() != "SYDNEY" || $("#cityName").text() == "SYDNEY")){
+      for(var i=1; i < 6; i++){
+        var itemName = "location" + i;
+        if (coordinates[itemName]){
+          delete coordinates[itemName];
+          document.getElementById(itemName).remove();
+        }
+      }
+      $("#placesToSee").fadeOut(100);
       map.setZoom(13);
       map.setCenter(sydney);
       $("#cityName").text("SYDNEY");
@@ -571,11 +596,15 @@ function initMap() {
     markers.push(marker);
 
     // Formats the content of the infowindow for each marker
-    var contentString = '<div style="width:300px;"><h3 id="info-window-title" class="text-center">' + place.name +
-    '</h3><div style="display: inline-block; position: relative;"><img id="info-window-image" src="' + loadedImages[city][interest][placeNameTrim][0] +
-    '" style="width: 150px; height: 200px; display: inline-block;"/><i id="refreshImage" class="fa fa-refresh" aria-hidden="true" style="cursor:pointer; position: absolute; top: 2%; right: 3%; height:20px; width:20px; border-radius: 50%; padding: 1px 0px 0px 1.7px; line-height:20px; text-align:center; background-color: white; color: #59d;"></i></div>' +
-    '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div><button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button>';
-
+    if(loadedImages[city][interest][placeNameTrim] != undefined){
+      var contentString = '<div style="width:300px;"><h3 id="info-window-title" class="text-center">' + place.name +
+      '</h3><div style="display: inline-block; position: relative;"><img id="info-window-image" src="' + loadedImages[city][interest][placeNameTrim][0] +
+      '" style="width: 150px; height: 200px; display: inline-block;"/><i id="refreshImage" class="fa fa-refresh" aria-hidden="true" style="cursor:pointer; position: absolute; top: 2%; right: 3%; height:20px; width:20px; border-radius: 50%; padding: 1px 0px 0px 1.7px; line-height:20px; text-align:center; background-color: white; color: #59d;"></i></div>' +
+      '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div><button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button>';
+    } else {
+      var contentString = '<div style="width:300px;"><h3 id="info-window-title" class="text-center">' + place.name +
+      '</h3>' + '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div><button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button>';
+    }
     // Creates the infowindow for the marker
     var infoWindow = new google.maps.InfoWindow({
       content: contentString
@@ -603,12 +632,14 @@ function initMap() {
         });
 
         // adds listener to the refreshImage button in the infowindow
-        google.maps.event.addDomListener(document.getElementById('refreshImage'), 'click', function(){
-          var imageArray = loadedImages[city][interest][placeNameTrim];
-          var maxIndex = imageArray.length;
-          var imageIndex = getRandom(maxIndex);
-          document.getElementById("info-window-image").src = loadedImages[city][interest][placeNameTrim][imageIndex];
-        });
+        if(loadedImages[city][interest][placeNameTrim] != undefined){
+          google.maps.event.addDomListener(document.getElementById('refreshImage'), 'click', function(){
+            var imageArray = loadedImages[city][interest][placeNameTrim];
+            var maxIndex = imageArray.length;
+            var imageIndex = getRandom(maxIndex);
+            document.getElementById("info-window-image").src = loadedImages[city][interest][placeNameTrim][imageIndex];
+          });
+        }
     }); // closes adsListener()
   }//closes setMarker
 
@@ -672,25 +703,25 @@ function initMap() {
   });
 
   $("#locationsToSee").on("click", "#locationButton2", function(){
-    locationMarkers.location2.setIcon('http://maps.google.com/mapfiles/ms/icons/red-circle.png');
+    locationMarkers.location2.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
     delete coordinates.location2;
     document.getElementById("location2").remove();
   });
 
   $("#locationsToSee").on("click", "#locationButton3", function(){
-    locationMarkers.location3.setIcon('http://maps.google.com/mapfiles/ms/icons/red-circle.png');
+    locationMarkers.location3.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
     delete coordinates.location3;
     document.getElementById("location3").remove();
   });
 
   $("#locationsToSee").on("click", "#locationButton4", function(){
-    locationMarkers.location4.setIcon('http://maps.google.com/mapfiles/ms/icons/red-circle.png');
+    locationMarkers.location4.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
     delete coordinates.location4;
     document.getElementById("location4").remove();
   });
 
   $("#locationsToSee").on("click", "#locationButton5", function(){
-    locationMarkers.location5.setIcon('http://maps.google.com/mapfiles/ms/icons/red-circle.png');
+    locationMarkers.location5.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
     delete coordinates.location5;
     document.getElementById("location5").remove();
   });
