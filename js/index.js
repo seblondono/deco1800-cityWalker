@@ -5,7 +5,7 @@ var markers = [];
 // Array of markers selected by the user to walk and explore
 var markersRout = [];
 // Preloaded locations to be displayed in each interest page. There are 5 locations per interest per city
-
+var directionsPressed = false;
 var interestLocations = {h_brisbane:[{name:"Customs house",location:{lat:-27.465441, lng:153.031123}},
   {name:"State Library of Queensland",location:{lat:-27.4711627, lng:153.0181129}},
   {name:"All Saints Wickham Terrace",location:{lat:-27.4644891, lng:153.0280164}},
@@ -480,6 +480,7 @@ function initMap() {
   // });
   $("#directions").click(function(){
     getDirections(directionsService, directionsDisplay);
+    directionsPressed = true;
   });
 
   var coordinates = {};
@@ -546,7 +547,31 @@ function initMap() {
       }
 
       var fastestRoute = document.getElementById("fastestRoute").checked;
+       
+       var startPosition = new google.maps.LatLng(locationsRoutFinalOrder[0].lat, locationsRoutFinalOrder[0].lng)
+       
+    var StartHere = new InfoBubble({
+      content: ("START HERE"),
+      position: startPosition,
+      shadowStyle: 1,
+      padding: 0,
+      borderRadius: 5,
+      backgroundColor: '#ff6c4d',
+      border: 'none',
+      arrowSize: 10,
+      disableAutoPan: true,
+      hideCloseButton: true,
+      arrowPosition: 30,
+      backgroundClassName: 'transparent',
+      arrowStyle: 1,
+      fontSize: '6em',
+      fontFamily: "'Titillium Web', sans-serif"
+    }); 
 
+            StartHere.open(map);
+       
+       
+       
       directionsService.route({
           origin: locationsRoutFinalOrder[0],
           destination: dest,
@@ -563,7 +588,36 @@ function initMap() {
             for (var i = 0; i < route.legs.length; i++) {
                 var section = route.legs[i];
                 distance += section.distance.value;
+                console.log(distance);
                 time += section.duration.value;
+                console.log(time);
+
+            var step = Math.round((response.routes[0].legs[i].steps.length)/2);
+            console.log(step);
+                var miniInfo = new InfoBubble({
+                  content: (response.routes[0].legs[i].distance.text + "<br>" + response.routes[0].legs[i].duration.text + " "),
+                  position: response.routes[0].legs[i].steps[step].end_location,
+                  shadowStyle: 1,
+                  padding: 0,
+                  borderColor: '#59d',
+                  borderRadius: 5,
+                  arrowSize: 10,
+                  borderWidth: 1,
+                  disableAutoPan: true,
+                  hideCloseButton: true,
+                  arrowPosition: 30,
+                  backgroundClassName: 'transparent',
+                  arrowStyle: 4
+                }); 
+        
+
+            miniInfo.close(map);
+            miniInfo.open(map);   
+                
+                
+                
+                
+                
             }
             $("#distance").html("Total distance: " + getDistance(distance) + ", ");
             $("#duration").html("total duration: " + Math.round(time / 60) + " minutes");
@@ -646,6 +700,10 @@ function getDistance(distance) {
           // makes the navbar draggable
           $("#placesToSee").draggable();
           buildPoints(marker);
+            
+        if (directionsPressed == true) {
+    getDirections(directionsService, directionsDisplay)
+    };
         });
             
         google.maps.event.addListener(map, "click", function(event) {
@@ -722,30 +780,45 @@ function getDistance(distance) {
     locationMarkers.location1.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
     delete coordinates.location1;
     document.getElementById("location1").remove();
+    if (directionsPressed = true) {
+    getDirections(directionsService, directionsDisplay);
+    }
   });
 
   $("#locationsToSee").on("click", "#locationButton2", function(){
     locationMarkers.location2.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
     delete coordinates.location2;
     document.getElementById("location2").remove();
+        if (directionsPressed = true) {
+    getDirections(directionsService, directionsDisplay);
+    }
   });
 
-  $("#locationsToSee").on("click", "#locationButton3", function(){
+  $("#locationsToSee").on("click", ".locationButton3", function(){
     locationMarkers.location3.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
     delete coordinates.location3;
     document.getElementById("location3").remove();
+        if (directionsPressed = true) {
+    getDirections(directionsService, directionsDisplay);
+    }
   });
 
   $("#locationsToSee").on("click", "#locationButton4", function(){
     locationMarkers.location4.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
     delete coordinates.location4;
     document.getElementById("location4").remove();
+        if (directionsPressed = true) {
+    getDirections(directionsService, directionsDisplay);
+    }
   });
 
   $("#locationsToSee").on("click", "#locationButton5", function(){
     locationMarkers.location5.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
     delete coordinates.location5;
     document.getElementById("location5").remove();
+        if (directionsPressed = true) {
+    getDirections(directionsService, directionsDisplay);
+    }
   });
 
 }// closes initMap
@@ -777,7 +850,8 @@ function successFunction(position) {
     codeLatLng(latGEO, lngGEO)
 }
 
-    
+var routeFormed = false;
+
 function codeLatLng(latGEO, lngGEO) {
 
     var latlng = new google.maps.LatLng(latGEO, lngGEO);
