@@ -11,7 +11,8 @@
   background: #F7F7F7;
   position: absolute;
   right: 10px;
-  width: 260px;
+  top: 60%;
+  width: 360px;
   overflow: hidden;
   border-width: 15px;
   -webkit-transform: translateZ(0) scale(1, 1);
