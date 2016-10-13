@@ -693,7 +693,7 @@ function getDistance(distance) {
         google.maps.event.addDomListener(document.getElementById('addLocation'), 'click', function(){
           markersRout.push(marker);
           //sets initial position of location table
-          $("#placesToSee").css({'top': '15%', 'right': '5%'});
+          // $("#placesToSee").css({'top': '15%', 'right': '5%'});
           // shows the navigation bar for places to visit
           $("#placesToSee").fadeIn(1200);
 
