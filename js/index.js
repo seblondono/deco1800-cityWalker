@@ -5,6 +5,7 @@ var markers = [];
 // Array of markers selected by the user to walk and explore
 var markersRout = [];
 // Preloaded locations to be displayed in each interest page. There are 5 locations per interest per city
+
 var interestLocations = {h_brisbane:[{name:"Customs house",location:{lat:-27.465441, lng:153.031123}},
   {name:"State Library of Queensland",location:{lat:-27.4711627, lng:153.0181129}},
   {name:"All Saints Wickham Terrace",location:{lat:-27.4644891, lng:153.0280164}},
@@ -556,11 +557,26 @@ function initMap() {
             if (status === 'OK') {
             directionsDisplay.setDirections(response);
             directionsDisplay.setOptions( { suppressMarkers: true } );
+            var distance = 0;
+            var time = 0;
             var route = response.routes[0];
+            for (var i = 0; i < route.legs.length; i++) {
+                var section = route.legs[i];
+                distance += section.distance.value;
+                time += section.duration.value;
+            }
+            $("#distance").html("Total distance: " + getDistance(distance) + ", ");
+            $("#duration").html("total duration: " + Math.round(time / 60) + " minutes");
             }
           });
    }
 
+function getDistance(distance) {
+    "use strict";
+        return Math.round(distance / 100) / 10 + " km";
+    }
+
+    
 /*
  *   This block of code Generates the Markers for the locations stored at interestLocations object
  *   It also set the HTML code that goes in the infowindow for each marker
@@ -605,6 +621,7 @@ function initMap() {
       var contentString = '<div style="width:300px;"><h3 id="info-window-title" class="text-center">' + place.name +
       '</h3>' + '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div><button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button>';
     }
+      
     // Creates the infowindow for the marker
     var infoWindow = new google.maps.InfoWindow({
       content: contentString
@@ -630,7 +647,10 @@ function initMap() {
           $("#placesToSee").draggable();
           buildPoints(marker);
         });
-
+            
+        google.maps.event.addListener(map, "click", function(event) {
+    infoWindow.close();
+});
         // adds listener to the refreshImage button in the infowindow
         if(loadedImages[city][interest][placeNameTrim] != undefined){
           google.maps.event.addDomListener(document.getElementById('refreshImage'), 'click', function(){
@@ -672,6 +692,8 @@ function initMap() {
       markers = [];
     }
   }
+    
+    
 
   //****************************************************************************//
   /*                      Finishes the block to set markers                     */
@@ -741,4 +763,55 @@ function initAutocomplete() {
 function initialise() {
     initMap();
     initAutocomplete();
+    geocoder = new google.maps.Geocoder();
 }
+var geocoder;
+//Geocoding
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(successFunction);
+} 
+//Get the latitude and the longitude;
+function successFunction(position) {
+    var latGEO = position.coords.latitude;
+    var lngGEO = position.coords.longitude;
+    codeLatLng(latGEO, lngGEO)
+}
+
+    
+function codeLatLng(latGEO, lngGEO) {
+
+    var latlng = new google.maps.LatLng(latGEO, lngGEO);
+    geocoder.geocode({'latLng': latlng}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+      console.log(results)
+        if (results[1]) {
+        //find country name
+             for (var i=0; i<results[0].address_components.length; i++) {
+            for (var b=0;b<results[0].address_components[i].types.length;b++) {
+
+            //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
+                if (results[0].address_components[i].types[b] == "administrative_area_level_2") {
+                    //this is the object you are looking for
+                    city= results[0].address_components[i];
+                    break;
+                }
+                if (results[0].address_components[i].types[b] == "political") {
+                    //this is the object you are looking for
+                    state= results[0].address_components[i];
+                    break;
+                }
+                if (results[0].address_components[i].types[b] == "country") {
+                    //this is the object you are looking for
+                    country= results[0].address_components[i];
+                    break;
+                }
+            }
+        }
+        //city data
+        document.getElementById("autocomplete").value = city.short_name + ", " + state.long_name +", " + country.long_name;
+//        $("#autocomplete").attr("placeholder", city.short_name + ", " + state.long_name +", " + country.long_name);
+        } 
+      } 
+    });
+  }
+
