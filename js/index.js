@@ -503,7 +503,7 @@ function initMap() {
       $("#placesToSee ol").append(html);
     }
   }
-
+        var infoBubbles = [];
 //runs the google directions api to form a route//
 //More detail to be addded to allow greater user flexibility (walking/driving/bus etc)
    function getDirections(directionsService, directionsDisplay) {
@@ -549,28 +549,12 @@ function initMap() {
       var fastestRoute = document.getElementById("fastestRoute").checked;
        
        var startPosition = new google.maps.LatLng(locationsRoutFinalOrder[0].lat, locationsRoutFinalOrder[0].lng)
-       
-    var StartHere = new InfoBubble({
-      content: ("START HERE"),
-      position: startPosition,
-      shadowStyle: 1,
-      padding: 0,
-      borderRadius: 5,
-      backgroundColor: '#ff6c4d',
-      border: 'none',
-      arrowSize: 10,
-      disableAutoPan: true,
-      hideCloseButton: true,
-      arrowPosition: 30,
-      backgroundClassName: 'transparent',
-      arrowStyle: 1,
-      fontSize: '6em',
-      fontFamily: "'Titillium Web', sans-serif"
-    }); 
 
-            StartHere.open(map);
-       
-       
+
+            $.each(infoBubbles, function( index ) {
+                infoBubbles[index].close();
+                });
+            infoBubbles = [];
        
       directionsService.route({
           origin: locationsRoutFinalOrder[0],
@@ -585,18 +569,44 @@ function initMap() {
             var distance = 0;
             var time = 0;
             var route = response.routes[0];
+            
+
+
+                
+            var StartHere = new InfoBubble({
+              content: ("START HERE"),
+              position: startPosition,
+              shadowStyle: 1,
+              padding: 0,
+              borderRadius: 5,
+              backgroundColor: '#ff6c4d',
+              border: 'none',
+              arrowSize: 10,
+              disableAutoPan: true,
+              hideCloseButton: true,
+              arrowPosition: 30,
+              backgroundClassName: 'transparent',
+              arrowStyle: 1,
+              fontSize: '6em',
+              fontFamily: "'Titillium Web', sans-serif"
+            }); 
+                StartHere.open(map);
+                infoBubbles.push(StartHere);
+                console.log(infoBubbles);
+
             for (var i = 0; i < route.legs.length; i++) {
                 var section = route.legs[i];
                 distance += section.distance.value;
-                console.log(distance);
+ 
                 time += section.duration.value;
-                console.log(time);
 
-            var step = Math.round((response.routes[0].legs[i].steps.length)/2);
-            console.log(step);
+
+                var step;
+                step = Math.floor((response.routes[0].legs[i].steps.length)/2);
+                //console.log(step);
                 var miniInfo = new InfoBubble({
-                  content: (response.routes[0].legs[i].distance.text + "<br>" + response.routes[0].legs[i].duration.text + " "),
                   position: response.routes[0].legs[i].steps[step].end_location,
+                  content: (response.routes[0].legs[i].distance.text + "<br>" + response.routes[0].legs[i].duration.text + " "),
                   shadowStyle: 1,
                   padding: 0,
                   borderColor: '#59d',
@@ -609,15 +619,8 @@ function initMap() {
                   backgroundClassName: 'transparent',
                   arrowStyle: 4
                 }); 
-        
-
-            miniInfo.close(map);
-            miniInfo.open(map);   
-                
-                
-                
-                
-                
+                infoBubbles.push(miniInfo);
+                miniInfo.open(map);     
             }
             $("#distance").html("Total distance: " + getDistance(distance) + ", ");
             $("#duration").html("total duration: " + Math.round(time / 60) + " minutes");
@@ -684,7 +687,12 @@ function getDistance(distance) {
     // Adds a listener to the marker of the location
     google.maps.event.addListener(marker,'click', function(){
       // passes the map and marker to the infowindow obeject
-      infoWindows.forEach(function(){this.close();});
+      //infoWindows.forEach(function(){this.close();});
+        
+        $.each(infoWindows, function( index ) {
+            infoWindows[index].close();
+        });
+        infoWindows = [];
 
       infoWindow.open(map, this);
       infoWindows.push(infoWindow);
@@ -705,7 +713,7 @@ function getDistance(distance) {
     getDirections(directionsService, directionsDisplay)
     };
         });
-            
+       //closes all info windows if clicked anywhere on the map     
         google.maps.event.addListener(map, "click", function(event) {
     infoWindow.close();
 });
@@ -852,6 +860,7 @@ function successFunction(position) {
 
 var routeFormed = false;
 
+//geocodes the location onto the main page automatically
 function codeLatLng(latGEO, lngGEO) {
 
     var latlng = new google.maps.LatLng(latGEO, lngGEO);

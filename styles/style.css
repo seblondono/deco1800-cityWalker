@@ -18,6 +18,9 @@ html, body {
     font-family: 'Ubuntu', sans-serif;
 }
 
+#locationsToSee {
+    margin-bottom: 0;
+}
 
 #over-content {
   position: absolute;
@@ -42,6 +45,8 @@ html, body {
   left: 0;
   z-index: 9;
 }
+
+
 
 #map {
   height: 100%;
