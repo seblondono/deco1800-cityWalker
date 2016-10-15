@@ -503,10 +503,10 @@ function initMap() {
       $("#placesToSee ol").append(html);
     }
   }
-        var infoBubbles = [];
+          var infoBubbles = [];
 //runs the google directions api to form a route//
 //More detail to be addded to allow greater user flexibility (walking/driving/bus etc)
-   function getDirections(directionsService, directionsDisplay) {
+  function getDirections(directionsService, directionsDisplay) {
       "use strict";
       var locationsRoutFinalOrder = [];
       var numberOfItems = $("#placesToSee li").size();
@@ -633,6 +633,7 @@ function getDistance(distance) {
         return Math.round(distance / 100) / 10 + " km";
     }
 
+
     
 /*
  *   This block of code Generates the Markers for the locations stored at interestLocations object
@@ -642,7 +643,7 @@ function getDistance(distance) {
 
  var infoWindows = [];
 
-  function setMarker(city, interest, place){
+ function setMarker(city, interest, place){
     // Sets a marker into the map
     var markerDesign;
     if (interest === "landmarks") {
@@ -708,6 +709,7 @@ function getDistance(distance) {
           // makes the navbar draggable
           $("#placesToSee").draggable();
           buildPoints(marker);
+            console.log(buildPoints());
             
         if (directionsPressed == true) {
     getDirections(directionsService, directionsDisplay)
@@ -860,7 +862,6 @@ function successFunction(position) {
 
 var routeFormed = false;
 
-//geocodes the location onto the main page automatically
 function codeLatLng(latGEO, lngGEO) {
 
     var latlng = new google.maps.LatLng(latGEO, lngGEO);
