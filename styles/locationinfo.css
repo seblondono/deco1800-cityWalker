@@ -69,3 +69,12 @@ label {
 }
 
 .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+
+#distance, #duration {
+    padding: 0;
+    margin: 0;
+}
+
+.moreInfo {
+    width: 90%;
+}

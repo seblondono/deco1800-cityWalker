@@ -574,7 +574,7 @@ function initMap() {
 
                 
             var StartHere = new InfoBubble({
-              content: ("START HERE"),
+              content: ("<p id='startHeading'>Start Here</p>"),
               position: startPosition,
               shadowStyle: 1,
               padding: 0,
@@ -600,19 +600,19 @@ function initMap() {
  
                 time += section.duration.value;
 
-
+                var z = i+1;
                 var step;
                 step = Math.floor((response.routes[0].legs[i].steps.length)/2);
                 //console.log(step);
                 var miniInfo = new InfoBubble({
                   position: response.routes[0].legs[i].steps[step].end_location,
-                  content: (response.routes[0].legs[i].distance.text + "<br>" + response.routes[0].legs[i].duration.text + " "),
+                  content: ("<div id='sectionInfoHeading'>Leg " + z + ": " + markersRout[i].title + " TO<br>" + markersRout[i+1].title +   "</div><div id='sectionInfoContent'>" + "<br> Distance:" + response.routes[0].legs[i].distance.text + "<br> Time:" + response.routes[0].legs[i].duration.text + " </div>"),
                   shadowStyle: 1,
                   padding: 0,
                   borderColor: '#59d',
                   borderRadius: 5,
                   arrowSize: 10,
-                  borderWidth: 1,
+                  borderWidth: 3,
                   disableAutoPan: true,
                   hideCloseButton: true,
                   arrowPosition: 30,
@@ -621,6 +621,7 @@ function initMap() {
                 }); 
                 infoBubbles.push(miniInfo);
                 miniInfo.open(map);     
+               
             }
             $("#distance").html("Total distance: " + getDistance(distance) + ", ");
             $("#duration").html("total duration: " + Math.round(time / 60) + " minutes");
@@ -674,10 +675,10 @@ function getDistance(distance) {
       var contentString = '<div style="width:300px;"><h3 id="info-window-title" class="text-center">' + place.name +
       '</h3><div style="display: inline-block; position: relative;"><img id="info-window-image" src="' + loadedImages[city][interest][placeNameTrim][0] +
       '" style="width: 150px; height: 200px; display: inline-block;"/><i id="refreshImage" class="fa fa-refresh" aria-hidden="true" style="cursor:pointer; position: absolute; top: 2%; right: 3%; height:20px; width:20px; border-radius: 50%; padding: 1px 0px 0px 1.7px; line-height:20px; text-align:center; background-color: white; color: #59d;"></i></div>' +
-      '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div><button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button>';
+      '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div><button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button><button style="margin:10px 5px 5px 0px;" id="moreInformation" class="btn btn-primary" data-toggle="modal" data-target="#myModal">More Info</button>';
     } else {
       var contentString = '<div style="width:300px;"><h3 id="info-window-title" class="text-center">' + place.name +
-      '</h3>' + '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div><button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button>';
+      '</h3>' + '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div><button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button><button style="margin:10px 5px 5px 0px;" id="moreInformation" class="btn btn-primary" data-toggle="modal" data-target="#myModal">More Info</button>';
     }
       
     // Creates the infowindow for the marker
@@ -714,6 +715,16 @@ function getDistance(distance) {
         if (directionsPressed == true) {
     getDirections(directionsService, directionsDisplay)
     };
+        });
+        
+                google.maps.event.addDomListener(document.getElementById('moreInformation'), 'click', function(){
+                    $("#infoTitle").html('<h3 id="info-window-title" class="text-center">' + place.name + '</h3>')
+                    $("#infoPage").html('<div style="display: inline-block; position: relative;"><img id="info-window-image" src="' + loadedImages[city][interest][placeNameTrim][0] +
+      '" style="width: 150px; height: 200px; display: inline-block;"/><i id="refreshImage" class="fa fa-refresh" aria-hidden="true" style="cursor:pointer; position: absolute; top: 2%; right: 3%; height:20px; width:20px; border-radius: 50%; padding: 1px 0px 0px 1.7px; line-height:20px; text-align:center; background-color: white; color: #59d;"></i></div>' +
+      '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div>')
+                    
+                    
+                    
         });
        //closes all info windows if clicked anywhere on the map     
         google.maps.event.addListener(map, "click", function(event) {
@@ -898,4 +909,6 @@ function codeLatLng(latGEO, lngGEO) {
       } 
     });
   }
+
+
 
