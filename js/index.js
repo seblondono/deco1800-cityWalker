@@ -61,7 +61,7 @@ var cities = ["brisbane", "melbourne", "sydney"];
 var interests = ["landmarks", "museums", "historical"];
 
 // Object {city:{interest:[location]}. To be used in the getImagesOnLoad()
-var imagesData = {brisbane:{historical:["Customs house", "State Library Queensland", "All Saint Wickham Terrace", "Newstead House", "St Stephens Cathedral"],
+var locationsData = {brisbane:{historical:["Customs house", "State Library Queensland", "All Saint Wickham Terrace", "Newstead House", "St Stephens Cathedral"],
                             landmarks:["Story Bridge", "City Hall", "Parliament House", "Wheel of Brisbane", "The Old Windmill"],
                             museums: ["Old Museum", "Mercy Heritage", "Queensland Museum", "Queensland Maritime Museum", "Queensland Gallery Modern Art"]},
                   melbourne:{historical:["Federation Square", "Flemington", "Old Treasury Building", "The Great Melbourne Telescope", "The Shrine Remembrance"],
@@ -90,8 +90,8 @@ function getImagesOnLoad(){
 
   for(var city in cities){
     for(var interest in interests){
-      for(var location in imagesData[cities[city]][interests[interest]]){
-          searchImages(cities[city], interests[interest], imagesData[cities[city]][interests[interest]][location]);
+      for(var location in locationsData[cities[city]][interests[interest]]){
+          searchImages(cities[city], interests[interest], locationsData[cities[city]][interests[interest]][location]);
       }
     }
   }
@@ -100,23 +100,24 @@ function getImagesOnLoad(){
 // Calls getImagesOnLoad
 $(document).ready(function(){
   getImagesOnLoad();
+  getArticleOnLoad();
 });
 
 function searchImages(cityName, interest, location){
   // Search for images with the Trove API
   // searchImages(cityName, interest, location) -> None
-    var apiKey = "ekq3l7c47bcs61ts";
+  var apiKey = "ekq3l7c47bcs61ts";
 
-    //create searh query
-    var url = "http://api.trove.nla.gov.au/result?key=" + apiKey + "&l-availability=y%2Ff&encoding=json&zone=picture" + "&sortby=relevance&n=100&q=" + location + " " + cityName + "&callback=?";
+  //create searh query
+  var url = "http://api.trove.nla.gov.au/result?key=" + apiKey + "&l-availability=y%2Ff&encoding=json&zone=picture" + "&sortby=relevance&n=100&q=" + location + " " + cityName + "&callback=?";
 
-    //get the JSON information we need to display the images
-    $.getJSON(url, function(data) {
-        // Removes the spaces in the name of the location, to correspond with the format of the Object loadedImages
-        location = location.replace(/\s+/g, '');
-        // passes item, index and arr to processImages, and passes [interest, location, cityName] as "this" value to processImages
-        data.response.zone[0].records.work.forEach(processImages,[interest, location, cityName]);
-    });
+  //get the JSON information we need to display the images
+  $.getJSON(url, function(data) {
+      // Removes the spaces in the name of the location, to correspond with the format of the Object loadedImages
+      location = location.replace(/\s+/g, '');
+      // passes item, index and arr to processImages, and passes [interest, location, cityName] as "this" value to processImages
+      data.response.zone[0].records.work.forEach(processImages,[interest, location, cityName]);
+  });
 }//close searchImages
 
 /*
@@ -198,18 +199,6 @@ function getQueryVariable(variable, url) {
 /*            Finishes the block to process Images from Trove API             */
 //****************************************************************************//
 
-var articleData = {brisbane:{historical:["Customs house", "State Library Queensland", "All Saint Wickham Terrace", "Newstead House", "St Stephens Cathedral"],
-                            landmarks:["Story Bridge", "City Hall", "Parliament House", "Wheel of Brisbane", "The Old Windmill"],
-                            museums: ["Old Museum", "Mercy Heritage", "Queensland Museum", "Queensland Maritime Museum", "Queensland Gallery Modern Art"]},
-                  melbourne:{historical:["Federation Square", "Flemington", "Old Treasury Building", "The Great Melbourne Telescope", "The Shrine Remembrance"],
-                            landmarks:["Star Observation Wheel", "Royal Botanic Gardens", "Queen Victoria Market", "Flinders Street Station", "Royal Exhibition Building"],
-                            museums:["Melbourne Museum", "National Gallery Victoria", "Immigration Museum", "Old Treasury Building", "Jewish Museum"]},
-                  sydney:{historical:["Sydney Park St Peters", "Government House", "St Francis Xaviers Church", "Fortune War Pub"],
-                          landmarks:["Sydney Opera House", "Sydney Harbour Bridge", "Sydney Observatory", "St Marys Cathedral", "Sydney Tower Eye"],
-                          // List of cities where we have the service. To be used in the getImagesOnLoad()
-                          museums:["Powerhouse Museum", "Australian National Maritime Museum", "Australian Museum", "Museum Sydney", "Hyde Park Barracks Museum"]}};
-
-
 // Object {city:{interest:{location:[]}}. To be used in the searchImages(). When searching for location images, the URLs are stored in city.interest.location
 var loadedArticle = {brisbane:{historical:{Customshouse:[],StateLibraryQueensland:[],AllSaintWickhamTerrace:[],NewsteadHouse:[],StStephensCathedral:[]},
   landmarks:{StoryBridge:[],CityHall:[],ParliamentHouse:[],WheelofBrisbane:[],TheOldWindmill:[]},
@@ -222,61 +211,54 @@ var loadedArticle = {brisbane:{historical:{Customshouse:[],StateLibraryQueenslan
   museums:{PowerhouseMuseum:[],AustralianNationalMaritimeMuseum:[],AustralianMuseum:[],MuseumSydney:[],HydeParkBarracksMuseum:[]}}};
 
 function getArticleOnLoad(){
-  // Gets images for every location in each city and interest. Its called when page finished loading
-  //getImagesOnLoad() -> None
+  // Gets articles for every location in each city and interest. Its called when page finished loading
+  //getArticleOnLoad() -> None
 
   for(var city in cities){
     for(var interest in interests){
-      for(var location in articleData[cities[city]][interests[interest]]){
-          searchArticle(cities[city], interests[interest], articleData[cities[city]][interests[interest]][location]);
+      for(var location in locationsData[cities[city]][interests[interest]]){
+          searchArticle(cities[city], interests[interest], locationsData[cities[city]][interests[interest]][location]);
       }
     }
   }
 }//close getImagesOnLoad
 
-
-$(document).ready(function(){
-getArticleOnLoad();
-	});
-
 function searchArticle(cityName, interest, location){
 // Set the search zone - alternatively you can set this using a form input
-              var apiKey = "ekq3l7c47bcs61ts";
-					    var searchZone = "newspaper";
-					    var sortBy = "relevance"; //$("#sortBy").val();
+  var apiKey = "ekq3l7c47bcs61ts";
+  var searchZone = "newspaper";
+  var sortBy = "relevance"; //$("#sortBy").val();
 
-					    /*
-					    *	Construct the URL for the Trove Search API
-					    * 	http://api.trove.nla.gov.au/result? is the base URL required for accessing the TROVE API
-					    * 	Additional arguments are sent as key/value pairs separated by the & sign
-					    * 	key is the API key needed to access the API
-					    * 	encoding tells the API how to return the results - json or xml (default)
-					    * 	zone tells the API where to perform the search - book, picture, article, music, map, collection, newspaper, list or all can be used
-					    * 	sortby tells the API how to sort the results - datedesc, dateasc, relevance
-					    * 	q is the set of keywords to search on, alternatively you can use Indexes to refine the search terms (see the API documentation for how to use indexes & which zones support each one
-					    *	callback allows you to specify a function to process the response - even if you choose not to set one, you need to include the callback parameter
-					    * 	See the API documentation for other parameters you can use in the search string
-					    */
-					    var url = "http://api.trove.nla.gov.au/result?key=" + apiKey + "&encoding=json&zone=" + searchZone +
-					    "&sortby=" + sortBy + "&q=" + location + " " + cityName + "&s=0&n=20&include=articletext,pdf&encoding=json&callback=?";
+  /*
+  *	Construct the URL for the Trove Search API
+  * 	http://api.trove.nla.gov.au/result? is the base URL required for accessing the TROVE API
+  * 	Additional arguments are sent as key/value pairs separated by the & sign
+  * 	key is the API key needed to access the API
+  * 	encoding tells the API how to return the results - json or xml (default)
+  * 	zone tells the API where to perform the search - book, picture, article, music, map, collection, newspaper, list or all can be used
+  * 	sortby tells the API how to sort the results - datedesc, dateasc, relevance
+  * 	q is the set of keywords to search on, alternatively you can use Indexes to refine the search terms (see the API documentation for how to use indexes & which zones support each one
+  *	callback allows you to specify a function to process the response - even if you choose not to set one, you need to include the callback parameter
+  * 	See the API documentation for other parameters you can use in the search string
+  */
+  var url = "http://api.trove.nla.gov.au/result?key=" + apiKey + "&encoding=json&zone=" + searchZone +
+  "&sortby=" + sortBy + "&q=" + location + " " + cityName + "&s=0&n=20&include=articletext,pdf&encoding=json&callback=?";
 
-					    /*
-					    * 	Perform the search using jQuery's getJSON method
-					    *	Requires the search URL
-					    */
-					    console.log(url);
+  /*
+  * 	Perform the search using jQuery's getJSON method
+  *	Requires the search URL
+  */
+  location = location.replace(/\s+/g, '');
 
-					    $.getJSON(url, function(data) {
-					    	// clear the HTML div that will display the results
-					        $('#output').empty();
-									console.log(data);
+  $.getJSON(url, function(data) {
+  	// clear the HTML div that will display the results
+    $.each(data.response.zone[0].records.article, function(index, value) {
+      	loadedArticle[cityName][interest][location].push(value);
+    });
+  });
 
 
-					        $.each(data.response.zone[0].records.article, function(index, value) {
-					          	$("#output").append("<h3>" + index + " " + value.heading + "</h3>" + "<p>" + value.articleText +"</p><hr/>");
-					        });
-						});
-					}
+}// closes searchArticle()
 
 
 
@@ -552,7 +534,7 @@ function initMap() {
       }
   }//close smoothZoom()
 
-//sets up the direction service to display route between locations
+  //sets up the direction service to display route between locations
   var directionsService = new google.maps.DirectionsService;
   var directionsDisplay = new google.maps.DirectionsRenderer;
   directionsDisplay.setMap(map);
@@ -567,7 +549,7 @@ function initMap() {
   var coordinates = {};
   var locationMarkers = {};
 
-//forms the table of locations to see, along with modification buttons//
+  //forms the table of locations to see, along with modification buttons//
   function buildPoints(marker) {
     "use strict";
     if(marker != undefined){
@@ -585,8 +567,8 @@ function initMap() {
     }
   }
           var infoBubbles = [];
-//runs the google directions api to form a route//
-//More detail to be addded to allow greater user flexibility (walking/driving/bus etc)
+  //runs the google directions api to form a route
+  //More detail to be addded to allow greater user flexibility (walking/driving/bus etc)
   function getDirections(directionsService, directionsDisplay) {
       "use strict";
       var locationsRoutFinalOrder = [];
@@ -710,12 +692,10 @@ function initMap() {
           });
    }
 
-function getDistance(distance) {
-    "use strict";
-        return Math.round(distance / 100) / 10 + " km";
-    }
-
-
+  function getDistance(distance) {
+      "use strict";
+          return Math.round(distance / 100) / 10 + " km";
+  }
 
 /*
  *   This block of code Generates the Markers for the locations stored at interestLocations object
@@ -756,7 +736,9 @@ function getDistance(distance) {
       var contentString = '<div style="width:300px;"><h3 id="info-window-title" class="text-center">' + place.name +
       '</h3><div style="display: inline-block; position: relative;"><img id="info-window-image" src="' + loadedImages[city][interest][placeNameTrim][0] +
       '" style="width: 150px; height: 200px; display: inline-block;"/><i id="refreshImage" class="fa fa-refresh" aria-hidden="true" style="cursor:pointer; position: absolute; top: 2%; right: 3%; height:20px; width:20px; border-radius: 50%; padding: 1px 0px 0px 1.7px; line-height:20px; text-align:center; background-color: white; color: #59d;"></i></div>' +
-      '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">' + loadedArticle[city][interest][placeNameTrim][0] +'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div><button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button><button style="margin:10px 5px 5px 0px;" id="moreInformation" class="btn btn-primary" data-toggle="modal" data-target="#myModal">More Info</button>';
+      '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">' + loadedArticle[city][interest][placeNameTrim][0] +'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div>' +
+      '<button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button>' +
+      '<button style="margin:10px 5px 5px 0px;" id="moreInformation" class="btn btn-primary" data-toggle="modal" data-target="#myModal">More Info</button>';
     } else {
       var contentString = '<div style="width:300px;"><h3 id="info-window-title" class="text-center">' + place.name +
       '</h3>' + '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div><button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button><button style="margin:10px 5px 5px 0px;" id="moreInformation" class="btn btn-primary" data-toggle="modal" data-target="#myModal">More Info</button>';
@@ -770,57 +752,51 @@ function getDistance(distance) {
     // Adds a listener to the marker of the location
     google.maps.event.addListener(marker,'click', function(){
       // passes the map and marker to the infowindow obeject
-      //infoWindows.forEach(function(){this.close();});
 
-        $.each(infoWindows, function( index ) {
-            infoWindows[index].close();
-        });
-        infoWindows = [];
+      $.each(infoWindows, function( index ) {
+          infoWindows[index].close();
+      });
+      infoWindows = [];
 
       infoWindow.open(map, this);
       infoWindows.push(infoWindow);
 
-        // adds a listener to addLocation button in the infowindow
-        google.maps.event.addDomListener(document.getElementById('addLocation'), 'click', function(){
-          markersRout.push(marker);
-          //sets initial position of location table
-          // $("#placesToSee").css({'top': '15%', 'right': '5%'});
-          // shows the navigation bar for places to visit
-          $("#placesToSee").fadeIn(1200);
+      // adds a listener to addLocation button in the infowindow
+      google.maps.event.addDomListener(document.getElementById('addLocation'), 'click', function(){
+        markersRout.push(marker);
 
-          // makes the navbar draggable
-          $("#placesToSee").draggable();
-          buildPoints(marker);
-            console.log(buildPoints());
+        // shows the navigation bar for places to visit
+        $("#placesToSee").fadeIn(1200);
+
+        // makes the navbar draggable
+        $("#placesToSee").draggable();
+        buildPoints(marker);
+          console.log(buildPoints());
 
         if (directionsPressed == true) {
-    getDirections(directionsService, directionsDisplay)
-    };
-        });
+          getDirections(directionsService, directionsDisplay)
+        };
+      });
 
-                google.maps.event.addDomListener(document.getElementById('moreInformation'), 'click', function(){
-                    $("#infoTitle").html('<h3 id="info-window-title" class="text-center">' + place.name + '</h3>')
-                    $("#infoPage").html('<div style="display: inline-block; position: relative;"><img id="info-window-image" src="' + loadedImages[city][interest][placeNameTrim][0] +
-      '" style="width: 150px; height: 200px; display: inline-block;"/><i id="refreshImage" class="fa fa-refresh" aria-hidden="true" style="cursor:pointer; position: absolute; top: 2%; right: 3%; height:20px; width:20px; border-radius: 50%; padding: 1px 0px 0px 1.7px; line-height:20px; text-align:center; background-color: white; color: #59d;"></i></div>' +
-      '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div>')
-
-
-
-        });
+      google.maps.event.addDomListener(document.getElementById('moreInformation'), 'click', function(){
+          $("#infoTitle").html(place.name);
+          $("#infoPage").html(loadedArticle[city][interest][placeNameTrim][0].articleText);
+      });
        //closes all info windows if clicked anywhere on the map
-        google.maps.event.addListener(map, "click", function(event) {
-    infoWindow.close();
-});
-        // adds listener to the refreshImage button in the infowindow
-        if(loadedImages[city][interest][placeNameTrim] != undefined){
-          google.maps.event.addDomListener(document.getElementById('refreshImage'), 'click', function(){
-            var imageArray = loadedImages[city][interest][placeNameTrim];
-            var maxIndex = imageArray.length;
-            var imageIndex = getRandom(maxIndex);
-            document.getElementById("info-window-image").src = loadedImages[city][interest][placeNameTrim][imageIndex];
-          });
-        }
-    }); // closes adsListener()
+      google.maps.event.addListener(map, "click", function(event) {
+        infoWindow.close();
+      });
+      // adds listener to the refreshImage button in the infowindow
+      if(loadedImages[city][interest][placeNameTrim] != undefined){
+        google.maps.event.addDomListener(document.getElementById('refreshImage'), 'click', function(){
+          var imageArray = loadedImages[city][interest][placeNameTrim];
+          var maxIndex = imageArray.length;
+          var imageIndex = getRandom(maxIndex);
+          document.getElementById("info-window-image").src = loadedImages[city][interest][placeNameTrim][imageIndex];
+        });
+      }
+
+    }); // closes addListener(marker)
   }//closes setMarker
 
   function getRandom(maxIndex){
