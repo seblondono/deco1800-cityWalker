@@ -224,7 +224,7 @@ function getArticleOnLoad(){
 }//close getImagesOnLoad
 
 function searchArticle(cityName, interest, location){
-// Set the search zone - alternatively you can set this using a form input
+  // Set the search zone - alternatively you can set this using a form input
   var apiKey = "ekq3l7c47bcs61ts";
   var searchZone = "newspaper";
   var sortBy = "relevance"; //$("#sortBy").val();
@@ -736,12 +736,15 @@ function initMap() {
       var contentString = '<div style="width:300px;"><h3 id="info-window-title" class="text-center">' + place.name +
       '</h3><div style="display: inline-block; position: relative;"><img id="info-window-image" src="' + loadedImages[city][interest][placeNameTrim][0] +
       '" style="width: 150px; height: 200px; display: inline-block;"/><i id="refreshImage" class="fa fa-refresh" aria-hidden="true" style="cursor:pointer; position: absolute; top: 2%; right: 3%; height:20px; width:20px; border-radius: 50%; padding: 1px 0px 0px 1.7px; line-height:20px; text-align:center; background-color: white; color: #59d;"></i></div>' +
-      '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">' + loadedArticle[city][interest][placeNameTrim][0] +'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div>' +
+      '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">' + loadedArticle[city][interest][placeNameTrim][0].articleText.substring(0, 100) + '</p></div>' +
       '<button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button>' +
       '<button style="margin:10px 5px 5px 0px;" id="moreInformation" class="btn btn-primary" data-toggle="modal" data-target="#myModal">More Info</button>';
+      var contentStringModal = '<div style="display: inline-block; position: relative;"><img id="info-window-image" src="' + loadedImages[city][interest][placeNameTrim][0] +
+      '" style="width: 150px; height: 200px; display: inline-block;"/><i id="refreshImage" class="fa fa-refresh" aria-hidden="true" style="cursor:pointer; position: absolute; top: 2%; right: 3%; height:20px; width:20px; border-radius: 50%; padding: 1px 0px 0px 1.7px; line-height:20px; text-align:center; background-color: white; color: #59d;"></i></div>';
     } else {
       var contentString = '<div style="width:300px;"><h3 id="info-window-title" class="text-center">' + place.name +
       '</h3>' + '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div><button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button><button style="margin:10px 5px 5px 0px;" id="moreInformation" class="btn btn-primary" data-toggle="modal" data-target="#myModal">More Info</button>';
+      var contentStringModal = "No Images Found about this location."
     }
 
     // Creates the infowindow for the marker
@@ -757,6 +760,8 @@ function initMap() {
           infoWindows[index].close();
       });
       infoWindows = [];
+      articlesNumber = 0;
+      currentArticleIndex = 0;
 
       infoWindow.open(map, this);
       infoWindows.push(infoWindow);
@@ -780,7 +785,15 @@ function initMap() {
 
       google.maps.event.addDomListener(document.getElementById('moreInformation'), 'click', function(){
           $("#infoTitle").html(place.name);
-          $("#infoPage").html(loadedArticle[city][interest][placeNameTrim][0].articleText);
+          $("#infoPage").html(contentStringModal);
+          $("#infoPage").append(loadedArticle[city][interest][placeNameTrim][0].articleText);
+          articlesNumber = loadedArticle[city][interest][placeNameTrim].length;
+          currentCity = city;
+          currentInterest = interest;
+          currentLocation = placeNameTrim;
+          if (articlesNumber > 0){
+            $("#nextArticle").show();
+          }
       });
        //closes all info windows if clicked anywhere on the map
       google.maps.event.addListener(map, "click", function(event) {
@@ -798,6 +811,42 @@ function initMap() {
 
     }); // closes addListener(marker)
   }//closes setMarker
+
+  var articlesNumber = 0;
+  var currentArticleIndex = 0;
+  var currentCity = "";
+  var currentInterest = "";
+  var currentLocation = "";
+
+  $("#refreshImage").click(function(){
+    var imageArray = loadedImages[currentCity][currentInterest][currentLocation];
+    var maxIndex = imageArray.length;
+    var imageIndex = getRandom(maxIndex);
+    document.getElementById("info-window-image").src = loadedImages[currentCity][currentInterest][currentLocation][imageIndex];
+  });
+
+  $("#nextArticle").click(function(){
+    if(currentArticleIndex <= articlesNumber) {
+      currentArticleIndex += 1;
+      if (currentArticleIndex == articlesNumber){
+        $("#nextArticle").hide();
+      }else {
+        $("#infoPage").html(loadedArticle[currentCity][currentInterest][currentLocation][currentArticleIndex].articleText);
+        $("#previousArticle").css("display", "inline-block");
+      }
+    }
+  });
+
+  $("#previousArticle").click(function(){
+    if (currentArticleIndex > 0){
+      currentArticleIndex -= 1;
+      $("#infoPage").html(loadedArticle[currentCity][currentInterest][currentLocation][currentArticleIndex].articleText);
+      $("#nextArticle").css("display", "inline-block");
+      if(currentArticleIndex <= 0) {
+        $("#previousArticle").hide();
+      }
+    }
+  });
 
   function getRandom(maxIndex){
     // returns a random number between 0 and the number of items in the city.interest.location object

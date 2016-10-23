@@ -3,6 +3,7 @@
     color: white;
     padding: 5px;
     border-radius: 5px;
+    height: 45px;
 }
 
 .modal-content {
@@ -44,6 +45,21 @@
 }
 
 .modal-title{
-  margin: 10px 0px 10px 0px;
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 5px 0px 10px 0px;
   text-align: center;
+}
+
+#nextArticle {
+  position: absolute;
+  right: 0px;
+  margin: 0px 40px;
+
+}
+
+#previousArticle {
+  margin: 0px 40px;
 }
