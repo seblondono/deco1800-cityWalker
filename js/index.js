@@ -582,10 +582,17 @@ function initMap() {
         Object.defineProperty(locationMarkers, locationIndex, {writable : true, enumerable : true, configurable : true});
         coordinates[locationIndex] = {lat:marker.getPosition().lat(), lng:marker.getPosition().lng()};
         locationMarkers[locationIndex] = marker;
+        if (($("#placesToSee ol li").eq(0).attr("id")) != undefined) {
+            var idCheck = $("#placesToSee ol li").eq(0).attr("id");
+            if (idCheck == 'gone') {
+                $('#gone').remove();
+            }
 
+        }
         var html = "";
         html = "<li class='locationList' id='location" + index + "'><i style='margin:5px 20px 5px 5px;' class='fa fa-arrows-v' aria-hidden='true'></i>" + marker.title + "<button id='locationButton" + index + "' style='position:absolute; right:5px; top:4px;' class='btn btn-xs btn-danger'>X</button></li>";
         $("#placesToSee ol").append(html);
+          console.log($("#placesToSee ol li").length);
       }
     }
   }
@@ -951,9 +958,15 @@ function initMap() {
         }
     delete coordinates[locationName];
     document.getElementById(locationName).remove();
+
     if (directionsPressed == true) {
     getDirections(directionsService, directionsDisplay);
     }
+    if (($("#placesToSee ol li").length) == 0) {
+    var allGone = "";
+    allGone = "<li id='gone'>Please see add some more locations.</li>";
+    $("#placesToSee ol").append(allGone);
+      }
   });
 
 }// closes initMap
