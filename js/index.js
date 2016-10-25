@@ -106,7 +106,7 @@ $(document).ready(function(){
 function searchImages(cityName, interest, location){
   // Search for images with the Trove API
   // searchImages(cityName, interest, location) -> None
-  var apiKey = "ekq3l7c47bcs61ts";
+  var apiKey = "hkjqsa5k0v4bb85b";
 
   //create searh query
   var url = "http://api.trove.nla.gov.au/result?key=" + apiKey + "&l-availability=y%2Ff&encoding=json&zone=picture" + "&sortby=relevance&n=100&q=" + location + " " + cityName + "&callback=?";
@@ -552,15 +552,17 @@ function initMap() {
   //forms the table of locations to see, along with modification buttons//
   function buildPoints(marker) {
     "use strict";
-    if(marker != undefined){
+
         
-        if (marker.icon = 'images/landmarks.png') {
+        if (marker.icon == 'images/landmarks.png') {
             marker.setIcon('images/landmarksSELECTED.png');
         }
-        if (marker.icon = 'images/historical.png') {
+        else
+        if (marker.icon == 'images/historical.png') {
             marker.setIcon('images/historicalSELECTED.png');
         }
-        if (marker.icon = 'images/museums.png') {
+        else
+        if (marker.icon == 'images/museums.png') {
             marker.setIcon('images/museumsSELECTED.png');
         }
     
@@ -572,9 +574,10 @@ function initMap() {
       locationMarkers[locationIndex] = marker;
 
       var html = "";
+      
       html = "<li class='locationList' id='location" + index + "'><i style='margin:5px 20px 5px 5px;' class='fa fa-arrows-v' aria-hidden='true'></i>" + marker.title + "<button id='locationButton" + index + "' style='position:absolute; right:5px; top:4px;' class='btn btn-xs btn-danger'>X</button></li>";
       $("#placesToSee ol").append(html);
-    }
+    
   }
           var infoBubbles = [];
   //runs the google directions api to form a route
@@ -665,7 +668,7 @@ function initMap() {
             });
                 StartHere.open(map);
                 infoBubbles.push(StartHere);
-                console.log(infoBubbles);
+
 
             for (var i = 0; i < route.legs.length; i++) {
                 var section = route.legs[i];
@@ -774,7 +777,7 @@ function initMap() {
 
       infoWindow.open(map, this);
       infoWindows.push(infoWindow);
-        console.log(markersRout);
+
       // adds a listener to addLocation button in the infowindow
       google.maps.event.addDomListener(document.getElementById('addLocation'), 'click', function(){
         markersRout.push(marker);
@@ -911,100 +914,29 @@ function initMap() {
   $( "#locationsToSee" ).sortable();
   $( "#locationsToSee" ).disableSelection();
 
-  $("#locationsToSee").on("click", "#locationButton1", function(){
-        if (locationMarkers.location1.icon = 'images/landmarksSELECTED.png') {
-            locationMarkers.location1.setIcon('images/landmarks.png');
+  $("#locationsToSee").on("click", "[id^=locationButton]", function(){
+      var value = this.id
+      value = value.replace(/locationButton/, '');
+      var locationName = "location" + value;
+        if (locationMarkers[locationName].icon == 'images/landmarksSELECTED.png') {
+            locationMarkers[locationName].setIcon('images/landmarks.png');
         }
       else
-        if (locationMarkers.location1.icon = 'images/historicalSELECTED.png') {
-            locationMarkers.location1.setIcon('images/historical.png');
+        if (locationMarkers[locationName].icon == 'images/historicalSELECTED.png') {
+            locationMarkers[locationName].setIcon('images/historical.png');
         }
       else
-        if (locationMarkers.location1.icon = 'images/museumsSELECTED.png') {
-            locationMarkers.location1.setIcon('images/museums.png');
+        if (locationMarkers[locationName].icon == 'images/museumsSELECTED.png') {
+            locationMarkers[locationName].setIcon('images/museums.png');
         }
-    delete coordinates.location1;
-    document.getElementById("location1").remove();
+    delete coordinates[locationName];
+    document.getElementById(locationName).remove();
     if (directionsPressed == true) {
     getDirections(directionsService, directionsDisplay);
     }
   });
 
-  $("#locationsToSee").on("click", "#locationButton2", function(){
-        if (locationMarkers.location2.icon = 'images/landmarksSELECTED.png') {
-            locationMarkers.location2.setIcon('images/landmarks.png');
-        }
-      else
-        if (locationMarkers.location2.icon = 'images/historicalSELECTED.png') {
-            locationMarkers.location2.setIcon('images/historical.png');
-        }
-      else
-        if (locationMarkers.location2.icon = 'images/museumsSELECTED.png') {
-            locationMarkers.location2.setIcon('images/museums.png');
-        }    
-      delete coordinates.location2;
-    document.getElementById("location2").remove();
-        if (directionsPressed == true) {
-    getDirections(directionsService, directionsDisplay);
-    }
-  });
 
-  $("#locationsToSee").on("click", ".locationButton3", function(){
-        if (locationMarkers.location3.icon = 'images/landmarksSELECTED.png') {
-            locationMarkers.location3.setIcon('images/landmarks.png');
-        }
-      else
-        if (locationMarkers.location3.icon = 'images/historicalSELECTED.png') {
-            locationMarkers.location3.setIcon('images/historical.png');
-        }
-      else
-        if (locationMarkers.location3.icon = 'images/museumsSELECTED.png') {
-            locationMarkers.location3.setIcon('images/museums.png');
-        }
-    delete coordinates.location3;
-    document.getElementById("location3").remove();
-        if (directionsPressed == true) {
-    getDirections(directionsService, directionsDisplay);
-    }
-  });
-
-  $("#locationsToSee").on("click", "#locationButton4", function(){
-        if (locationMarkers.location4.icon = 'images/landmarksSELECTED.png') {
-            locationMarkers.location4.setIcon('images/landmarks.png');
-        }
-      else
-        if (locationMarkers.location4.icon = 'images/historicalSELECTED.png') {
-            locationMarkers.location4.setIcon('images/historical.png');
-        }
-      else
-        if (locationMarkers.location4.icon = 'images/museumsSELECTED.png') {
-            locationMarkers.location4.setIcon('images/museums.png');
-        }
-    delete coordinates.location4;
-    document.getElementById("location4").remove();
-        if (directionsPressed == true) {
-    getDirections(directionsService, directionsDisplay);
-    }
-  });
-
-  $("#locationsToSee").on("click", "#locationButton5", function(){
-        if (locationMarkers.location5.icon = 'images/landmarksSELECTED.png') {
-            locationMarkers.location5.setIcon('images/landmarks.png');
-        }
-      else
-        if (locationMarkers.location5.icon = 'images/historicalSELECTED.png') {
-            locationMarkers.location5.setIcon('images/historical.png');
-        }
-      else
-        if (locationMarkers.location5.icon = 'images/museumsSELECTED.png') {
-            locationMarkers.location5.setIcon('images/museums.png');
-        }
-    delete coordinates.location5;
-    document.getElementById("location5").remove();
-        if (directionsPressed == true) {
-    getDirections(directionsService, directionsDisplay);
-    }
-  });
 
 }// closes initMap
 
@@ -1042,7 +974,6 @@ function codeLatLng(latGEO, lngGEO) {
     var latlng = new google.maps.LatLng(latGEO, lngGEO);
     geocoder.geocode({'latLng': latlng}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
-      console.log(results)
         if (results[1]) {
         //find country name
              for (var i=0; i<results[0].address_components.length; i++) {
