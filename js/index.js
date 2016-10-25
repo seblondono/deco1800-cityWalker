@@ -5,6 +5,11 @@ var markers = [];
 // Array of markers selected by the user to walk and explore
 var markersRout = [];
 // Preloaded locations to be displayed in each interest page. There are 5 locations per interest per city
+//Setting conditions for one off events //
+var interestsModalSeen = false;
+var locationModalSeen = false;
+var moreInfoModalSeen = false;
+var locationTableModalSeen = false;
 var directionsPressed = false;
 var interestLocations = {h_brisbane:[{name:"Customs house",location:{lat:-27.465441, lng:153.031123}},
   {name:"State Library of Queensland",location:{lat:-27.4711627, lng:153.0181129}},
@@ -381,7 +386,11 @@ function initMap() {
       map.setCenter(brisbane);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
-      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
+    // set modal to show on first time
+        if (interestsModalSeen == false) {
+        setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
+            interestsModalSeen = true;
+        }
     }
   });
 
@@ -418,7 +427,11 @@ function initMap() {
       map.setCenter(melbourne);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
-      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
+    // set modal to show on first time
+        if (interestsModalSeen == false) {
+        setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
+            interestsModalSeen = true;
+        }
     }
   });
 
@@ -454,7 +467,11 @@ function initMap() {
       map.setCenter(sydney);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
-      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
+    // set modal to show on first time
+        if (interestsModalSeen == false) {
+        setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
+            interestsModalSeen = true;
+        }
     }
   });
 
@@ -468,7 +485,11 @@ function initMap() {
     var cityName = $("#cityName").text().toLowerCase();
     var m = "m_" + cityName;
     set_places(cityName, "museums", interestLocations[m]);
-    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
+    // set modal to show on first time
+        if (locationModalSeen == false) {
+        setTimeout(function(){$('#locationPrompt').modal('show');}, 1000);
+            locationModalSeen = true;
+        }
   });
 
   $(".historical").click(function(){
@@ -481,7 +502,11 @@ function initMap() {
     var cityName = $("#cityName").text().toLowerCase();
     var h = "h_" + cityName;
     set_places(cityName, "historical", interestLocations[h]);
-    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
+    // set modal to show on first time
+        if (locationModalSeen == false) {
+        setTimeout(function(){$('#locationPrompt').modal('show');}, 1000);
+            locationModalSeen = true;
+        }
   });
 
   $(".landmarks").click(function(){
@@ -494,7 +519,11 @@ function initMap() {
     var cityName = $("#cityName").text().toLowerCase();
     var l = "l_" + cityName;
     set_places(cityName, "landmarks", interestLocations[l]);
-    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
+    // set modal to show on first time
+        if (locationModalSeen == false) {
+        setTimeout(function(){$('#locationPrompt').modal('show');}, 1000);
+            locationModalSeen = true;
+        }
   });
 
   $(".citylogo").click(function(){
@@ -802,7 +831,12 @@ function initMap() {
 
         // shows the navigation bar for places to visit
         $("#placesToSee").fadeIn(1200);
-
+          
+        // set modal to show on first time
+        if (locationTableModalSeen == false) {
+        setTimeout(function(){$('#locationTablePrompt').modal('show');}, 1000);
+            locationTableModalSeen = true;
+        }
         // makes the navbar draggable
         $("#placesToSee").draggable();
         buildPoints(marker);
@@ -813,6 +847,13 @@ function initMap() {
       });
 
       google.maps.event.addDomListener(document.getElementById('moreInformation'), 'click', function(){
+          
+        // set modal to show on first time
+        if (moreInfoModalSeen == false) {
+        setTimeout(function(){$('#moreInfoPrompt').modal('show');}, 1000);
+            moreInfoModalSeen = true;
+        }
+          
           $("#infoTitle").empty();
           $("#infoPage").empty();
           $("#infoTitle").html(place.name);
@@ -964,7 +1005,7 @@ function initMap() {
     }
     if (($("#placesToSee ol li").length) == 0) {
     var allGone = "";
-    allGone = "<li id='gone'>Please see add some more locations.</li>";
+    allGone = "<li id='gone'>Please add some more locations.</li>";
     $("#placesToSee ol").append(allGone);
       }
   });
