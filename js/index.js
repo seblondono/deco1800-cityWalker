@@ -381,7 +381,7 @@ function initMap() {
       map.setCenter(brisbane);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
-      // setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
+      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
   });
 
@@ -418,7 +418,7 @@ function initMap() {
       map.setCenter(melbourne);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
-      // setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
+      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
   });
 
@@ -454,7 +454,7 @@ function initMap() {
       map.setCenter(sydney);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
-      // setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
+      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
   });
 
@@ -468,7 +468,7 @@ function initMap() {
     var cityName = $("#cityName").text().toLowerCase();
     var m = "m_" + cityName;
     set_places(cityName, "museums", interestLocations[m]);
-    // setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".historical").click(function(){
@@ -481,7 +481,7 @@ function initMap() {
     var cityName = $("#cityName").text().toLowerCase();
     var h = "h_" + cityName;
     set_places(cityName, "historical", interestLocations[h]);
-    // setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".landmarks").click(function(){
@@ -494,7 +494,7 @@ function initMap() {
     var cityName = $("#cityName").text().toLowerCase();
     var l = "l_" + cityName;
     set_places(cityName, "landmarks", interestLocations[l]);
-    // setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".citylogo").click(function(){

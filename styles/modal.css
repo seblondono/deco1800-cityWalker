@@ -34,7 +34,7 @@
   height: 90%;
 }
 
-.modal-body {
+.moreInfoModal {
   display: inline-block;
   position: absolute;
   margin: 0px;
@@ -43,6 +43,13 @@
   height: 83%;
   padding: 20px 10px 10px 10px;
   overflow-y: auto;
+}
+
+.modal-body {
+
+
+  width: auto;
+
 }
 
 .modal-title{
