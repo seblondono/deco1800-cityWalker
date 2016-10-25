@@ -261,5 +261,13 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 /* Style the tab content */
 .tabcontent {
     display: none;
+}
 
+#autocomplete {
+  margin-bottom: 30px;
+  width: 300px;
+  text-align: center;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }

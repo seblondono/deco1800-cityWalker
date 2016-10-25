@@ -157,7 +157,6 @@ function processImages(troveItem, index) {
 
     } else { // Could not reliably load image for item
         // UNCOMMENT FOR DEBUG:
-        //  console.log("Not available: " + imgUrl);
     }
 }// closes processImages()
 
@@ -260,7 +259,16 @@ function searchArticle(cityName, interest, location){
 
 }// closes searchArticle()
 
-
+function removeLng(arr) {
+    var what, a = arguments, L = a.length, ax;
+    while (L > 1 && arr.length) {
+        what = a[--L];
+        while ((ax= arr.indexOf(what)) !== -1) {
+            arr.splice(ax, 1);
+        }
+    }
+    return arr;
+}
 
 function initMap() {
   // Create a new StyledMapType object, passing it an array of styles,
@@ -340,18 +348,17 @@ function initMap() {
   $(".brisbane").click(function(){
     // Removes all the markers from the global markers variable
     clearMarkers(null);
+    directionsDisplay.setDirections({routes: []});
+    directionsPressed = false;
+    $("#locationsToSee").empty();
+    coordinatesItem = {};
+    locationMarkersItem = {};
+    routMarkers = [];
 
     // If the user is in the location page (zoom 15) and not in Brisbane
     if(map.getZoom() >= 15 && ($("#cityName").text() != "BRISBANE" || $("#cityName").text() == "BRISBANE")){
-      //Zoom in to location
+      //Zoom into location
 
-      for(var i=1; i < 6; i++){
-        var itemName = "location" + i;
-        if (coordinates[itemName]){
-          delete coordinates[itemName];
-          document.getElementById(itemName).remove();
-        }
-      }
       $("#placesToSee").fadeOut(100);
       map.setZoom(13);
       // set Brisbane as center
@@ -387,15 +394,14 @@ function initMap() {
 
   $(".melbourne").click(function(){
     clearMarkers(null);
+    directionsDisplay.setDirections({routes: []});
+    directionsPressed = false;
+    $("#locationsToSee").empty();
+    coordinatesItem = {};
+    locationMarkersItem = {};
+    routMarkers = [];
 
     if(map.getZoom() >= 15 && ($("#cityName").text() != "MELBOURNE" || $("#cityName").text() == "MELBOURNE")){
-      for(var i=1; i < 6; i++){
-        var itemName = "location" + i;
-        if (coordinates[itemName]){
-          delete coordinates[itemName];
-          document.getElementById(itemName).remove();
-        }
-      }
       $("#placesToSee").fadeOut(100);
       map.setZoom(13);
       map.setCenter(melbourne);
@@ -420,18 +426,21 @@ function initMap() {
       setTimeout(function(){setNavCss();}, 5000);
       // setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
+    coordinates = {};
+    locationMarkers = {};
+    routMarkers = [];
   });
 
   $(".sydney").click(function(){
     clearMarkers(null);
+    directionsDisplay.setDirections({routes: []});
+    directionsPressed = false;
+    $("#locationsToSee").empty();
+    coordinatesItem = {};
+    locationMarkersItem = {};
+    routMarkers = [];
+
     if(map.getZoom() >= 15 && ($("#cityName").text() != "SYDNEY" || $("#cityName").text() == "SYDNEY")){
-      for(var i=1; i < 6; i++){
-        var itemName = "location" + i;
-        if (coordinates[itemName]){
-          delete coordinates[itemName];
-          document.getElementById(itemName).remove();
-        }
-      }
       $("#placesToSee").fadeOut(100);
       map.setZoom(13);
       map.setCenter(sydney);
@@ -456,10 +465,12 @@ function initMap() {
       setTimeout(function(){setNavCss();}, 5000);
       // setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
+    coordinates = {};
+    locationMarkers = {};
+    routMarkers = [];
   });
 
   $(".museums").click(function(){
-    clearMarkers(null);
     smoothZoom(map, 16, map.getZoom());
     $("#over-content-interest").fadeOut(1000);
 
@@ -472,7 +483,6 @@ function initMap() {
   });
 
   $(".historical").click(function(){
-    clearMarkers(null);
     smoothZoom(map, 16, map.getZoom());
     $("#over-content-interest").fadeOut(1000);
 
@@ -485,7 +495,6 @@ function initMap() {
   });
 
   $(".landmarks").click(function(){
-    clearMarkers(null);
     smoothZoom(map, 16, map.getZoom());
     $("#over-content-interest").fadeOut(1000);
 
@@ -542,46 +551,43 @@ function initMap() {
   //     getDirections(directionsService, directionsDisplay);
   // });
   $("#directions").click(function(){
+    // directionsDisplay.setMap(map);
     getDirections(directionsService, directionsDisplay);
     directionsPressed = true;
   });
 
-  var coordinates = {};
-  var locationMarkers = {};
+  var coordinatesItem = {};
+  var locationMarkersItem = {};
   var routMarkers = [];
 
   //forms the table of locations to see, along with modification buttons//
   function buildPoints(marker) {
     "use strict";
 
+    var markerLng = marker.getPosition().lng();
 
-
-    if(marker != undefined){
-      if(jQuery.inArray(marker, routMarkers) != -1){
-        console.log("i'm here");
+    if(markerLng != undefined){
+      if(jQuery.inArray(markerLng, routMarkers) != -1){
         return;
       } else {
-        routMarkers.push(marker);
+        routMarkers.push(markerLng);
 
-        if (marker.icon = 'images/landmarks.png') {
+        if (marker.icon == 'images/landmarks.png') {
             marker.setIcon('images/landmarksSELECTED.png');
         }
-        else
-        if (marker.icon == 'images/historical.png') {
+        else if (marker.icon == 'images/historical.png') {
             marker.setIcon('images/historicalSELECTED.png');
         }
-        else
-        if (marker.icon == 'images/museums.png') {
+        else if (marker.icon == 'images/museums.png') {
             marker.setIcon('images/museumsSELECTED.png');
         }
 
-
         var index = markersRout.length;
         var locationIndex = "location" + index;
-        Object.defineProperty(coordinates, locationIndex, {writable : true, enumerable : true, configurable : true});
-        Object.defineProperty(locationMarkers, locationIndex, {writable : true, enumerable : true, configurable : true});
-        coordinates[locationIndex] = {lat:marker.getPosition().lat(), lng:marker.getPosition().lng()};
-        locationMarkers[locationIndex] = marker;
+        Object.defineProperty(coordinatesItem, locationIndex, {writable : true, enumerable : true, configurable : true});
+        Object.defineProperty(locationMarkersItem, locationIndex, {writable : true, enumerable : true, configurable : true});
+        coordinatesItem[locationIndex] = {lat:marker.getPosition().lat(), lng:marker.getPosition().lng()};
+        locationMarkersItem[locationIndex] = marker;
 
         var html = "";
         html = "<li class='locationList' id='location" + index + "'><i style='margin:5px 20px 5px 5px;' class='fa fa-arrows-v' aria-hidden='true'></i>" + marker.title + "<button id='locationButton" + index + "' style='position:absolute; right:5px; top:4px;' class='btn btn-xs btn-danger'>X</button></li>";
@@ -589,19 +595,29 @@ function initMap() {
       }
     }
   }
-          var infoBubbles = [];
+
+  function showError(text){
+    alert(text);
+  }
+
   //runs the google directions api to form a route
   //More detail to be addded to allow greater user flexibility (walking/driving/bus etc)
   function getDirections(directionsService, directionsDisplay) {
       "use strict";
+
+      directionsDisplay.setMap(map);
+      // StartHere.close();
+
       var locationsRoutFinalOrder = [];
       var numberOfItems = $("#placesToSee li").size();
       for(var i =0; i < numberOfItems; i++){
-        var item = $("#placesToSee li").eq(i).attr("id");
-        locationsRoutFinalOrder.push(coordinates[item]);
+        var locationIndex = $("#placesToSee li").eq(i).attr("id");
+        // var coordinatesItem = coordinates[i]
+        locationsRoutFinalOrder.push(coordinatesItem[locationIndex]);
       }
 
       if (locationsRoutFinalOrder.length < 2) {
+          directionsPressed = false;
           showError("You need to add at least two locations");
           return;
       }
@@ -617,7 +633,9 @@ function initMap() {
       }
 
       for (var i = 1; i < end; i++) {
+        // if (locationsRoutFinalOrder[i].lat != undefined && locationsRoutFinalOrder[i].lng != undefined){
           waypts.push({ location: {lat:locationsRoutFinalOrder[i].lat, lng:locationsRoutFinalOrder[i].lng} });
+        // }
       }
 
       var journeyStyle = $("#journeyStyle").val();
@@ -625,91 +643,76 @@ function initMap() {
       if (journeyStyle === "driving") {
           travelMode = google.maps.TravelMode.DRIVING;
       }
-      /*    else if (journeyStyle === "public transport") {
-          travelMode = google.maps.TravelMode.TRANSIT;
-      }*/
       else if (journeyStyle === "cycling") {
           travelMode = google.maps.TravelMode.BICYCLING;
       }
 
       var fastestRoute = document.getElementById("fastestRoute").checked;
 
-       var startPosition = new google.maps.LatLng(locationsRoutFinalOrder[0].lat, locationsRoutFinalOrder[0].lng)
-
-
-            $.each(infoBubbles, function( index ) {
-                infoBubbles[index].close();
-                });
-            infoBubbles = [];
+      var startPosition = new google.maps.LatLng(locationsRoutFinalOrder[0].lat, locationsRoutFinalOrder[0].lng)
 
       directionsService.route({
-          origin: locationsRoutFinalOrder[0],
+          origin: startPosition,
           destination: dest,
           waypoints: waypts,
           travelMode: travelMode,
           optimizeWaypoints: fastestRoute
       }, function(response, status) {
             if (status === 'OK') {
-            directionsDisplay.setDirections(response);
-            directionsDisplay.setOptions( { suppressMarkers: true } );
-            var distance = 0;
-            var time = 0;
-            var route = response.routes[0];
+              directionsDisplay.setDirections(response);
+              directionsDisplay.setOptions( { suppressMarkers: true } );
+              var distance = 0;
+              var time = 0;
+              var route = response.routes[0];
 
+              // var StartHere = new InfoBubble({
+              //   content: ("<p id='startHeading' style='padding:6px; z-index:-9;'>Start Here</p>"),
+              //   position: startPosition,
+              //   shadowStyle: 1,
+              //   padding: 0,
+              //   borderRadius: 5,
+              //   backgroundColor: '#ff6c4d',
+              //   border: 'none',
+              //   arrowSize: 10,
+              //   zIndex: 0,
+              //   disableAutoPan: true,
+              //   arrowPosition: 30,
+              //   backgroundClassName: 'transparent',
+              //   arrowStyle: 1,
+              //   fontSize: '6em',
+              //   fontFamily: "'Titillium Web', sans-serif"
+              // });
+              //     StartHere.open(map, this);
+              //     InfoBubble.push(StartHere);
 
-
-
-            var StartHere = new InfoBubble({
-              content: ("<p id='startHeading'>Start Here</p>"),
-              position: startPosition,
-              shadowStyle: 1,
-              padding: 0,
-              borderRadius: 5,
-              backgroundColor: '#ff6c4d',
-              border: 'none',
-              arrowSize: 10,
-              disableAutoPan: true,
-              hideCloseButton: true,
-              arrowPosition: 30,
-              backgroundClassName: 'transparent',
-              arrowStyle: 1,
-              fontSize: '6em',
-              fontFamily: "'Titillium Web', sans-serif"
-            });
-                StartHere.open(map);
-                infoBubbles.push(StartHere);
-
-
-            for (var i = 0; i < route.legs.length; i++) {
-                var section = route.legs[i];
-                distance += section.distance.value;
-
-                time += section.duration.value;
-
-                var z = i+1;
-                var step;
-                step = Math.floor((response.routes[0].legs[i].steps.length)/2);
-                //console.log(step);
-                var miniInfo = new InfoBubble({
-                  position: response.routes[0].legs[i].steps[step].end_location,
-                  content: ("<div id='sectionInfoHeading'>Leg " + z + ": " + markersRout[i].title + " TO<br>" + markersRout[i+1].title +   "</div><div id='sectionInfoContent'>" + "<br> Distance:" + response.routes[0].legs[i].distance.text + "<br> Time:" + response.routes[0].legs[i].duration.text + " </div>"),
-                  shadowStyle: 1,
-                  padding: 0,
-                  borderColor: '#59d',
-                  borderRadius: 5,
-                  arrowSize: 10,
-                  borderWidth: 3,
-                  disableAutoPan: true,
-                  arrowPosition: 30,
-                  backgroundClassName: 'transparent',
-                  arrowStyle: 4
-                });
-                infoBubbles.push(miniInfo);
-                miniInfo.open(map);
-
-            }
-            $("#distance").html("Total distance: " + getDistance(distance) + ", ");
-            $("#duration").html("total duration: " + Math.round(time / 60) + " minutes");
+              // for (var i = 0; i < route.legs.length; i++) {
+              //     var section = route.legs[i];
+              //     distance += section.distance.value;
+              //
+              //     time += section.duration.value;
+              //
+              //     var z = i+1;
+              //     var step;
+              //     step = Math.floor((response.routes[0].legs[i].steps.length)/2);
+              //     var miniInfo = new InfoBubble({
+              //       position: response.routes[0].legs[i].steps[step].end_location,
+              //       content: ("<div id='sectionInfoHeading'>Leg " + z + ": " + markersRout[i].title + " TO<br>" + markersRout[i+1].title +   "</div><div id='sectionInfoContent'>" + "<br> Distance:" + response.routes[0].legs[i].distance.text + "<br> Time:" + response.routes[0].legs[i].duration.text + " </div>"),
+              //       shadowStyle: 1,
+              //       padding: 0,
+              //       borderColor: '#59d',
+              //       borderRadius: 5,
+              //       arrowSize: 10,
+              //       borderWidth: 3,
+              //       disableAutoPan: true,
+              //       arrowPosition: 30,
+              //       backgroundClassName: 'transparent',
+              //       arrowStyle: 4
+              //     });
+                  // infoBubbles.push(miniInfo);
+                  // miniInfo.open(map);
+                // }
+              $("#distance").html("Total distance: " + getDistance(distance) + ", ");
+              $("#duration").html("total duration: " + Math.round(time / 60) + " minutes");
             }
           });
    }
@@ -718,6 +721,7 @@ function initMap() {
       "use strict";
           return Math.round(distance / 100) / 10 + " km";
   }
+
 
 /*
  *   This block of code Generates the Markers for the locations stored at interestLocations object
@@ -764,7 +768,7 @@ function initMap() {
       var contentStringModal = '<div style="display: inline-block; position: relative;"><img id="modal-info-window-image" src="' +
       loadedImages[city][interest][placeNameTrim][0] +
       '" style="width: 150px; height: 200px; display: inline-block;"/><i id="modal-refreshImage" class="fa fa-refresh" aria-hidden="true" style="position: absolute; top:5px; right:5px;cursor: pointer; display: block; background-color: white; border-radius: 50%; padding: 4px 4px 2px 4.7px;color: #59d;"></i></div>';
-    } else {
+      } else {
       var contentString = '<div style="width:300px;"><h3 id="info-window-title" class="text-center">' + place.name +
       '</h3>' + '<p style="margin: 10px; font-size: .8em; text-align: left;">Sorry! We were unable to find images of this location at Trove.</p></div><button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button><button style="margin:10px 5px 5px 0px;" id="moreInformation" class="btn btn-primary" data-toggle="modal" data-target="#myModal">More Info</button>';
       var contentStringModal = "<p style='width:150px;'>Sorry! We were unable to find images of this location at Trove.</p>"
@@ -791,6 +795,8 @@ function initMap() {
 
       // adds a listener to addLocation button in the infowindow
       google.maps.event.addDomListener(document.getElementById('addLocation'), 'click', function(){
+        directionsDisplay.setMap(map);
+        infoWindow.close();
         markersRout.push(marker);
 
         // shows the navigation bar for places to visit
@@ -801,7 +807,7 @@ function initMap() {
         buildPoints(marker);
 
         if (directionsPressed == true) {
-          getDirections(directionsService, directionsDisplay)
+          getDirections(directionsService, directionsDisplay);
         };
       });
 
@@ -849,11 +855,9 @@ function initMap() {
 
   $(document).on("click", "#modal-refreshImage", function(){
     var imageArray = loadedImages[currentCity][currentInterest][currentLocation];
-    console.log(imageArray);
     var maxIndex = imageArray.length;
     var imageIndex = getRandom(maxIndex);
     document.getElementById("modal-info-window-image").src = loadedImages[currentCity][currentInterest][currentLocation][imageIndex];
-    console.log(loadedImages[currentCity][currentInterest][currentLocation][imageIndex]);
   });
 
   $("#nextArticle").click(function(){
@@ -937,20 +941,25 @@ function initMap() {
   $("#locationsToSee").on("click", "[id^=locationButton]", function(){
       var value = this.id
       value = value.replace(/locationButton/, '');
-      var locationName = "location" + value;
-        if (locationMarkers[locationName].icon == 'images/landmarksSELECTED.png') {
-            locationMarkers[locationName].setIcon('images/landmarks.png');
+      var locationIndex = "location" + value;
+        if (locationMarkersItem[locationIndex].icon == 'images/landmarksSELECTED.png') {
+            locationMarkersItem[locationIndex].setIcon('images/landmarks.png');
         }
       else
-        if (locationMarkers[locationName].icon == 'images/historicalSELECTED.png') {
-            locationMarkers[locationName].setIcon('images/historical.png');
+        if (locationMarkersItem[locationIndex].icon == 'images/historicalSELECTED.png') {
+            locationMarkersItem[locationIndex].setIcon('images/historical.png');
         }
       else
-        if (locationMarkers[locationName].icon == 'images/museumsSELECTED.png') {
-            locationMarkers[locationName].setIcon('images/museums.png');
+        if (locationMarkersItem[locationIndex].icon == 'images/museumsSELECTED.png') {
+            locationMarkersItem[locationIndex].setIcon('images/museums.png');
         }
-    delete coordinates[locationName];
-    document.getElementById(locationName).remove();
+
+    var markerLng = coordinatesItem[locationIndex].lng;
+    delete coordinatesItem[locationIndex];
+    delete locationMarkersItem[locationIndex];
+    removeLng(routMarkers, markerLng);
+
+    document.getElementById(locationIndex).remove();
     if (directionsPressed == true) {
     getDirections(directionsService, directionsDisplay);
     }
@@ -960,6 +969,8 @@ function initMap() {
 
 
 // Creating the autocomplete functionality. Cities search type
+
+
 var autocomplete;
 function initAutocomplete() {
   autocomplete = new google.maps.places.Autocomplete(
@@ -970,55 +981,53 @@ function initAutocomplete() {
 // Enable running of both map and autocomplete simultaneously //
 function initialise() {
     initMap();
-    initAutocomplete();
-    geocoder = new google.maps.Geocoder();
+    // initAutocomplete();
+    // geocoder = new google.maps.Geocoder();
 }
-var geocoder;
-//Geocoding
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(successFunction);
-}
-//Get the latitude and the longitude;
-function successFunction(position) {
-    var latGEO = position.coords.latitude;
-    var lngGEO = position.coords.longitude;
-    codeLatLng(latGEO, lngGEO)
-}
-
-var routeFormed = false;
-
-function codeLatLng(latGEO, lngGEO) {
-
-    var latlng = new google.maps.LatLng(latGEO, lngGEO);
-    geocoder.geocode({'latLng': latlng}, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        if (results[1]) {
-        //find country name
-             for (var i=0; i<results[0].address_components.length; i++) {
-            for (var b=0;b<results[0].address_components[i].types.length;b++) {
-
-            //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
-                if (results[0].address_components[i].types[b] == "administrative_area_level_2") {
-                    //this is the object you are looking for
-                    city= results[0].address_components[i];
-                    break;
-                }
-                if (results[0].address_components[i].types[b] == "political") {
-                    //this is the object you are looking for
-                    state= results[0].address_components[i];
-                    break;
-                }
-                if (results[0].address_components[i].types[b] == "country") {
-                    //this is the object you are looking for
-                    country= results[0].address_components[i];
-                    break;
-                }
-            }
-        }
-        //city data
-        document.getElementById("autocomplete").value = city.short_name + ", " + state.long_name +", " + country.long_name;
-//        $("#autocomplete").attr("placeholder", city.short_name + ", " + state.long_name +", " + country.long_name);
-        }
-      }
-    });
-  }
+// var geocoder;
+// //Geocoding
+// if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition(successFunction);
+// }
+// //Get the latitude and the longitude;
+// function successFunction(position) {
+//     var latGEO = position.coords.latitude;
+//     var lngGEO = position.coords.longitude;
+//     codeLatLng(latGEO, lngGEO)
+// }
+//
+// function codeLatLng(latGEO, lngGEO) {
+//
+//     var latlng = new google.maps.LatLng(latGEO, lngGEO);
+//     geocoder.geocode({'latLng': latlng}, function(results, status) {
+//       if (status == google.maps.GeocoderStatus.OK) {
+//         if (results[1]) {
+//         //find country name
+//              for (var i=0; i<results[0].address_components.length; i++) {
+//             for (var b=0;b<results[0].address_components[i].types.length;b++) {
+//
+//             //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
+//                 if (results[0].address_components[i].types[b] == "administrative_area_level_2") {
+//                     //this is the object you are looking for
+//                     city= results[0].address_components[i];
+//                     break;
+//                 }
+//                 if (results[0].address_components[i].types[b] == "political") {
+//                     //this is the object you are looking for
+//                     state= results[0].address_components[i];
+//                     break;
+//                 }
+//                 if (results[0].address_components[i].types[b] == "country") {
+//                     //this is the object you are looking for
+//                     country= results[0].address_components[i];
+//                     break;
+//                 }
+//             }
+//         }
+//         //city data
+//         document.getElementById("autocomplete").value = city.short_name + ", " + state.long_name +", " + country.long_name;
+//         //$("#autocomplete").attr("placeholder", city.short_name + ", " + state.long_name +", " + country.long_name);
+//         }
+//       }
+//     });
+//   } // closes codeLatLng

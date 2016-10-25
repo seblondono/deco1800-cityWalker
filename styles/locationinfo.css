@@ -71,8 +71,8 @@ label {
 .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
 
 #distance, #duration {
-    padding: 0;
-    margin: 0;
+    padding: 0px 5px;
+    margin:  0px 5px;
 }
 
 .moreInfo {
