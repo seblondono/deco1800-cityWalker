@@ -704,52 +704,52 @@ function initMap() {
               var time = 0;
               var route = response.routes[0];
 
-              // var StartHere = new InfoBubble({
-              //   content: ("<p id='startHeading' style='padding:6px; z-index:-9;'>Start Here</p>"),
-              //   position: startPosition,
-              //   shadowStyle: 1,
-              //   padding: 0,
-              //   borderRadius: 5,
-              //   backgroundColor: '#ff6c4d',
-              //   border: 'none',
-              //   arrowSize: 10,
-              //   zIndex: 0,
-              //   disableAutoPan: true,
-              //   arrowPosition: 30,
-              //   backgroundClassName: 'transparent',
-              //   arrowStyle: 1,
-              //   fontSize: '6em',
-              //   fontFamily: "'Titillium Web', sans-serif"
-              // });
-              //     StartHere.open(map, this);
-              //     InfoBubble.push(StartHere);
+               var StartHere = new InfoBubble({
+                 content: ("<p id='startHeading' style='padding:6px; z-index:-9;'>Start Here</p>"),
+                 position: startPosition,
+                 shadowStyle: 1,
+                 padding: 0,
+                 borderRadius: 5,
+                 backgroundColor: '#ff6c4d',
+                 border: 'none',
+                 arrowSize: 10,
+                 zIndex: 0,
+                 disableAutoPan: true,
+                 arrowPosition: 30,
+                 backgroundClassName: 'transparent',
+                 arrowStyle: 1,
+                 fontSize: '6em',
+                 fontFamily: "'Titillium Web', sans-serif"
+               });
+                   StartHere.open(map, this);
+                   InfoBubble.push(StartHere);
 
-              // for (var i = 0; i < route.legs.length; i++) {
-              //     var section = route.legs[i];
-              //     distance += section.distance.value;
-              //
-              //     time += section.duration.value;
-              //
-              //     var z = i+1;
-              //     var step;
-              //     step = Math.floor((response.routes[0].legs[i].steps.length)/2);
-              //     var miniInfo = new InfoBubble({
-              //       position: response.routes[0].legs[i].steps[step].end_location,
-              //       content: ("<div id='sectionInfoHeading'>Leg " + z + ": " + markersRout[i].title + " TO<br>" + markersRout[i+1].title +   "</div><div id='sectionInfoContent'>" + "<br> Distance:" + response.routes[0].legs[i].distance.text + "<br> Time:" + response.routes[0].legs[i].duration.text + " </div>"),
-              //       shadowStyle: 1,
-              //       padding: 0,
-              //       borderColor: '#59d',
-              //       borderRadius: 5,
-              //       arrowSize: 10,
-              //       borderWidth: 3,
-              //       disableAutoPan: true,
-              //       arrowPosition: 30,
-              //       backgroundClassName: 'transparent',
-              //       arrowStyle: 4
-              //     });
-                  // infoBubbles.push(miniInfo);
-                  // miniInfo.open(map);
-                // }
+               for (var i = 0; i < route.legs.length; i++) {
+                   var section = route.legs[i];
+                   distance += section.distance.value;
+              
+                   time += section.duration.value;
+              
+                   var z = i+1;
+                   var step;
+                   step = Math.floor((response.routes[0].legs[i].steps.length)/2);
+                   var miniInfo = new InfoBubble({
+                     position: response.routes[0].legs[i].steps[step].end_location,
+                     content: ("<div id='sectionInfoHeading'>Leg " + z + ": " + markersRout[i].title + " TO<br>" + markersRout[i+1].title +   "</div><div id='sectionInfoContent'>" + "<br> Distance:" + response.routes[0].legs[i].distance.text + "<br> Time:" + response.routes[0].legs[i].duration.text + " </div>"),
+                     shadowStyle: 1,
+                     padding: 0,
+                     borderColor: '#59d',
+                     borderRadius: 5,
+                     arrowSize: 10,
+                     borderWidth: 3,
+                     disableAutoPan: true,
+                     arrowPosition: 30,
+                     backgroundClassName: 'transparent',
+                     arrowStyle: 4
+                   });
+                   infoBubbles.push(miniInfo);
+                   miniInfo.open(map);
+                 }
               $("#distance").html("Total distance: " + getDistance(distance) + ", ");
               $("#duration").html("total duration: " + Math.round(time / 60) + " minutes");
             }
