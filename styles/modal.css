@@ -78,3 +78,17 @@
   float: left;
   margin: 10px;
 }
+
+.img{
+  max-width:500px;
+  max-height: 300px;
+}
+
+#helpheading{
+  text-align:center;
+}
+
+.heading_logo{
+  max-width:40px;
+  max-height:40px;
+}
