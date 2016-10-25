@@ -618,7 +618,16 @@ function initMap() {
         Object.defineProperty(locationMarkersItem, locationIndex, {writable : true, enumerable : true, configurable : true});
         coordinatesItem[locationIndex] = {lat:marker.getPosition().lat(), lng:marker.getPosition().lng()};
         locationMarkersItem[locationIndex] = marker;
+        if (($("#placesToSee ol li").eq(0).attr("id")) != undefined) {
+            var idCheck = $("#placesToSee ol li").eq(0).attr("id");
+            if (idCheck == 'gone') {
+                $('#gone').remove();
+            }
 
+        }
+          
+          
+          
         var html = "";
         html = "<li class='locationList' id='location" + index + "'><i style='margin:5px 20px 5px 5px;' class='fa fa-arrows-v' aria-hidden='true'></i>" + marker.title + "<button id='locationButton" + index + "' style='position:absolute; right:5px; top:4px;' class='btn btn-xs btn-danger'>X</button></li>";
         $("#placesToSee ol").append(html);
