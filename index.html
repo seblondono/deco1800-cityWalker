@@ -191,7 +191,7 @@
             <li>
               <span class="menuDesign">
                 <i class="fa faedit fa-question-circle fa-lg"></i>
-                <span class="nav-text">Help</span>
+                <span class="nav-text" data-toggle="modal" href="#helpModal">Help</span>
               </span>
             </li>
           </ul>
@@ -199,7 +199,7 @@
             <li>
               <span class="menuDesign">
                 <i class="fa faedit fa-lightbulb-o fa-lg"></i>
-                <span class="nav-text">ABOUT</span>
+                <span class="nav-text" data-toggle="modal" href="#aboutModal">ABOUT</span>
               </span>
             </li>
           </ul>
@@ -235,7 +235,7 @@
         <div class="social social-g">&#62223;</div>
       </div>
 
-      <!-- Modal Information-->
+      <!-- Location Modal Prompt-->
       <div class="modal fade" id="locationPrompt" role="dialog">
         <div class="modal-dialog modal-sm">
           <!-- Modal content-->
@@ -251,13 +251,12 @@
       </div>
     </div>
 
-        <!-- Modal -->
+    <!-- More information Modal -->
     <div id="myModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
-
         <!-- Modal content-->
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header moreInfoHeader">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <!-- <button id="previousArticle" class="btn btn-primary" style="display:none;">Previous Article</button> -->
             <h4 class="modal-title" id="infoTitle"></h4>
@@ -265,17 +264,92 @@
           </div>
           <div id="modal-images">
           </div>
-          <div id="infoPage" class="modal-body">
+          <div id="infoPage" class="moreInfoModal">
           </div>
           <button id="nextArticle" class="btn btn-primary" style="display:none;">Next Article</button>
           <button id="previousArticle" class="btn btn-primary" style="display:none;">Previous Article</button>
         </div>
       </div>
-
       </div>
-    </div>
 
-    <!-- Interest Prompt-->
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Help</h4>
+          </div>
+          <div class="modal-body">
+        <h1 id="helpheading">How it Works</h1>
+		<h2><img class="heading_logo" alt="explore location" src="images/explore_location.png">  Explore locations</h2>
+		  <p>At the centre of the page you will see a input box here. Enter a city you like to explore and click ‘use my location’ button to the next step. </p>
+			<p><img class="img" alt="Explore bar" src="images/explore_bar.jpg"></p>
+    </br>
+			<p>Here is the another way to explore locations. Under the input box, you will see 3 differently favourite cities. Hover over these with your mouse to see the different cities options and click to select one: </p>
+      <p><img class="img" alt="Cities Exploration" src="images/cities.jpg"></p>
+        </br>
+		<h2><img class="heading_logo" alt="select_interest" src="images/select_interest.png">  Select interests</h2>
+		  <p>After you selected you city for exploration, you will see 3 differently interests: Landmarks, Museums and Historical Locations. Hover over these with your mouse to see the different cities options and click to select one:</p>
+			<p><img class="img" alt="Interest" src="images/interests.jpg"></p>
+        </br>
+		<h2><img class="heading_logo" alt="city_exploration" src="images/city_exploration.png">  City Exploration</h2>
+	  	<p>After you selected your interests, our website will show you the map of the city. You will be able to select locations for relevant information, which will be retrieved from Trove.</p>
+			<p><img class="img" alt="Information" src="images/information_box.jpg"></p>
+        </br>
+      <p>Also, you can click into ‘More info’ button to see the articles for specific location.</p>
+      <p><img class="img" alt="Information" src="images/more_info.jpg"></p>
+        </br>
+		<h2>Create a Journey in these few easy steps!</h2>
+			<p>Step 1 | For the location you are interested in, click the ‘Add Location’ button in the information box:</p>
+			<p><img class="img" alt="step1" src="images/step1.jpg"></p>
+        </br>
+			<p>After you added in the journey list, you will see the location’s name will be displayed at the top of the list. The style of the spot will be also changed.</p>
+			<p><img class="img" alt="step1" src="images/step1a.jpg"></p>
+			<p><img class="img" alt="step1" src="images/step1b.jpg"></p>
+        </br>
+			<p>Step 2 | Added more locations</p>
+			<p>After you added more locations, the locations’ name will be displayed after your last locations. You can change the order of locations or delete them anytime.</p>
+			<p><img class="img" alt="step2" src="images/step2.jpg"></p>
+        </br>
+			<p>Step 3 | Your journey has been finished!</p>
+			<p>The map will show a track of the locations you chose, which also provides the distance and duration you need:</p>
+			<p><img class="img" alt="step3" src="images/track.jpg"></p>
+        </br>
+		<h2>Change your locations and interests anytime!</h2>
+			<p>At the left of the page, you will see a main menu for you to change your locations and interests as you want:</p>
+			<p><img class="img" alt="Menu" src="images/main_menu.jpg"></p>
+        </br>
+		<h3>Don't wait! Let's explore, City Walker!<h3>
+          </div>
+
+        </div>
+      </div>
+      </div>
+
+
+    <!-- About Modal -->
+    <div id="aboutModal" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">About Us</h4>
+          </div>
+          <div class="modal-body">
+		<p>City Walker is a project developed by 3 students at the University of Queensland, which is a unique web-based application that will enable users to create and share historically informed walking journeys around a city of choice. Within each journey you will be able to select locations for relevant information, which will be retrieved from Trove and would be customised according to user specific interests.</p>
+		<p>To create a Journey, simply sign up and follow the instructions, it's as easy as that! If you don't want to sign up then feel free to browse through our extensive database of already existing Travel Route. By signing up, you can have access to your own profile and most importantly the privilege to access and modify your own Journey! </p>
+		<p>So what are you waiting for? Let's start exploring!</p>
+          </div>
+
+        </div>
+      </div>
+      </div>
+
+
+    <!-- Interest Prompt modal-->
     <div class="modal fade" id="interestPrompt" role="dialog">
       <div class="modal-dialog modal-sm">
         <!-- Modal content-->
@@ -286,6 +360,42 @@
           </div>
           <div class="modal-body">
             <p>Please select an interest to explore with.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Location table Prompt modal-->
+    <div class="modal fade locationTable" id="locationTablePrompt" role="dialog">
+      <div class="modal-dialog modal-sm">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Edit locations</h4>
+          </div>
+          <div class="modal-body">
+            <p><i class='fa fa-arrows-v'></i>  drag to re-arrange</p> 
+            <p><button class='btn btn-xs btn-danger'>X</button>  delete location</p>
+            <p><button class='btn btn-xs btn-info'><i class="fa fa-info"></i></button>  more information.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- More information prompy-->
+    <div class="modal fade moreInfoPrompt" id="moreInfoPrompt" role="dialog">
+      <div class="modal-dialog modal-sm">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title moreInfoTitle">Information</h4>
+          </div>
+          <div class="modal-body">
+            <p>Please enjoy detailed information about these locations. You can see more information by selecting <button class="btn btn-primary">Next Article</button></p>
           </div>
         </div>
       </div>
