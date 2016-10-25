@@ -106,7 +106,7 @@ $(document).ready(function(){
 function searchImages(cityName, interest, location){
   // Search for images with the Trove API
   // searchImages(cityName, interest, location) -> None
-  var apiKey = "ekq3l7c47bcs61ts";
+  var apiKey = "hkjqsa5k0v4bb85b";
 
   //create searh query
   var url = "http://api.trove.nla.gov.au/result?key=" + apiKey + "&l-availability=y%2Ff&encoding=json&zone=picture" + "&sortby=relevance&n=100&q=" + location + " " + cityName + "&callback=?";
@@ -381,7 +381,7 @@ function initMap() {
       map.setCenter(brisbane);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
-      // setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
+      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
   });
 
@@ -418,7 +418,7 @@ function initMap() {
       map.setCenter(melbourne);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
-      // setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
+      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
   });
 
@@ -454,7 +454,7 @@ function initMap() {
       map.setCenter(sydney);
       smoothZoom(map, 14, map.getZoom());
       setTimeout(function(){setNavCss();}, 5000);
-      // setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
+      setTimeout(function(){$('#interestPrompt').modal('show');}, 8000);
     }
   });
 
@@ -468,7 +468,7 @@ function initMap() {
     var cityName = $("#cityName").text().toLowerCase();
     var m = "m_" + cityName;
     set_places(cityName, "museums", interestLocations[m]);
-    // setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".historical").click(function(){
@@ -481,7 +481,7 @@ function initMap() {
     var cityName = $("#cityName").text().toLowerCase();
     var h = "h_" + cityName;
     set_places(cityName, "historical", interestLocations[h]);
-    // setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".landmarks").click(function(){
@@ -494,7 +494,7 @@ function initMap() {
     var cityName = $("#cityName").text().toLowerCase();
     var l = "l_" + cityName;
     set_places(cityName, "landmarks", interestLocations[l]);
-    // setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
+    setTimeout(function(){$('#locationPrompt').modal('show');}, 4000);
   });
 
   $(".citylogo").click(function(){
@@ -548,32 +548,45 @@ function initMap() {
 
   var coordinates = {};
   var locationMarkers = {};
+  var routMarkers = [];
 
   //forms the table of locations to see, along with modification buttons//
   function buildPoints(marker) {
     "use strict";
+
+
+
     if(marker != undefined){
-        
+      if(jQuery.inArray(marker, routMarkers) != -1){
+        console.log("i'm here");
+        return;
+      } else {
+        routMarkers.push(marker);
+
         if (marker.icon = 'images/landmarks.png') {
             marker.setIcon('images/landmarksSELECTED.png');
         }
-        if (marker.icon = 'images/historical.png') {
+        else
+        if (marker.icon == 'images/historical.png') {
             marker.setIcon('images/historicalSELECTED.png');
         }
-        if (marker.icon = 'images/museums.png') {
+        else
+        if (marker.icon == 'images/museums.png') {
             marker.setIcon('images/museumsSELECTED.png');
         }
-    
-      var index = markersRout.length;
-      var locationIndex = "location" + index;
-      Object.defineProperty(coordinates, locationIndex, {writable : true, enumerable : true, configurable : true});
-      Object.defineProperty(locationMarkers, locationIndex, {writable : true, enumerable : true, configurable : true});
-      coordinates[locationIndex] = {lat:marker.getPosition().lat(), lng:marker.getPosition().lng()};
-      locationMarkers[locationIndex] = marker;
 
-      var html = "";
-      html = "<li class='locationList' id='location" + index + "'><i style='margin:5px 20px 5px 5px;' class='fa fa-arrows-v' aria-hidden='true'></i>" + marker.title + "<button id='locationButton" + index + "' style='position:absolute; right:5px; top:4px;' class='btn btn-xs btn-danger'>X</button></li>";
-      $("#placesToSee ol").append(html);
+
+        var index = markersRout.length;
+        var locationIndex = "location" + index;
+        Object.defineProperty(coordinates, locationIndex, {writable : true, enumerable : true, configurable : true});
+        Object.defineProperty(locationMarkers, locationIndex, {writable : true, enumerable : true, configurable : true});
+        coordinates[locationIndex] = {lat:marker.getPosition().lat(), lng:marker.getPosition().lng()};
+        locationMarkers[locationIndex] = marker;
+
+        var html = "";
+        html = "<li class='locationList' id='location" + index + "'><i style='margin:5px 20px 5px 5px;' class='fa fa-arrows-v' aria-hidden='true'></i>" + marker.title + "<button id='locationButton" + index + "' style='position:absolute; right:5px; top:4px;' class='btn btn-xs btn-danger'>X</button></li>";
+        $("#placesToSee ol").append(html);
+      }
     }
   }
           var infoBubbles = [];
@@ -665,7 +678,7 @@ function initMap() {
             });
                 StartHere.open(map);
                 infoBubbles.push(StartHere);
-                console.log(infoBubbles);
+
 
             for (var i = 0; i < route.legs.length; i++) {
                 var section = route.legs[i];
@@ -742,18 +755,19 @@ function initMap() {
 
     // Formats the content of the infowindow for each marker
     if(loadedImages[city][interest][placeNameTrim] != undefined){
-      var contentString = '<div style="width:300px;"><h3 id="info-window-title" class="text-center">' + place.name +
+      var contentString = '<div style="width:280px;"><h3 id="info-window-title" class="text-center">' + place.name +
       '</h3><div style="display: inline-block; position: relative;"><img id="info-window-image" src="' + loadedImages[city][interest][placeNameTrim][0] +
-      '" style="width: 150px; height: 200px; display: inline-block;"/><i id="refreshImage" class="fa fa-refresh" aria-hidden="true" style="cursor:pointer; position: absolute; top: 2%; right: 3%; height:20px; width:20px; border-radius: 50%; padding: 1px 0px 0px 1.7px; line-height:20px; text-align:center; background-color: white; color: #59d;"></i></div>' +
-      '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">' + loadedArticle[city][interest][placeNameTrim][0].articleText.substring(0, 100) + '</p></div>' +
+      '" style="position:relative; left:50%;width: 150px; height: 200px; display:inline-block; padding-bottom:10px;"/><i id="refreshImage" class="fa fa-refresh" aria-hidden="true" style="position: absolute; top:5px; right:-70px;cursor: pointer; display: block; background-color: white; border-radius: 50%; padding: 4px 4px 2px 4.7px;color: #59d;"></i></div>' +
+      loadedArticle[city][interest][placeNameTrim][0].articleText.substring(0, 200) + '...</div>' +
       '<button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button>' +
       '<button style="margin:10px 5px 5px 0px;" id="moreInformation" class="btn btn-primary" data-toggle="modal" data-target="#myModal">More Info</button>';
-      var contentStringModal = '<div style="display: inline-block; position: relative;"><img id="info-window-image" src="' + loadedImages[city][interest][placeNameTrim][0] +
-      '" style="width: 150px; height: 200px; display: inline-block;"/><i id="refreshImage" class="fa fa-refresh" aria-hidden="true" style="cursor:pointer; position: absolute; top: 2%; right: 3%; height:20px; width:20px; border-radius: 50%; padding: 1px 0px 0px 1.7px; line-height:20px; text-align:center; background-color: white; color: #59d;"></i></div>';
+      var contentStringModal = '<div style="display: inline-block; position: relative;"><img id="modal-info-window-image" src="' +
+      loadedImages[city][interest][placeNameTrim][0] +
+      '" style="width: 150px; height: 200px; display: inline-block;"/><i id="modal-refreshImage" class="fa fa-refresh" aria-hidden="true" style="position: absolute; top:5px; right:5px;cursor: pointer; display: block; background-color: white; border-radius: 50%; padding: 4px 4px 2px 4.7px;color: #59d;"></i></div>';
     } else {
       var contentString = '<div style="width:300px;"><h3 id="info-window-title" class="text-center">' + place.name +
-      '</h3>' + '<p style="display: inline-block; margin: 0px 10px; position: absolute; width: 140px; font-size: .7em; text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sollicitudin tincidunt pulvinar. In purus elit, varius quis faucibus vel.</p></div><button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button><button style="margin:10px 5px 5px 0px;" id="moreInformation" class="btn btn-primary" data-toggle="modal" data-target="#myModal">More Info</button>';
-      var contentStringModal = "No Images Found about this location."
+      '</h3>' + '<p style="margin: 10px; font-size: .8em; text-align: left;">Sorry! We were unable to find images of this location at Trove.</p></div><button style="margin:10px 5px 5px 0px;" id="addLocation" class="btn btn-primary">Add Location</button><button style="margin:10px 5px 5px 0px;" id="moreInformation" class="btn btn-primary" data-toggle="modal" data-target="#myModal">More Info</button>';
+      var contentStringModal = "<p style='width:150px;'>Sorry! We were unable to find images of this location at Trove.</p>"
     }
 
     // Creates the infowindow for the marker
@@ -774,7 +788,7 @@ function initMap() {
 
       infoWindow.open(map, this);
       infoWindows.push(infoWindow);
-        console.log(markersRout);
+
       // adds a listener to addLocation button in the infowindow
       google.maps.event.addDomListener(document.getElementById('addLocation'), 'click', function(){
         markersRout.push(marker);
@@ -792,15 +806,22 @@ function initMap() {
       });
 
       google.maps.event.addDomListener(document.getElementById('moreInformation'), 'click', function(){
+          $("#infoTitle").empty();
+          $("#infoPage").empty();
           $("#infoTitle").html(place.name);
-          $("#infoPage").html(contentStringModal);
-          $("#infoPage").append(loadedArticle[city][interest][placeNameTrim][0].articleText);
-          articlesNumber = loadedArticle[city][interest][placeNameTrim].length;
-          currentCity = city;
-          currentInterest = interest;
-          currentLocation = placeNameTrim;
-          if (articlesNumber > 0){
-            $("#nextArticle").show();
+          $("#modal-images").html(contentStringModal);
+          var articles = loadedArticle[city][interest][placeNameTrim];
+          if(articles != undefined){
+            $("#infoPage").append(loadedArticle[city][interest][placeNameTrim][0].articleText);
+            articlesNumber = loadedArticle[city][interest][placeNameTrim].length;
+            currentCity = city;
+            currentInterest = interest;
+            currentLocation = placeNameTrim;
+            if (articlesNumber > 0){
+              $("#nextArticle").show();
+            }
+          } else {
+            $("#infoPage").append("<p>Sorry! We were unable to find articles related to this location in Trove.</p>");
           }
       });
        //closes all info windows if clicked anywhere on the map
@@ -826,11 +847,13 @@ function initMap() {
   var currentInterest = "";
   var currentLocation = "";
 
-  $("#refreshImage").click(function(){
+  $(document).on("click", "#modal-refreshImage", function(){
     var imageArray = loadedImages[currentCity][currentInterest][currentLocation];
+    console.log(imageArray);
     var maxIndex = imageArray.length;
     var imageIndex = getRandom(maxIndex);
-    document.getElementById("info-window-image").src = loadedImages[currentCity][currentInterest][currentLocation][imageIndex];
+    document.getElementById("modal-info-window-image").src = loadedImages[currentCity][currentInterest][currentLocation][imageIndex];
+    console.log(loadedImages[currentCity][currentInterest][currentLocation][imageIndex]);
   });
 
   $("#nextArticle").click(function(){
@@ -911,97 +934,24 @@ function initMap() {
   $( "#locationsToSee" ).sortable();
   $( "#locationsToSee" ).disableSelection();
 
-  $("#locationsToSee").on("click", "#locationButton1", function(){
-        if (locationMarkers.location1.icon = 'images/landmarksSELECTED.png') {
-            locationMarkers.location1.setIcon('images/landmarks.png');
+  $("#locationsToSee").on("click", "[id^=locationButton]", function(){
+      var value = this.id
+      value = value.replace(/locationButton/, '');
+      var locationName = "location" + value;
+        if (locationMarkers[locationName].icon == 'images/landmarksSELECTED.png') {
+            locationMarkers[locationName].setIcon('images/landmarks.png');
         }
       else
-        if (locationMarkers.location1.icon = 'images/historicalSELECTED.png') {
-            locationMarkers.location1.setIcon('images/historical.png');
+        if (locationMarkers[locationName].icon == 'images/historicalSELECTED.png') {
+            locationMarkers[locationName].setIcon('images/historical.png');
         }
       else
-        if (locationMarkers.location1.icon = 'images/museumsSELECTED.png') {
-            locationMarkers.location1.setIcon('images/museums.png');
+        if (locationMarkers[locationName].icon == 'images/museumsSELECTED.png') {
+            locationMarkers[locationName].setIcon('images/museums.png');
         }
-    delete coordinates.location1;
-    document.getElementById("location1").remove();
+    delete coordinates[locationName];
+    document.getElementById(locationName).remove();
     if (directionsPressed == true) {
-    getDirections(directionsService, directionsDisplay);
-    }
-  });
-
-  $("#locationsToSee").on("click", "#locationButton2", function(){
-        if (locationMarkers.location2.icon = 'images/landmarksSELECTED.png') {
-            locationMarkers.location2.setIcon('images/landmarks.png');
-        }
-      else
-        if (locationMarkers.location2.icon = 'images/historicalSELECTED.png') {
-            locationMarkers.location2.setIcon('images/historical.png');
-        }
-      else
-        if (locationMarkers.location2.icon = 'images/museumsSELECTED.png') {
-            locationMarkers.location2.setIcon('images/museums.png');
-        }    
-      delete coordinates.location2;
-    document.getElementById("location2").remove();
-        if (directionsPressed == true) {
-    getDirections(directionsService, directionsDisplay);
-    }
-  });
-
-  $("#locationsToSee").on("click", ".locationButton3", function(){
-        if (locationMarkers.location3.icon = 'images/landmarksSELECTED.png') {
-            locationMarkers.location3.setIcon('images/landmarks.png');
-        }
-      else
-        if (locationMarkers.location3.icon = 'images/historicalSELECTED.png') {
-            locationMarkers.location3.setIcon('images/historical.png');
-        }
-      else
-        if (locationMarkers.location3.icon = 'images/museumsSELECTED.png') {
-            locationMarkers.location3.setIcon('images/museums.png');
-        }
-    delete coordinates.location3;
-    document.getElementById("location3").remove();
-        if (directionsPressed == true) {
-    getDirections(directionsService, directionsDisplay);
-    }
-  });
-
-  $("#locationsToSee").on("click", "#locationButton4", function(){
-        if (locationMarkers.location4.icon = 'images/landmarksSELECTED.png') {
-            locationMarkers.location4.setIcon('images/landmarks.png');
-        }
-      else
-        if (locationMarkers.location4.icon = 'images/historicalSELECTED.png') {
-            locationMarkers.location4.setIcon('images/historical.png');
-        }
-      else
-        if (locationMarkers.location4.icon = 'images/museumsSELECTED.png') {
-            locationMarkers.location4.setIcon('images/museums.png');
-        }
-    delete coordinates.location4;
-    document.getElementById("location4").remove();
-        if (directionsPressed == true) {
-    getDirections(directionsService, directionsDisplay);
-    }
-  });
-
-  $("#locationsToSee").on("click", "#locationButton5", function(){
-        if (locationMarkers.location5.icon = 'images/landmarksSELECTED.png') {
-            locationMarkers.location5.setIcon('images/landmarks.png');
-        }
-      else
-        if (locationMarkers.location5.icon = 'images/historicalSELECTED.png') {
-            locationMarkers.location5.setIcon('images/historical.png');
-        }
-      else
-        if (locationMarkers.location5.icon = 'images/museumsSELECTED.png') {
-            locationMarkers.location5.setIcon('images/museums.png');
-        }
-    delete coordinates.location5;
-    document.getElementById("location5").remove();
-        if (directionsPressed == true) {
     getDirections(directionsService, directionsDisplay);
     }
   });
@@ -1042,7 +992,6 @@ function codeLatLng(latGEO, lngGEO) {
     var latlng = new google.maps.LatLng(latGEO, lngGEO);
     geocoder.geocode({'latLng': latlng}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
-      console.log(results)
         if (results[1]) {
         //find country name
              for (var i=0; i<results[0].address_components.length; i++) {
