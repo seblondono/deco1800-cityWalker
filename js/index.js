@@ -553,7 +553,17 @@ function initMap() {
   function buildPoints(marker) {
     "use strict";
     if(marker != undefined){
-      marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+        
+        if (marker.icon = 'images/landmarks.png') {
+            marker.setIcon('images/landmarksSELECTED.png');
+        }
+        if (marker.icon = 'images/historical.png') {
+            marker.setIcon('images/historicalSELECTED.png');
+        }
+        if (marker.icon = 'images/museums.png') {
+            marker.setIcon('images/museumsSELECTED.png');
+        }
+    
       var index = markersRout.length;
       var locationIndex = "location" + index;
       Object.defineProperty(coordinates, locationIndex, {writable : true, enumerable : true, configurable : true});
@@ -677,7 +687,6 @@ function initMap() {
                   arrowSize: 10,
                   borderWidth: 3,
                   disableAutoPan: true,
-                  hideCloseButton: true,
                   arrowPosition: 30,
                   backgroundClassName: 'transparent',
                   arrowStyle: 4
@@ -765,7 +774,7 @@ function initMap() {
 
       infoWindow.open(map, this);
       infoWindows.push(infoWindow);
-
+        console.log(markersRout);
       // adds a listener to addLocation button in the infowindow
       google.maps.event.addDomListener(document.getElementById('addLocation'), 'click', function(){
         markersRout.push(marker);
@@ -776,7 +785,6 @@ function initMap() {
         // makes the navbar draggable
         $("#placesToSee").draggable();
         buildPoints(marker);
-          console.log(buildPoints());
 
         if (directionsPressed == true) {
           getDirections(directionsService, directionsDisplay)
@@ -904,46 +912,96 @@ function initMap() {
   $( "#locationsToSee" ).disableSelection();
 
   $("#locationsToSee").on("click", "#locationButton1", function(){
-    locationMarkers.location1.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+        if (locationMarkers.location1.icon = 'images/landmarksSELECTED.png') {
+            locationMarkers.location1.setIcon('images/landmarks.png');
+        }
+      else
+        if (locationMarkers.location1.icon = 'images/historicalSELECTED.png') {
+            locationMarkers.location1.setIcon('images/historical.png');
+        }
+      else
+        if (locationMarkers.location1.icon = 'images/museumsSELECTED.png') {
+            locationMarkers.location1.setIcon('images/museums.png');
+        }
     delete coordinates.location1;
     document.getElementById("location1").remove();
-    if (directionsPressed = true) {
+    if (directionsPressed == true) {
     getDirections(directionsService, directionsDisplay);
     }
   });
 
   $("#locationsToSee").on("click", "#locationButton2", function(){
-    locationMarkers.location2.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
-    delete coordinates.location2;
+        if (locationMarkers.location2.icon = 'images/landmarksSELECTED.png') {
+            locationMarkers.location2.setIcon('images/landmarks.png');
+        }
+      else
+        if (locationMarkers.location2.icon = 'images/historicalSELECTED.png') {
+            locationMarkers.location2.setIcon('images/historical.png');
+        }
+      else
+        if (locationMarkers.location2.icon = 'images/museumsSELECTED.png') {
+            locationMarkers.location2.setIcon('images/museums.png');
+        }    
+      delete coordinates.location2;
     document.getElementById("location2").remove();
-        if (directionsPressed = true) {
+        if (directionsPressed == true) {
     getDirections(directionsService, directionsDisplay);
     }
   });
 
   $("#locationsToSee").on("click", ".locationButton3", function(){
-    locationMarkers.location3.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+        if (locationMarkers.location3.icon = 'images/landmarksSELECTED.png') {
+            locationMarkers.location3.setIcon('images/landmarks.png');
+        }
+      else
+        if (locationMarkers.location3.icon = 'images/historicalSELECTED.png') {
+            locationMarkers.location3.setIcon('images/historical.png');
+        }
+      else
+        if (locationMarkers.location3.icon = 'images/museumsSELECTED.png') {
+            locationMarkers.location3.setIcon('images/museums.png');
+        }
     delete coordinates.location3;
     document.getElementById("location3").remove();
-        if (directionsPressed = true) {
+        if (directionsPressed == true) {
     getDirections(directionsService, directionsDisplay);
     }
   });
 
   $("#locationsToSee").on("click", "#locationButton4", function(){
-    locationMarkers.location4.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+        if (locationMarkers.location4.icon = 'images/landmarksSELECTED.png') {
+            locationMarkers.location4.setIcon('images/landmarks.png');
+        }
+      else
+        if (locationMarkers.location4.icon = 'images/historicalSELECTED.png') {
+            locationMarkers.location4.setIcon('images/historical.png');
+        }
+      else
+        if (locationMarkers.location4.icon = 'images/museumsSELECTED.png') {
+            locationMarkers.location4.setIcon('images/museums.png');
+        }
     delete coordinates.location4;
     document.getElementById("location4").remove();
-        if (directionsPressed = true) {
+        if (directionsPressed == true) {
     getDirections(directionsService, directionsDisplay);
     }
   });
 
   $("#locationsToSee").on("click", "#locationButton5", function(){
-    locationMarkers.location5.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+        if (locationMarkers.location5.icon = 'images/landmarksSELECTED.png') {
+            locationMarkers.location5.setIcon('images/landmarks.png');
+        }
+      else
+        if (locationMarkers.location5.icon = 'images/historicalSELECTED.png') {
+            locationMarkers.location5.setIcon('images/historical.png');
+        }
+      else
+        if (locationMarkers.location5.icon = 'images/museumsSELECTED.png') {
+            locationMarkers.location5.setIcon('images/museums.png');
+        }
     delete coordinates.location5;
     document.getElementById("location5").remove();
-        if (directionsPressed = true) {
+        if (directionsPressed == true) {
     getDirections(directionsService, directionsDisplay);
     }
   });
