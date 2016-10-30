@@ -639,7 +639,8 @@ function initMap() {
     alert(text);
   }
 
-  var infoBubble = [];
+var infoBubbles = [];
+
 
   //runs the google directions api to form a route
   //More detail to be addded to allow greater user flexibility (walking/driving/bus etc)
@@ -691,7 +692,12 @@ function initMap() {
       var fastestRoute = document.getElementById("fastestRoute").checked;
 
       var startPosition = new google.maps.LatLng(locationsRoutFinalOrder[0].lat, locationsRoutFinalOrder[0].lng)
-
+        $.each(infoBubbles, function( index ) {
+             infoBubbles[index].close();
+             });
+            infoBubbles = [];
+      
+      
       directionsService.route({
           origin: startPosition,
           destination: dest,
@@ -723,8 +729,9 @@ function initMap() {
                  fontSize: '6em',
                  fontFamily: "'Titillium Web', sans-serif"
                });
+        
                    StartHere.open(map, this);
-                   infoBubble.push(StartHere);
+                   infoBubbles.push(StartHere);
 
                for (var i = 0; i < route.legs.length; i++) {
                    var section = route.legs[i];
@@ -749,8 +756,8 @@ function initMap() {
                      backgroundClassName: 'transparent',
                      arrowStyle: 4
                    });
-                   infoBubble.push(miniInfo);
                    miniInfo.open(map);
+                   infoBubbles.push(miniInfo);
                  }
               $("#distance").html("Total distance: " + getDistance(distance) + ", ");
               $("#duration").html("total duration: " + Math.round(time / 60) + " minutes");
