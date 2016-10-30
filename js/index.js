@@ -625,9 +625,9 @@ function initMap() {
             }
 
         }
-          
-          
-          
+
+
+
         var html = "";
         html = "<li class='locationList' id='location" + index + "'><i style='margin:5px 20px 5px 5px;' class='fa fa-arrows-v' aria-hidden='true'></i>" + marker.title + "<button id='locationButton" + index + "' style='position:absolute; right:5px; top:4px;' class='btn btn-xs btn-danger'>X</button></li>";
         $("#placesToSee ol").append(html);
@@ -638,6 +638,8 @@ function initMap() {
   function showError(text){
     alert(text);
   }
+
+  var infoBubble = [];
 
   //runs the google directions api to form a route
   //More detail to be addded to allow greater user flexibility (walking/driving/bus etc)
@@ -722,14 +724,14 @@ function initMap() {
                  fontFamily: "'Titillium Web', sans-serif"
                });
                    StartHere.open(map, this);
-                   InfoBubble.push(StartHere);
+                   infoBubble.push(StartHere);
 
                for (var i = 0; i < route.legs.length; i++) {
                    var section = route.legs[i];
                    distance += section.distance.value;
-              
+
                    time += section.duration.value;
-              
+
                    var z = i+1;
                    var step;
                    step = Math.floor((response.routes[0].legs[i].steps.length)/2);
@@ -747,7 +749,7 @@ function initMap() {
                      backgroundClassName: 'transparent',
                      arrowStyle: 4
                    });
-                   infoBubbles.push(miniInfo);
+                   infoBubble.push(miniInfo);
                    miniInfo.open(map);
                  }
               $("#distance").html("Total distance: " + getDistance(distance) + ", ");
